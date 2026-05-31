@@ -1,0 +1,438 @@
+export type Lang = 'es' | 'en' | 'it' | 'pt';
+
+export interface LangOption {
+  code: Lang;
+  label: string;
+  flag: string;
+}
+
+export const LANGS: LangOption[] = [
+  { code: 'es', label: 'Español', flag: 'ES' },
+  { code: 'en', label: 'English', flag: 'EN' },
+  { code: 'it', label: 'Italiano', flag: 'IT' },
+  { code: 'pt', label: 'Português', flag: 'PT' },
+];
+
+export type TranslationKey =
+  | 'app.tagline'
+  | 'login.welcome'
+  | 'login.subtitle'
+  | 'login.email'
+  | 'login.emailPlaceholder'
+  | 'login.sendCode'
+  | 'login.codeTitle'
+  | 'login.codeSubtitle'
+  | 'login.codeHint'
+  | 'login.verify'
+  | 'login.resend'
+  | 'login.back'
+  | 'login.demoHint'
+  | 'login.invalid'
+  | 'login.emailInvalid'
+  | 'nav.home'
+  | 'nav.consultas'
+  | 'nav.agenda'
+  | 'nav.pacientes'
+  | 'nav.ajustes'
+  | 'nav.section.clinica'
+  | 'nav.section.general'
+  | 'topbar.search'
+  | 'topbar.logout'
+  | 'home.greeting'
+  | 'home.subtitle'
+  | 'home.stat.patients'
+  | 'home.stat.today'
+  | 'home.stat.pending'
+  | 'home.stat.week'
+  | 'home.upcoming'
+  | 'home.recent'
+  | 'home.viewAll'
+  | 'consultas.title'
+  | 'consultas.subtitle'
+  | 'agenda.title'
+  | 'agenda.subtitle'
+  | 'placeholder.soon'
+  | 'placeholder.desc'
+  | 'patients.title'
+  | 'patients.count.one'
+  | 'patients.count.other'
+  | 'patients.new'
+  | 'patients.search'
+  | 'patients.col.patient'
+  | 'patients.col.age'
+  | 'patients.col.lastVisit'
+  | 'patients.col.consultas'
+  | 'patients.col.status'
+  | 'patients.years'
+  | 'patients.empty'
+  | 'detail.back'
+  | 'detail.edit'
+  | 'detail.save'
+  | 'detail.cancel'
+  | 'detail.saved'
+  | 'detail.name'
+  | 'detail.age'
+  | 'detail.tab.history'
+  | 'detail.tab.data'
+  | 'detail.info'
+  | 'detail.id'
+  | 'detail.email'
+  | 'detail.phone'
+  | 'detail.since'
+  | 'detail.totalConsultas'
+  | 'detail.with'
+  | 'detail.ageInvalid'
+  | 'status.completada'
+  | 'status.pendiente'
+  | 'status.cancelada'
+  | 'status.activo'
+  | 'theme.toggle'
+  | 'ajustes.title'
+  | 'ajustes.subtitle';
+
+type Translations = Record<TranslationKey, string>;
+
+export const translations: Record<Lang, Translations> = {
+  es: {
+    'app.tagline': 'Plataforma clínica',
+    'login.welcome': 'Bienvenido de nuevo',
+    'login.subtitle': 'Introduce tu correo y te enviaremos un código de acceso.',
+    'login.email': 'Correo electrónico',
+    'login.emailPlaceholder': 'nombre@clinica.com',
+    'login.sendCode': 'Enviar código',
+    'login.codeTitle': 'Revisa tu correo',
+    'login.codeSubtitle': 'Hemos enviado un código de 6 dígitos a',
+    'login.codeHint': 'El código caduca en 10 minutos.',
+    'login.verify': 'Verificar y entrar',
+    'login.resend': 'Reenviar código',
+    'login.back': 'Usar otro correo',
+    'login.demoHint': 'Demo: el código es 482019',
+    'login.invalid': 'Código incorrecto. Inténtalo de nuevo.',
+    'login.emailInvalid': 'Introduce un correo válido.',
+    'nav.home': 'Inicio',
+    'nav.consultas': 'Consultas',
+    'nav.agenda': 'Agenda',
+    'nav.pacientes': 'Pacientes',
+    'nav.ajustes': 'Ajustes',
+    'nav.section.clinica': 'Clínica',
+    'nav.section.general': 'General',
+    'topbar.search': 'Buscar pacientes, consultas…',
+    'topbar.logout': 'Cerrar sesión',
+    'home.greeting': 'Buenos días',
+    'home.subtitle': 'Esto es lo que ocurre hoy en tu clínica.',
+    'home.stat.patients': 'Pacientes activos',
+    'home.stat.today': 'Consultas hoy',
+    'home.stat.pending': 'Pendientes',
+    'home.stat.week': 'Esta semana',
+    'home.upcoming': 'Próximas consultas',
+    'home.recent': 'Pacientes recientes',
+    'home.viewAll': 'Ver todos',
+    'consultas.title': 'Consultas',
+    'consultas.subtitle': 'Gestiona las consultas de la clínica.',
+    'agenda.title': 'Agenda',
+    'agenda.subtitle': 'Tu calendario de citas.',
+    'placeholder.soon': 'Módulo en construcción',
+    'placeholder.desc':
+      'Esta sección forma parte del sistema pero queda fuera del alcance de esta prueba. La navegación y el diseño ya están listos.',
+    'patients.title': 'Pacientes',
+    'patients.count.one': 'paciente',
+    'patients.count.other': 'pacientes',
+    'patients.new': 'Nuevo paciente',
+    'patients.search': 'Buscar por nombre o ID…',
+    'patients.col.patient': 'Paciente',
+    'patients.col.age': 'Edad',
+    'patients.col.lastVisit': 'Última visita',
+    'patients.col.consultas': 'Consultas',
+    'patients.col.status': 'Estado',
+    'patients.years': 'años',
+    'patients.empty': 'No se encontraron pacientes.',
+    'detail.back': 'Pacientes',
+    'detail.edit': 'Editar',
+    'detail.save': 'Guardar cambios',
+    'detail.cancel': 'Cancelar',
+    'detail.saved': 'Cambios guardados correctamente.',
+    'detail.name': 'Nombre completo',
+    'detail.age': 'Edad',
+    'detail.tab.history': 'Histórico de consultas',
+    'detail.tab.data': 'Datos',
+    'detail.info': 'Información',
+    'detail.id': 'Identificador',
+    'detail.email': 'Correo',
+    'detail.phone': 'Teléfono',
+    'detail.since': 'Paciente desde',
+    'detail.totalConsultas': 'consultas en total',
+    'detail.with': 'con',
+    'detail.ageInvalid': 'Edad no válida',
+    'status.completada': 'Completada',
+    'status.pendiente': 'Pendiente',
+    'status.cancelada': 'Cancelada',
+    'status.activo': 'Activo',
+    'theme.toggle': 'Cambiar tema',
+    'ajustes.title': 'Ajustes',
+    'ajustes.subtitle': 'Configuración de la plataforma.',
+  },
+  en: {
+    'app.tagline': 'Clinical platform',
+    'login.welcome': 'Welcome back',
+    'login.subtitle': "Enter your email and we'll send you an access code.",
+    'login.email': 'Email address',
+    'login.emailPlaceholder': 'name@clinic.com',
+    'login.sendCode': 'Send code',
+    'login.codeTitle': 'Check your email',
+    'login.codeSubtitle': 'We sent a 6-digit code to',
+    'login.codeHint': 'The code expires in 10 minutes.',
+    'login.verify': 'Verify and sign in',
+    'login.resend': 'Resend code',
+    'login.back': 'Use another email',
+    'login.demoHint': 'Demo: the code is 482019',
+    'login.invalid': 'Incorrect code. Please try again.',
+    'login.emailInvalid': 'Enter a valid email address.',
+    'nav.home': 'Home',
+    'nav.consultas': 'Consultations',
+    'nav.agenda': 'Schedule',
+    'nav.pacientes': 'Patients',
+    'nav.ajustes': 'Settings',
+    'nav.section.clinica': 'Clinic',
+    'nav.section.general': 'General',
+    'topbar.search': 'Search patients, consultations…',
+    'topbar.logout': 'Sign out',
+    'home.greeting': 'Good morning',
+    'home.subtitle': "Here's what's happening at your clinic today.",
+    'home.stat.patients': 'Active patients',
+    'home.stat.today': 'Consultations today',
+    'home.stat.pending': 'Pending',
+    'home.stat.week': 'This week',
+    'home.upcoming': 'Upcoming consultations',
+    'home.recent': 'Recent patients',
+    'home.viewAll': 'View all',
+    'consultas.title': 'Consultations',
+    'consultas.subtitle': "Manage the clinic's consultations.",
+    'agenda.title': 'Schedule',
+    'agenda.subtitle': 'Your appointment calendar.',
+    'placeholder.soon': 'Module under construction',
+    'placeholder.desc':
+      'This section is part of the system but is out of scope for this test. Navigation and design are already in place.',
+    'patients.title': 'Patients',
+    'patients.count.one': 'patient',
+    'patients.count.other': 'patients',
+    'patients.new': 'New patient',
+    'patients.search': 'Search by name or ID…',
+    'patients.col.patient': 'Patient',
+    'patients.col.age': 'Age',
+    'patients.col.lastVisit': 'Last visit',
+    'patients.col.consultas': 'Consultations',
+    'patients.col.status': 'Status',
+    'patients.years': 'yrs',
+    'patients.empty': 'No patients found.',
+    'detail.back': 'Patients',
+    'detail.edit': 'Edit',
+    'detail.save': 'Save changes',
+    'detail.cancel': 'Cancel',
+    'detail.saved': 'Changes saved successfully.',
+    'detail.name': 'Full name',
+    'detail.age': 'Age',
+    'detail.tab.history': 'Consultation history',
+    'detail.tab.data': 'Data',
+    'detail.info': 'Information',
+    'detail.id': 'Identifier',
+    'detail.email': 'Email',
+    'detail.phone': 'Phone',
+    'detail.since': 'Patient since',
+    'detail.totalConsultas': 'consultations in total',
+    'detail.with': 'with',
+    'detail.ageInvalid': 'Invalid age',
+    'status.completada': 'Completed',
+    'status.pendiente': 'Pending',
+    'status.cancelada': 'Cancelled',
+    'status.activo': 'Active',
+    'theme.toggle': 'Toggle theme',
+    'ajustes.title': 'Settings',
+    'ajustes.subtitle': 'Platform configuration.',
+  },
+  it: {
+    'app.tagline': 'Piattaforma clinica',
+    'login.welcome': 'Bentornato',
+    'login.subtitle': 'Inserisci la tua email e ti invieremo un codice di accesso.',
+    'login.email': 'Indirizzo email',
+    'login.emailPlaceholder': 'nome@clinica.com',
+    'login.sendCode': 'Invia codice',
+    'login.codeTitle': 'Controlla la tua email',
+    'login.codeSubtitle': 'Abbiamo inviato un codice di 6 cifre a',
+    'login.codeHint': 'Il codice scade tra 10 minuti.',
+    'login.verify': 'Verifica ed entra',
+    'login.resend': 'Invia di nuovo',
+    'login.back': "Usa un'altra email",
+    'login.demoHint': 'Demo: il codice è 482019',
+    'login.invalid': 'Codice errato. Riprova.',
+    'login.emailInvalid': "Inserisci un'email valida.",
+    'nav.home': 'Home',
+    'nav.consultas': 'Consulti',
+    'nav.agenda': 'Agenda',
+    'nav.pacientes': 'Pazienti',
+    'nav.ajustes': 'Impostazioni',
+    'nav.section.clinica': 'Clinica',
+    'nav.section.general': 'Generale',
+    'topbar.search': 'Cerca pazienti, consulti…',
+    'topbar.logout': 'Esci',
+    'home.greeting': 'Buongiorno',
+    'home.subtitle': 'Ecco cosa succede oggi nella tua clinica.',
+    'home.stat.patients': 'Pazienti attivi',
+    'home.stat.today': 'Consulti oggi',
+    'home.stat.pending': 'In sospeso',
+    'home.stat.week': 'Questa settimana',
+    'home.upcoming': 'Prossimi consulti',
+    'home.recent': 'Pazienti recenti',
+    'home.viewAll': 'Vedi tutti',
+    'consultas.title': 'Consulti',
+    'consultas.subtitle': 'Gestisci i consulti della clinica.',
+    'agenda.title': 'Agenda',
+    'agenda.subtitle': 'Il tuo calendario di appuntamenti.',
+    'placeholder.soon': 'Modulo in costruzione',
+    'placeholder.desc':
+      "Questa sezione fa parte del sistema ma è fuori dall'ambito di questo test.",
+    'patients.title': 'Pazienti',
+    'patients.count.one': 'paziente',
+    'patients.count.other': 'pazienti',
+    'patients.new': 'Nuovo paziente',
+    'patients.search': 'Cerca per nome o ID…',
+    'patients.col.patient': 'Paziente',
+    'patients.col.age': 'Età',
+    'patients.col.lastVisit': 'Ultima visita',
+    'patients.col.consultas': 'Consulti',
+    'patients.col.status': 'Stato',
+    'patients.years': 'anni',
+    'patients.empty': 'Nessun paziente trovato.',
+    'detail.back': 'Pazienti',
+    'detail.edit': 'Modifica',
+    'detail.save': 'Salva modifiche',
+    'detail.cancel': 'Annulla',
+    'detail.saved': 'Modifiche salvate correttamente.',
+    'detail.name': 'Nome completo',
+    'detail.age': 'Età',
+    'detail.tab.history': 'Storico dei consulti',
+    'detail.tab.data': 'Dati',
+    'detail.info': 'Informazioni',
+    'detail.id': 'Identificatore',
+    'detail.email': 'Email',
+    'detail.phone': 'Telefono',
+    'detail.since': 'Paziente dal',
+    'detail.totalConsultas': 'consulti in totale',
+    'detail.with': 'con',
+    'detail.ageInvalid': 'Età non valida',
+    'status.completada': 'Completato',
+    'status.pendiente': 'In sospeso',
+    'status.cancelada': 'Annullato',
+    'status.activo': 'Attivo',
+    'theme.toggle': 'Cambia tema',
+    'ajustes.title': 'Impostazioni',
+    'ajustes.subtitle': 'Configurazione della piattaforma.',
+  },
+  pt: {
+    'app.tagline': 'Plataforma clínica',
+    'login.welcome': 'Bem-vindo de volta',
+    'login.subtitle': 'Introduza o seu email e enviaremos um código de acesso.',
+    'login.email': 'Endereço de email',
+    'login.emailPlaceholder': 'nome@clinica.com',
+    'login.sendCode': 'Enviar código',
+    'login.codeTitle': 'Verifique o seu email',
+    'login.codeSubtitle': 'Enviámos um código de 6 dígitos para',
+    'login.codeHint': 'O código expira em 10 minutos.',
+    'login.verify': 'Verificar e entrar',
+    'login.resend': 'Reenviar código',
+    'login.back': 'Usar outro email',
+    'login.demoHint': 'Demo: o código é 482019',
+    'login.invalid': 'Código incorreto. Tente novamente.',
+    'login.emailInvalid': 'Introduza um email válido.',
+    'nav.home': 'Início',
+    'nav.consultas': 'Consultas',
+    'nav.agenda': 'Agenda',
+    'nav.pacientes': 'Pacientes',
+    'nav.ajustes': 'Definições',
+    'nav.section.clinica': 'Clínica',
+    'nav.section.general': 'Geral',
+    'topbar.search': 'Procurar pacientes, consultas…',
+    'topbar.logout': 'Terminar sessão',
+    'home.greeting': 'Bom dia',
+    'home.subtitle': 'Eis o que está a acontecer hoje na sua clínica.',
+    'home.stat.patients': 'Pacientes ativos',
+    'home.stat.today': 'Consultas hoje',
+    'home.stat.pending': 'Pendentes',
+    'home.stat.week': 'Esta semana',
+    'home.upcoming': 'Próximas consultas',
+    'home.recent': 'Pacientes recentes',
+    'home.viewAll': 'Ver todos',
+    'consultas.title': 'Consultas',
+    'consultas.subtitle': 'Faça a gestão das consultas da clínica.',
+    'agenda.title': 'Agenda',
+    'agenda.subtitle': 'O seu calendário de marcações.',
+    'placeholder.soon': 'Módulo em construção',
+    'placeholder.desc': 'Esta secção faz parte do sistema mas está fora do âmbito deste teste.',
+    'patients.title': 'Pacientes',
+    'patients.count.one': 'paciente',
+    'patients.count.other': 'pacientes',
+    'patients.new': 'Novo paciente',
+    'patients.search': 'Procurar por nome ou ID…',
+    'patients.col.patient': 'Paciente',
+    'patients.col.age': 'Idade',
+    'patients.col.lastVisit': 'Última visita',
+    'patients.col.consultas': 'Consultas',
+    'patients.col.status': 'Estado',
+    'patients.years': 'anos',
+    'patients.empty': 'Nenhum paciente encontrado.',
+    'detail.back': 'Pacientes',
+    'detail.edit': 'Editar',
+    'detail.save': 'Guardar alterações',
+    'detail.cancel': 'Cancelar',
+    'detail.saved': 'Alterações guardadas com sucesso.',
+    'detail.name': 'Nome completo',
+    'detail.age': 'Idade',
+    'detail.tab.history': 'Histórico de consultas',
+    'detail.tab.data': 'Dados',
+    'detail.info': 'Informação',
+    'detail.id': 'Identificador',
+    'detail.email': 'Email',
+    'detail.phone': 'Telefone',
+    'detail.since': 'Paciente desde',
+    'detail.totalConsultas': 'consultas no total',
+    'detail.with': 'com',
+    'detail.ageInvalid': 'Idade inválida',
+    'status.completada': 'Concluída',
+    'status.pendiente': 'Pendente',
+    'status.cancelada': 'Cancelada',
+    'status.activo': 'Ativo',
+    'theme.toggle': 'Mudar tema',
+    'ajustes.title': 'Definições',
+    'ajustes.subtitle': 'Configuração da plataforma.',
+  },
+};
+
+export const LOCALE_MAP: Record<Lang, string> = {
+  es: 'es-ES',
+  en: 'en-US',
+  it: 'it-IT',
+  pt: 'pt-PT',
+};
+
+export function fmtDate(iso: string, lang: Lang): string {
+  try {
+    return new Intl.DateTimeFormat(LOCALE_MAP[lang], {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).format(new Date(iso));
+  } catch {
+    return iso;
+  }
+}
+
+export function fmtDateLong(iso: string, lang: Lang): string {
+  try {
+    return new Intl.DateTimeFormat(LOCALE_MAP[lang], {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(iso));
+  } catch {
+    return iso;
+  }
+}
