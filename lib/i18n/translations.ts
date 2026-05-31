@@ -86,6 +86,9 @@ export type TranslationKey =
   | 'status.pendiente'
   | 'status.cancelada'
   | 'status.activo'
+  | 'patients.view.table'
+  | 'patients.view.cards'
+  | 'login.asideQuote'
   | 'theme.toggle'
   | 'ajustes.title'
   | 'ajustes.subtitle';
@@ -106,7 +109,7 @@ export const translations: Record<Lang, Translations> = {
     'login.verify': 'Verificar y entrar',
     'login.resend': 'Reenviar código',
     'login.back': 'Usar otro correo',
-    'login.demoHint': 'Demo: el código es 482019',
+    'login.demoHint': 'Demo: el código es',
     'login.invalid': 'Código incorrecto. Inténtalo de nuevo.',
     'login.emailInvalid': 'Introduce un correo válido.',
     'nav.home': 'Inicio',
@@ -146,6 +149,10 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.status': 'Estado',
     'patients.years': 'años',
     'patients.empty': 'No se encontraron pacientes.',
+    'patients.view.table': 'Tabla',
+    'patients.view.cards': 'Tarjetas',
+    'login.asideQuote':
+      'Gestiona pacientes, consultas y agenda en un único espacio claro y seguro.',
     'detail.back': 'Pacientes',
     'detail.edit': 'Editar',
     'detail.save': 'Guardar cambios',
@@ -184,7 +191,7 @@ export const translations: Record<Lang, Translations> = {
     'login.verify': 'Verify and sign in',
     'login.resend': 'Resend code',
     'login.back': 'Use another email',
-    'login.demoHint': 'Demo: the code is 482019',
+    'login.demoHint': 'Demo: the code is',
     'login.invalid': 'Incorrect code. Please try again.',
     'login.emailInvalid': 'Enter a valid email address.',
     'nav.home': 'Home',
@@ -224,6 +231,9 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.status': 'Status',
     'patients.years': 'yrs',
     'patients.empty': 'No patients found.',
+    'patients.view.table': 'Table',
+    'patients.view.cards': 'Cards',
+    'login.asideQuote': 'Manage patients, consultations and scheduling in one clear, secure space.',
     'detail.back': 'Patients',
     'detail.edit': 'Edit',
     'detail.save': 'Save changes',
@@ -262,7 +272,7 @@ export const translations: Record<Lang, Translations> = {
     'login.verify': 'Verifica ed entra',
     'login.resend': 'Invia di nuovo',
     'login.back': "Usa un'altra email",
-    'login.demoHint': 'Demo: il codice è 482019',
+    'login.demoHint': 'Demo: il codice è',
     'login.invalid': 'Codice errato. Riprova.',
     'login.emailInvalid': "Inserisci un'email valida.",
     'nav.home': 'Home',
@@ -302,6 +312,9 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.status': 'Stato',
     'patients.years': 'anni',
     'patients.empty': 'Nessun paziente trovato.',
+    'patients.view.table': 'Tabella',
+    'patients.view.cards': 'Schede',
+    'login.asideQuote': 'Gestisci pazienti, consulti e agenda in un unico spazio chiaro e sicuro.',
     'detail.back': 'Pazienti',
     'detail.edit': 'Modifica',
     'detail.save': 'Salva modifiche',
@@ -340,7 +353,7 @@ export const translations: Record<Lang, Translations> = {
     'login.verify': 'Verificar e entrar',
     'login.resend': 'Reenviar código',
     'login.back': 'Usar outro email',
-    'login.demoHint': 'Demo: o código é 482019',
+    'login.demoHint': 'Demo: o código é',
     'login.invalid': 'Código incorreto. Tente novamente.',
     'login.emailInvalid': 'Introduza um email válido.',
     'nav.home': 'Início',
@@ -379,6 +392,10 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.status': 'Estado',
     'patients.years': 'anos',
     'patients.empty': 'Nenhum paciente encontrado.',
+    'patients.view.table': 'Tabela',
+    'patients.view.cards': 'Cartões',
+    'login.asideQuote':
+      'Faça a gestão de pacientes, consultas e agenda num único espaço claro e seguro.',
     'detail.back': 'Pacientes',
     'detail.edit': 'Editar',
     'detail.save': 'Guardar alterações',

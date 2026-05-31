@@ -4,34 +4,55 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Icon } from '@/components/atoms/icon';
-import { PatientAvatar } from '@/components/atoms/avatar';
+import { PatientAvatar, getInitials, getAvatarTone } from '@/components/atoms/avatar';
 import { StatusBadge } from '@/components/atoms/status-badge';
 import { useI18n } from '@/lib/i18n/context';
-import { usePatientRepository } from '@/lib/container';
+import { useGetPatientById, useUpdatePatient } from '@/lib/container';
 import { fmtDate, fmtDateLong } from '@/lib/i18n/translations';
+import type { Patient } from '@/src/modules/patients/domain/patient';
 
 export default function PatientDetailPage() {
   const { t, lang } = useI18n();
-  const repo = usePatientRepository();
+  const getPatientById = useGetPatientById();
+  const updatePatient = useUpdatePatient();
   const router = useRouter();
   const params = useParams();
   const id = typeof params.id === 'string' ? params.id : '';
 
-  const patient = repo.findById(id);
-
+  const [patient, setPatient] = useState<Patient | null | undefined>(undefined);
   const [tab, setTab] = useState<'history' | 'data'>('history');
   const [editing, setEditing] = useState(false);
-  const [name, setName] = useState(patient?.name ?? '');
-  const [age, setAge] = useState(String(patient?.age ?? ''));
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
   const [ageErr, setAgeErr] = useState('');
 
   useEffect(() => {
-    if (patient) {
-      setName(patient.name);
-      setAge(String(patient.age));
-      setEditing(false);
-    }
-  }, [id, patient?.id]);
+    getPatientById.execute(id).then(p => {
+      setPatient(p);
+      if (p) {
+        setName(p.name);
+        setAge(String(p.age));
+        setEditing(false);
+      }
+    });
+  }, [id, getPatientById]);
+
+  if (patient === undefined) {
+    return (
+      <div style={{ display: 'grid', placeItems: 'center', height: '50vh' }}>
+        <div
+          className="animate-spin"
+          style={{
+            width: 24,
+            height: 24,
+            borderRadius: '50%',
+            border: '2px solid var(--border)',
+            borderTopColor: 'var(--primary)',
+          }}
+        />
+      </div>
+    );
+  }
 
   if (!patient) {
     return (
@@ -47,17 +68,17 @@ export default function PatientDetailPage() {
     );
   }
 
-  function save() {
-    const n = parseInt(age, 10);
+  async function save() {
     if (!name.trim()) return;
-    if (isNaN(n) || n < 0 || n > 130) {
-      setAgeErr(t('detail.ageInvalid'));
-      return;
-    }
     setAgeErr('');
-    repo.update(patient!.id, { name: name.trim(), age: n });
-    toast.success(t('detail.saved'));
-    setEditing(false);
+    try {
+      const updated = await updatePatient.execute(patient!.id, { name, age: parseInt(age, 10) });
+      setPatient(updated);
+      toast.success(t('detail.saved'));
+      setEditing(false);
+    } catch {
+      setAgeErr(t('detail.ageInvalid'));
+    }
   }
 
   function cancel() {
@@ -104,16 +125,19 @@ export default function PatientDetailPage() {
       </div>
 
       <div className="detail-grid">
-        {/* Left column: avatar + info */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div className="card detail-hero">
-            <PatientAvatar initials={patient.initials} tone={patient.tone} size={72} />
+            <PatientAvatar
+              initials={getInitials(patient.name)}
+              tone={getAvatarTone(patient.id)}
+              size={72}
+            />
             {!editing ? (
               <>
                 <div className="name">{patient.name}</div>
                 <div className="id">{patient.id}</div>
                 <div style={{ marginTop: 10 }}>
-                  <StatusBadge status={patient.status} t={t} />
+                  <StatusBadge status={patient.status} />
                 </div>
               </>
             ) : (
@@ -193,7 +217,6 @@ export default function PatientDetailPage() {
           </div>
         </div>
 
-        {/* Right column: tabs + history */}
         <div>
           <div className="tabs">
             <button
@@ -214,8 +237,8 @@ export default function PatientDetailPage() {
                 {t('detail.totalConsultas')}
               </p>
               <div className="timeline">
-                {patient.history.map((c, i) => (
-                  <div className="tl-item" key={i}>
+                {patient.history.map(c => (
+                  <div className="tl-item" key={c.id}>
                     <div className="tl-rail">
                       <span className={`tl-dot ${c.status}`} />
                       <span className="tl-line" />
@@ -229,7 +252,7 @@ export default function PatientDetailPage() {
                           </div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                          <StatusBadge status={c.status} t={t} />
+                          <StatusBadge status={c.status} />
                           <span className="tl-date">{fmtDate(c.date, lang)}</span>
                         </div>
                       </div>

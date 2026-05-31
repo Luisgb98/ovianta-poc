@@ -1,12 +1,10 @@
-import type { Patient } from '@/src/modules/patients/domain/patient';
+import type { Patient } from '../domain/patient';
 
-export const INITIAL_PATIENTS: Patient[] = [
+export const SEED_PATIENTS: Patient[] = [
   {
     id: 'PT-04821',
     name: 'Ana Torres',
     age: 34,
-    initials: 'AT',
-    tone: 'primary',
     email: 'ana.torres@email.com',
     phone: '+34 612 345 678',
     since: '2021-03-12',
@@ -14,6 +12,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     status: 'completada',
     history: [
       {
+        id: 'c-04821-1',
         date: '2026-05-12',
         type: 'Revisión general',
         doctor: 'Dra. Elena Ruiz',
@@ -21,6 +20,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Revisión rutinaria sin incidencias. Constantes dentro de rango normal.',
       },
       {
+        id: 'c-04821-2',
         date: '2026-02-03',
         type: 'Análisis de sangre',
         doctor: 'Dr. Andrés Vega',
@@ -28,6 +28,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Hemograma completo. Ligero déficit de vitamina D, se recomienda suplementación.',
       },
       {
+        id: 'c-04821-3',
         date: '2025-11-20',
         type: 'Control de seguimiento',
         doctor: 'Dra. Elena Ruiz',
@@ -35,6 +36,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Seguimiento de tratamiento. Evolución favorable.',
       },
       {
+        id: 'c-04821-4',
         date: '2025-08-09',
         type: 'Primera consulta',
         doctor: 'Dra. Elena Ruiz',
@@ -47,8 +49,6 @@ export const INITIAL_PATIENTS: Patient[] = [
     id: 'PT-04822',
     name: 'Marco Rossi',
     age: 51,
-    initials: 'MR',
-    tone: 'info',
     email: 'marco.rossi@email.com',
     phone: '+39 333 123 4567',
     since: '2019-07-22',
@@ -56,6 +56,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     status: 'pendiente',
     history: [
       {
+        id: 'c-04822-1',
         date: '2026-04-28',
         type: 'Electrocardiograma',
         doctor: 'Dr. Marco Bianchi',
@@ -63,6 +64,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Pendiente de interpretación por cardiología.',
       },
       {
+        id: 'c-04822-2',
         date: '2026-01-15',
         type: 'Control de seguimiento',
         doctor: 'Dr. Marco Bianchi',
@@ -70,6 +72,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Tensión arterial controlada con medicación actual.',
       },
       {
+        id: 'c-04822-3',
         date: '2025-09-30',
         type: 'Análisis de sangre',
         doctor: 'Dr. Andrés Vega',
@@ -82,8 +85,6 @@ export const INITIAL_PATIENTS: Patient[] = [
     id: 'PT-04823',
     name: 'João Lima',
     age: 27,
-    initials: 'JL',
-    tone: 'warning',
     email: 'joao.lima@email.com',
     phone: '+351 912 345 678',
     since: '2023-01-08',
@@ -91,6 +92,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     status: 'activo',
     history: [
       {
+        id: 'c-04823-1',
         date: '2026-05-03',
         type: 'Consulta dermatológica',
         doctor: 'Dra. Sofia Costa',
@@ -98,6 +100,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'En tratamiento dermatológico activo. Próxima revisión en 3 semanas.',
       },
       {
+        id: 'c-04823-2',
         date: '2026-03-18',
         type: 'Primera consulta',
         doctor: 'Dra. Sofia Costa',
@@ -110,8 +113,6 @@ export const INITIAL_PATIENTS: Patient[] = [
     id: 'PT-04824',
     name: 'Sofía Méndez',
     age: 42,
-    initials: 'SM',
-    tone: 'primary',
     email: 'sofia.mendez@email.com',
     phone: '+34 677 889 900',
     since: '2020-11-30',
@@ -119,6 +120,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     status: 'completada',
     history: [
       {
+        id: 'c-04824-1',
         date: '2026-05-20',
         type: 'Vacunación',
         doctor: 'Dra. Elena Ruiz',
@@ -126,6 +128,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Vacuna de la gripe estacional administrada sin reacción adversa.',
       },
       {
+        id: 'c-04824-2',
         date: '2026-02-28',
         type: 'Revisión general',
         doctor: 'Dra. Elena Ruiz',
@@ -133,6 +136,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Estado de salud general bueno.',
       },
       {
+        id: 'c-04824-3',
         date: '2025-10-11',
         type: 'Análisis de sangre',
         doctor: 'Dr. Andrés Vega',
@@ -145,8 +149,6 @@ export const INITIAL_PATIENTS: Patient[] = [
     id: 'PT-04825',
     name: 'Luca Esposito',
     age: 63,
-    initials: 'LE',
-    tone: 'info',
     email: 'luca.esposito@email.com',
     phone: '+39 348 765 4321',
     since: '2018-04-17',
@@ -154,6 +156,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     status: 'cancelada',
     history: [
       {
+        id: 'c-04825-1',
         date: '2026-03-30',
         type: 'Control de seguimiento',
         doctor: 'Dr. Marco Bianchi',
@@ -161,6 +164,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Cita cancelada por el paciente. Reprogramar.',
       },
       {
+        id: 'c-04825-2',
         date: '2026-01-12',
         type: 'Electrocardiograma',
         doctor: 'Dr. Marco Bianchi',
@@ -168,6 +172,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Ritmo sinusal normal.',
       },
       {
+        id: 'c-04825-3',
         date: '2025-07-05',
         type: 'Revisión general',
         doctor: 'Dra. Elena Ruiz',
@@ -180,8 +185,6 @@ export const INITIAL_PATIENTS: Patient[] = [
     id: 'PT-04826',
     name: 'Beatriz Fonseca',
     age: 38,
-    initials: 'BF',
-    tone: 'warning',
     email: 'beatriz.fonseca@email.com',
     phone: '+351 967 111 222',
     since: '2022-09-14',
@@ -189,6 +192,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     status: 'pendiente',
     history: [
       {
+        id: 'c-04826-1',
         date: '2026-05-18',
         type: 'Análisis de sangre',
         doctor: 'Dr. Andrés Vega',
@@ -196,6 +200,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'A la espera de resultados de laboratorio.',
       },
       {
+        id: 'c-04826-2',
         date: '2026-02-22',
         type: 'Primera consulta',
         doctor: 'Dra. Sofia Costa',
@@ -208,8 +213,6 @@ export const INITIAL_PATIENTS: Patient[] = [
     id: 'PT-04827',
     name: 'Daniel Ferrari',
     age: 29,
-    initials: 'DF',
-    tone: 'primary',
     email: 'daniel.ferrari@email.com',
     phone: '+39 320 555 7788',
     since: '2024-02-01',
@@ -217,6 +220,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     status: 'completada',
     history: [
       {
+        id: 'c-04827-1',
         date: '2026-04-09',
         type: 'Revisión general',
         doctor: 'Dr. Marco Bianchi',
@@ -224,6 +228,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Apto para actividad deportiva. Sin contraindicaciones.',
       },
       {
+        id: 'c-04827-2',
         date: '2025-12-03',
         type: 'Primera consulta',
         doctor: 'Dr. Marco Bianchi',
@@ -236,8 +241,6 @@ export const INITIAL_PATIENTS: Patient[] = [
     id: 'PT-04828',
     name: 'Carla Pereira',
     age: 56,
-    initials: 'CP',
-    tone: 'info',
     email: 'carla.pereira@email.com',
     phone: '+351 933 444 555',
     since: '2017-06-25',
@@ -245,6 +248,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     status: 'activo',
     history: [
       {
+        id: 'c-04828-1',
         date: '2026-05-22',
         type: 'Control de seguimiento',
         doctor: 'Dra. Sofia Costa',
@@ -252,6 +256,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Seguimiento crónico activo. Medicación ajustada.',
       },
       {
+        id: 'c-04828-2',
         date: '2026-03-01',
         type: 'Análisis de sangre',
         doctor: 'Dr. Andrés Vega',
@@ -259,6 +264,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Valores estables respecto al control anterior.',
       },
       {
+        id: 'c-04828-3',
         date: '2025-11-18',
         type: 'Electrocardiograma',
         doctor: 'Dr. Marco Bianchi',
@@ -266,6 +272,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Sin alteraciones significativas.',
       },
       {
+        id: 'c-04828-4',
         date: '2025-09-02',
         type: 'Revisión general',
         doctor: 'Dra. Sofia Costa',
@@ -278,8 +285,6 @@ export const INITIAL_PATIENTS: Patient[] = [
     id: 'PT-04829',
     name: 'Hugo Martín',
     age: 45,
-    initials: 'HM',
-    tone: 'warning',
     email: 'hugo.martin@email.com',
     phone: '+34 655 222 111',
     since: '2021-12-09',
@@ -287,6 +292,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     status: 'completada',
     history: [
       {
+        id: 'c-04829-1',
         date: '2026-04-15',
         type: 'Consulta dermatológica',
         doctor: 'Dra. Sofia Costa',
@@ -294,6 +300,7 @@ export const INITIAL_PATIENTS: Patient[] = [
         note: 'Lesión cutánea benigna. No requiere intervención.',
       },
       {
+        id: 'c-04829-2',
         date: '2025-10-28',
         type: 'Revisión general',
         doctor: 'Dra. Elena Ruiz',
@@ -306,8 +313,6 @@ export const INITIAL_PATIENTS: Patient[] = [
     id: 'PT-04830',
     name: 'Giulia Conti',
     age: 31,
-    initials: 'GC',
-    tone: 'primary',
     email: 'giulia.conti@email.com',
     phone: '+39 327 888 9900',
     since: '2023-08-19',
@@ -315,6 +320,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     status: 'pendiente',
     history: [
       {
+        id: 'c-04830-1',
         date: '2026-05-25',
         type: 'Primera consulta',
         doctor: 'Dra. Sofia Costa',

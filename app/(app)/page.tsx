@@ -1,19 +1,24 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@/components/atoms/icon';
-import { PatientAvatar } from '@/components/atoms/avatar';
+import { PatientAvatar, getInitials, getAvatarTone } from '@/components/atoms/avatar';
 import { StatusBadge } from '@/components/atoms/status-badge';
 import { useI18n } from '@/lib/i18n/context';
-import { usePatientRepository } from '@/lib/container';
+import { useListPatients } from '@/lib/container';
 import { fmtDate } from '@/lib/i18n/translations';
+import type { Patient } from '@/src/modules/patients/domain/patient';
 
 export default function DashboardPage() {
   const { t, lang } = useI18n();
-  const repo = usePatientRepository();
   const router = useRouter();
+  const listPatients = useListPatients();
+  const [patients, setPatients] = useState<Patient[]>([]);
 
-  const patients = repo.getAll();
+  useEffect(() => {
+    listPatients.execute().then(setPatients);
+  }, [listPatients]);
 
   const stats = [
     { key: 'patients', icon: 'users' as const, val: patients.length, trend: '+2' },
@@ -29,14 +34,17 @@ export default function DashboardPage() {
   const upcoming = patients
     .slice(0, 4)
     .map(p => (p.history[0] ? { p, c: p.history[0] } : null))
-    .filter(Boolean) as { p: (typeof patients)[0]; c: (typeof patients)[0]['history'][0] }[];
+    .filter(Boolean) as { p: Patient; c: Patient['history'][0] }[];
 
   const recent = [...patients].sort((a, b) => b.lastVisit.localeCompare(a.lastVisit)).slice(0, 5);
 
   return (
     <div className="content-inner">
       <div className="page-head">
-        <h1>{t('home.greeting')} 👋</h1>
+        <h1>
+          {t('home.greeting')}{' '}
+          <span aria-hidden="true">👋</span>
+        </h1>
         <p className="pdesc">{t('home.subtitle')}</p>
       </div>
 
@@ -67,14 +75,14 @@ export default function DashboardPage() {
           </div>
           {upcoming.map(({ p, c }) => (
             <div className="row-item" key={p.id} onClick={() => router.push(`/pacientes/${p.id}`)}>
-              <PatientAvatar initials={p.initials} tone={p.tone} size={36} />
+              <PatientAvatar initials={getInitials(p.name)} tone={getAvatarTone(p.id)} size={36} />
               <div className="meta">
                 <div className="r-title">{p.name}</div>
                 <div className="r-sub">
                   {c.type} · {c.doctor}
                 </div>
               </div>
-              <StatusBadge status={c.status} t={t} />
+              <StatusBadge status={c.status} />
             </div>
           ))}
         </div>
@@ -88,7 +96,7 @@ export default function DashboardPage() {
           </div>
           {recent.map(p => (
             <div className="row-item" key={p.id} onClick={() => router.push(`/pacientes/${p.id}`)}>
-              <PatientAvatar initials={p.initials} tone={p.tone} size={36} />
+              <PatientAvatar initials={getInitials(p.name)} tone={getAvatarTone(p.id)} size={36} />
               <div className="meta">
                 <div className="r-title">{p.name}</div>
                 <div className="r-sub">{p.id}</div>
