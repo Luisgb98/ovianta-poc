@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon } from '@/components/atoms/icon';
-import { PatientAvatar, getInitials } from '@/components/atoms/avatar';
+import { PatientAvatar } from '@/components/atoms/avatar';
 import { useI18n } from '@/lib/i18n/context';
 import { useAuth } from '@/lib/auth/context';
 import { useListPatients } from '@/lib/container';
@@ -13,7 +13,13 @@ const NAV_ITEMS = [
   { key: 'home', href: '/', icon: 'grid' as const, section: 'clinica' },
   { key: 'consultas', href: '/consultas', icon: 'stethoscope' as const, section: 'clinica' },
   { key: 'agenda', href: '/agenda', icon: 'calendar' as const, section: 'clinica' },
-  { key: 'pacientes', href: '/pacientes', icon: 'users' as const, section: 'clinica', showCount: true },
+  {
+    key: 'pacientes',
+    href: '/pacientes',
+    icon: 'users' as const,
+    section: 'clinica',
+    showCount: true,
+  },
   { key: 'ajustes', href: '/ajustes', icon: 'settings' as const, section: 'general' },
 ] as const;
 
