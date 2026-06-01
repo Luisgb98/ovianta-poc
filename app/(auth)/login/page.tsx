@@ -6,10 +6,10 @@ import { Icon } from '@/components/atoms/icon';
 import { useI18n } from '@/lib/i18n/context';
 import { useAuth } from '@/lib/auth/context';
 
-const DEMO_CODE = '482019';
+const DEMO_CODE = process.env.NEXT_PUBLIC_DEMO_OTP ?? '';
 
 export default function LoginPage() {
-  const { t, lang } = useI18n();
+  const { t } = useI18n();
   const { login, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
@@ -98,13 +98,6 @@ export default function LoginPage() {
 
   const codeComplete = digits.join('').length === 6;
 
-  const asideQuote: Record<string, string> = {
-    es: 'Gestiona pacientes, consultas y agenda en un único espacio claro y seguro.',
-    en: 'Manage patients, consultations and scheduling in one clear, secure space.',
-    it: 'Gestisci pazienti, consulti e agenda in un unico spazio chiaro e sicuro.',
-    pt: 'Faça a gestão de pacientes, consultas e agenda num único espaço claro e seguro.',
-  };
-
   if (isLoading) return null;
 
   return (
@@ -131,7 +124,7 @@ export default function LoginPage() {
         </div>
         <div className="auth-quote">
           <h2>{t('app.tagline')}</h2>
-          <p>{asideQuote[lang] ?? asideQuote.es}</p>
+          <p>{t('login.asideQuote')}</p>
         </div>
         <div style={{ fontSize: 12.5, color: 'var(--muted-foreground)' }}>
           © 2026 Ovianta Health
@@ -246,11 +239,12 @@ export default function LoginPage() {
                 {t('login.verify')}
               </button>
 
-              <div className="demo-hint">
-                <Icon name="activity" size={15} />
-                {t('login.demoHint').split('482019')[0]}
-                <code>482019</code>
-              </div>
+              {DEMO_CODE && (
+                <div className="demo-hint">
+                  <Icon name="activity" size={15} />
+                  {t('login.demoHint')} <code>{DEMO_CODE}</code>
+                </div>
+              )}
             </form>
           )}
         </div>

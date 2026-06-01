@@ -32,7 +32,19 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.lang = l;
   }, []);
 
-  const t = useCallback((key: TranslationKey): string => translations[lang][key] ?? key, [lang]);
+  const t = useCallback(
+    (key: TranslationKey): string => {
+      const value = translations[lang][key];
+      if (value === undefined) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`[i18n] Missing translation key "${key}" for lang "${lang}"`);
+        }
+        return key;
+      }
+      return value;
+    },
+    [lang]
+  );
 
   return (
     <I18nContext.Provider value={{ lang, langs: LANGS, setLang, t }}>

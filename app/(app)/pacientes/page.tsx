@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@/components/atoms/icon';
-import { PatientAvatar } from '@/components/atoms/avatar';
+import { PatientAvatar, getInitials, getAvatarTone } from '@/components/atoms/avatar';
 import { StatusBadge } from '@/components/atoms/status-badge';
 import { useI18n } from '@/lib/i18n/context';
-import { usePatientRepository } from '@/lib/container';
+import { useListPatients } from '@/lib/container';
 import { fmtDate } from '@/lib/i18n/translations';
 import type { Patient } from '@/src/modules/patients/domain/patient';
 
@@ -15,15 +15,19 @@ type SortDir = 'asc' | 'desc';
 
 export default function PacientesPage() {
   const { t, lang } = useI18n();
-  const repo = usePatientRepository();
   const router = useRouter();
+  const listPatients = useListPatients();
+
+  const [patients, setPatients] = useState<Patient[]>([]);
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<{ key: SortKey; dir: SortDir }>({ key: 'name', dir: 'asc' });
   const [view, setView] = useState<'table' | 'cards'>('table');
 
-  const filtered = repo.findAll(query);
+  useEffect(() => {
+    listPatients.execute(query).then(setPatients);
+  }, [query, listPatients]);
 
-  const sorted = [...filtered].sort((a, b) => {
+  const sorted = [...patients].sort((a, b) => {
     let av: string | number = a[sort.key as keyof Patient] as string | number;
     let bv: string | number = b[sort.key as keyof Patient] as string | number;
     if (sort.key === 'consultas') {
@@ -43,7 +47,7 @@ export default function PacientesPage() {
     );
   }
 
-  const countLabel = `${filtered.length} ${filtered.length === 1 ? t('patients.count.one') : t('patients.count.other')}`;
+  const countLabel = `${patients.length} ${patients.length === 1 ? t('patients.count.one') : t('patients.count.other')}`;
 
   return (
     <div className="content-inner">
@@ -60,14 +64,14 @@ export default function PacientesPage() {
                 onClick={() => setView('table')}
               >
                 <Icon name="grid" size={14} style={{ marginRight: 4, verticalAlign: '-2px' }} />
-                Tabla
+                {t('patients.view.table')}
               </button>
               <button
                 className={`tab ${view === 'cards' ? 'on' : ''}`}
                 onClick={() => setView('cards')}
               >
                 <Icon name="activity" size={14} style={{ marginRight: 4, verticalAlign: '-2px' }} />
-                Tarjetas
+                {t('patients.view.cards')}
               </button>
             </div>
             <button className="btn btn-primary">
@@ -99,7 +103,7 @@ export default function PacientesPage() {
               onClick={() => router.push(`/pacientes/${p.id}`)}
             >
               <div className="pt-card-top">
-                <PatientAvatar initials={p.initials} tone={p.tone} size={44} />
+                <PatientAvatar initials={getInitials(p.name)} tone={getAvatarTone(p.id)} size={44} />
                 <div style={{ minWidth: 0 }}>
                   <div className="pt-name" style={{ fontSize: 15 }}>
                     {p.name}
@@ -107,7 +111,7 @@ export default function PacientesPage() {
                   <div className="pt-sub">{p.id}</div>
                 </div>
                 <div style={{ marginLeft: 'auto' }}>
-                  <StatusBadge status={p.status} t={t} />
+                  <StatusBadge status={p.status} />
                 </div>
               </div>
               <div className="pt-card-meta">
@@ -169,7 +173,7 @@ export default function PacientesPage() {
                 <tr key={p.id} onClick={() => router.push(`/pacientes/${p.id}`)}>
                   <td>
                     <div className="pt-cell">
-                      <PatientAvatar initials={p.initials} tone={p.tone} size={34} />
+                      <PatientAvatar initials={getInitials(p.name)} tone={getAvatarTone(p.id)} size={34} />
                       <div>
                         <div className="pt-name">{p.name}</div>
                         <div className="pt-sub">{p.id}</div>
@@ -183,7 +187,7 @@ export default function PacientesPage() {
                   <td>{fmtDate(p.lastVisit, lang)}</td>
                   <td>{p.history.length}</td>
                   <td>
-                    <StatusBadge status={p.status} t={t} />
+                    <StatusBadge status={p.status} />
                   </td>
                   <td className="td-right">
                     <Icon name="chevronRight" size={16} className="cell-chevron" />

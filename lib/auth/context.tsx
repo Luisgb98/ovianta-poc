@@ -10,6 +10,16 @@ interface AuthContextValue {
   isLoading: boolean;
 }
 
+const SESSION_COOKIE = 'ovianta-session';
+
+function setSessionCookie() {
+  document.cookie = `${SESSION_COOKIE}=1; path=/; SameSite=Strict`;
+}
+
+function clearSessionCookie() {
+  document.cookie = `${SESSION_COOKIE}=; path=/; max-age=0; SameSite=Strict`;
+}
+
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -28,12 +38,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = useCallback((userEmail: string) => {
     localStorage.setItem('ovianta-authed', '1');
     localStorage.setItem('ovianta-email', userEmail);
+    setSessionCookie();
     setEmail(userEmail);
     setIsAuthenticated(true);
   }, []);
 
   const logout = useCallback(() => {
     localStorage.removeItem('ovianta-authed');
+    localStorage.removeItem('ovianta-email');
+    clearSessionCookie();
     setIsAuthenticated(false);
     setEmail('');
   }, []);

@@ -1,28 +1,39 @@
 'use client';
 
 import { createContext, useContext } from 'react';
-import type { PatientRepository } from '@/src/modules/patients/application/ports/patient-repository';
+import type { ListPatientsUseCase } from '@/src/modules/patients/application/use-cases/list-patients.use-case';
+import type { GetPatientByIdUseCase } from '@/src/modules/patients/application/use-cases/get-patient-by-id.use-case';
+import type { UpdatePatientUseCase } from '@/src/modules/patients/application/use-cases/update-patient.use-case';
 
 export interface ServiceContainer {
-  patientRepository: PatientRepository;
+  listPatients: ListPatientsUseCase;
+  getPatientById: GetPatientByIdUseCase;
+  updatePatient: UpdatePatientUseCase;
 }
 
 const ServiceContext = createContext<ServiceContainer | null>(null);
 
 export function ServiceProvider({
   children,
-  patientRepository,
-}: {
-  children: React.ReactNode;
-  patientRepository: PatientRepository;
-}) {
-  return (
-    <ServiceContext.Provider value={{ patientRepository }}>{children}</ServiceContext.Provider>
-  );
+  ...services
+}: { children: React.ReactNode } & ServiceContainer) {
+  return <ServiceContext.Provider value={services}>{children}</ServiceContext.Provider>;
 }
 
-export function usePatientRepository(): PatientRepository {
+function useServices(): ServiceContainer {
   const ctx = useContext(ServiceContext);
-  if (!ctx) throw new Error('usePatientRepository must be used within ServiceProvider');
-  return ctx.patientRepository;
+  if (!ctx) throw new Error('Service hooks must be used within ServiceProvider');
+  return ctx;
+}
+
+export function useListPatients(): ListPatientsUseCase {
+  return useServices().listPatients;
+}
+
+export function useGetPatientById(): GetPatientByIdUseCase {
+  return useServices().getPatientById;
+}
+
+export function useUpdatePatient(): UpdatePatientUseCase {
+  return useServices().updatePatient;
 }
