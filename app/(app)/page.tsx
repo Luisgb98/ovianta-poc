@@ -42,8 +42,7 @@ export default function DashboardPage() {
     <div className="content-inner">
       <div className="page-head">
         <h1>
-          {t('home.greeting')}{' '}
-          <span aria-hidden="true">👋</span>
+          {t('home.greeting')} <span aria-hidden="true">👋</span>
         </h1>
         <p className="pdesc">{t('home.subtitle')}</p>
       </div>

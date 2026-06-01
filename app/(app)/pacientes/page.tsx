@@ -103,7 +103,11 @@ export default function PacientesPage() {
               onClick={() => router.push(`/pacientes/${p.id}`)}
             >
               <div className="pt-card-top">
-                <PatientAvatar initials={getInitials(p.name)} tone={getAvatarTone(p.id)} size={44} />
+                <PatientAvatar
+                  initials={getInitials(p.name)}
+                  tone={getAvatarTone(p.id)}
+                  size={44}
+                />
                 <div style={{ minWidth: 0 }}>
                   <div className="pt-name" style={{ fontSize: 15 }}>
                     {p.name}
@@ -173,7 +177,11 @@ export default function PacientesPage() {
                 <tr key={p.id} onClick={() => router.push(`/pacientes/${p.id}`)}>
                   <td>
                     <div className="pt-cell">
-                      <PatientAvatar initials={getInitials(p.name)} tone={getAvatarTone(p.id)} size={34} />
+                      <PatientAvatar
+                        initials={getInitials(p.name)}
+                        tone={getAvatarTone(p.id)}
+                        size={34}
+                      />
                       <div>
                         <div className="pt-name">{p.name}</div>
                         <div className="pt-sub">{p.id}</div>
