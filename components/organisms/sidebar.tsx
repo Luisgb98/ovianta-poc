@@ -36,6 +36,8 @@ const NAV_GROUPS = NAV_ITEMS.reduce(
   [] as { section: string; items: NavItem[] }[]
 );
 
+const STORAGE_KEY = 'sidebar-collapsed';
+
 interface SidebarProps {
   mobileOpen: boolean;
   onClose: () => void;
@@ -47,10 +49,23 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const listPatients = useListPatients();
   const [patientCount, setPatientCount] = useState(0);
+  const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem(STORAGE_KEY) === 'true') setCollapsed(true);
+  }, []);
 
   useEffect(() => {
     listPatients.execute().then(ps => setPatientCount(ps.length));
   }, [listPatients]);
+
+  function toggle() {
+    setCollapsed(c => {
+      const next = !c;
+      localStorage.setItem(STORAGE_KEY, String(next));
+      return next;
+    });
+  }
 
   function isActive(href: string, key: string): boolean {
     if (href === '/') return pathname === '/';
@@ -69,15 +84,26 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
     : 'U';
 
   return (
-    <aside className={`sidebar ${mobileOpen ? 'open' : ''}`}>
+    <aside className={`sidebar ${mobileOpen ? 'open' : ''} ${collapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-head">
-        <span className="brand-mark" style={{ width: 30, height: 30, fontSize: 16 }}>
-          O
-        </span>
-        <div className="brand-text">
-          Ovianta
-          <small>{t('app.tagline')}</small>
-        </div>
+        {collapsed ? (
+          <button className="sidebar-toggle" onClick={toggle} aria-label="Expand sidebar">
+            <Icon name="chevronRight" size={16} />
+          </button>
+        ) : (
+          <>
+            <span className="brand-mark" style={{ width: 30, height: 30, fontSize: 16 }}>
+              O
+            </span>
+            <div className="brand-text">
+              Ovianta
+              <small>{t('app.tagline')}</small>
+            </div>
+            <button className="sidebar-toggle" onClick={toggle} aria-label="Collapse sidebar">
+              <Icon name="chevronLeft" size={16} />
+            </button>
+          </>
+        )}
       </div>
 
       <nav className="sidebar-nav">

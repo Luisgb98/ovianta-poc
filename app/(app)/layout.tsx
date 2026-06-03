@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth/context';
 import { Sidebar } from '@/components/organisms/sidebar';
 import { Topbar } from '@/components/organisms/topbar';
@@ -9,8 +9,13 @@ import { Spinner } from '@/components/atoms/spinner';
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  if (!isAuthenticated) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !isAuthenticated) {
     return (
       <div className="grid h-screen place-items-center">
         <Spinner size={32} className="border-[3px]" />
