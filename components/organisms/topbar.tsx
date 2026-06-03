@@ -25,6 +25,7 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
   const [langOpen, setLangOpen] = useState(false);
   const [query, setQuery] = useState('');
   const langRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (pathname === '/pacientes') {
@@ -47,8 +48,18 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
     router.push('/login');
   }
 
+  function handleSearchChange(value: string) {
+    setQuery(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      const q = value.trim();
+      router.replace(q ? `/pacientes?q=${encodeURIComponent(q)}` : '/pacientes');
+    }, 300);
+  }
+
   function handleSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     const q = query.trim();
     router.push(q ? `/pacientes?q=${encodeURIComponent(q)}` : '/pacientes');
   }
@@ -76,7 +87,7 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
             placeholder={t('topbar.search')}
             aria-label={t('topbar.search')}
             value={query}
-            onChange={e => setQuery(e.target.value)}
+            onChange={e => handleSearchChange(e.target.value)}
           />
         </div>
       </form>
