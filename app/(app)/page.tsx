@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Icon } from '@/components/atoms/icon';
 import { StatusBadge } from '@/components/atoms/status-badge';
 import { PatientRow } from '@/components/molecules/patient-row';
+import { Button } from '@/components/atoms/button';
+import { Card } from '@/components/ui/card';
 import { useI18n } from '@/lib/i18n/context';
 import { useListPatients } from '@/lib/container';
 import { fmtDate } from '@/lib/i18n/translations';
@@ -54,7 +56,7 @@ export default function DashboardPage() {
 
       <div className="stat-grid">
         {stats.map(s => (
-          <div className="card stat" key={s.key}>
+          <Card key={s.key} className="stat gap-3 p-4">
             <div className="st-top">
               <span className="st-label">{t(`home.stat.${s.key}` as Parameters<typeof t>[0])}</span>
               <span className="st-ic">
@@ -62,12 +64,12 @@ export default function DashboardPage() {
               </span>
             </div>
             <div className="st-val tabular">{s.val}</div>
-          </div>
+          </Card>
         ))}
       </div>
 
       <div className="grid-2col">
-        <div className="card">
+        <Card className="gap-0 p-0">
           <div className="list-card-head">
             <h3>{t('home.upcoming')}</h3>
           </div>
@@ -79,14 +81,19 @@ export default function DashboardPage() {
               trailing={<StatusBadge status={c.status} />}
             />
           ))}
-        </div>
+        </Card>
 
-        <div className="card">
+        <Card className="gap-0 p-0">
           <div className="list-card-head">
             <h3>{t('home.recent')}</h3>
-            <button type="button" className="link-btn" onClick={() => router.push('/pacientes')}>
+            <Button
+              variant="link"
+              size="sm"
+              className="h-auto p-0"
+              onClick={() => router.push('/pacientes')}
+            >
               {t('home.viewAll')}
-            </button>
+            </Button>
           </div>
           {recent.map(p => (
             <PatientRow
@@ -96,7 +103,7 @@ export default function DashboardPage() {
               trailing={<span className="r-time">{fmtDate(p.lastVisit, lang)}</span>}
             />
           ))}
-        </div>
+        </Card>
       </div>
     </div>
   );

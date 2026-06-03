@@ -1,10 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Icon } from '@/components/atoms/icon';
 import { PatientAvatar, getInitials, getAvatarTone } from '@/components/atoms/avatar';
 import { StatusBadge } from '@/components/atoms/status-badge';
+import { Button } from '@/components/atoms/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { useI18n } from '@/lib/i18n/context';
 import { useListPatients } from '@/lib/container';
 import { fmtDate } from '@/lib/i18n/translations';
@@ -13,15 +16,20 @@ import type { Patient } from '@/src/modules/patients/domain/patient';
 type SortKey = 'name' | 'age' | 'lastVisit' | 'consultas';
 type SortDir = 'asc' | 'desc';
 
-export default function PacientesPage() {
+function PacientesPageContent() {
   const { t, lang } = useI18n();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const listPatients = useListPatients();
 
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(() => searchParams.get('q') ?? '');
   const [sort, setSort] = useState<{ key: SortKey; dir: SortDir }>({ key: 'name', dir: 'asc' });
   const [view, setView] = useState<'table' | 'cards'>('table');
+
+  useEffect(() => {
+    setQuery(searchParams.get('q') ?? '');
+  }, [searchParams]);
 
   useEffect(() => {
     listPatients.execute(query).then(setPatients);
@@ -59,27 +67,29 @@ export default function PacientesPage() {
           </div>
           <div className="flex items-center gap-2">
             <div className="tabs mb-0">
-              <button
+              <Button
                 type="button"
-                className={`tab ${view === 'table' ? 'on' : ''}`}
+                variant="tab"
+                aria-pressed={view === 'table'}
                 onClick={() => setView('table')}
               >
                 <Icon name="grid" size={14} className="mr-1 align-[-2px]" />
                 {t('patients.view.table')}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className={`tab ${view === 'cards' ? 'on' : ''}`}
+                variant="tab"
+                aria-pressed={view === 'cards'}
                 onClick={() => setView('cards')}
               >
                 <Icon name="activity" size={14} className="mr-1 align-[-2px]" />
                 {t('patients.view.cards')}
-              </button>
+              </Button>
             </div>
-            <button type="button" className="btn btn-primary">
+            <Button>
               <Icon name="plus" size={16} />
               {t('patients.new')}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -87,8 +97,7 @@ export default function PacientesPage() {
       <div className="mb-4 max-w-[360px]">
         <div className="input-icon-wrap">
           <Icon name="search" size={16} />
-          <input
-            className="input"
+          <Input
             placeholder={t('patients.search')}
             aria-label={t('patients.search')}
             value={query}
@@ -100,9 +109,9 @@ export default function PacientesPage() {
       {view === 'cards' ? (
         <div className="pt-card-grid">
           {sorted.map(p => (
-            <div
-              className="card pt-card"
+            <Card
               key={p.id}
+              className="pt-card cursor-pointer gap-3 p-4"
               role="button"
               tabIndex={0}
               onClick={() => router.push(`/pacientes/${p.id}`)}
@@ -141,12 +150,12 @@ export default function PacientesPage() {
                   <b> {fmtDate(p.lastVisit, lang)}</b>
                 </span>
               </div>
-            </div>
+            </Card>
           ))}
           {sorted.length === 0 && <p className="pdesc">{t('patients.empty')}</p>}
         </div>
       ) : (
-        <div className="card table-wrap">
+        <Card className="table-wrap gap-0 p-0">
           <table className="tbl tabular">
             <thead>
               <tr>
@@ -216,8 +225,16 @@ export default function PacientesPage() {
               )}
             </tbody>
           </table>
-        </div>
+        </Card>
       )}
     </div>
+  );
+}
+
+export default function PacientesPage() {
+  return (
+    <Suspense fallback={null}>
+      <PacientesPageContent />
+    </Suspense>
   );
 }

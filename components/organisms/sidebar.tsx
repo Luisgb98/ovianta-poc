@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import { PatientAvatar } from '@/components/atoms/avatar';
 import { useI18n } from '@/lib/i18n/context';
@@ -50,9 +51,18 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const listPatients = useListPatients();
   const [patientCount, setPatientCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem(STORAGE_KEY) === 'true') setCollapsed(true);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 760px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
   }, []);
 
   useEffect(() => {
@@ -83,13 +93,22 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
     ? (email[0] ?? 'U').toUpperCase() + (email[1] ?? '').toUpperCase()
     : 'U';
 
+  const isCollapsed = !isMobile && collapsed;
+
   return (
-    <aside className={`sidebar ${mobileOpen ? 'open' : ''} ${collapsed ? 'collapsed' : ''}`}>
+    <aside className={`sidebar ${mobileOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-head">
-        {collapsed ? (
-          <button className="sidebar-toggle" onClick={toggle} aria-label="Expand sidebar">
+        {isCollapsed ? (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            className="sidebar-toggle hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            onClick={toggle}
+            aria-label="Expand sidebar"
+          >
             <Icon name="chevronRight" size={16} />
-          </button>
+          </Button>
         ) : (
           <>
             <span className="brand-mark" style={{ width: 30, height: 30, fontSize: 16 }}>
@@ -99,9 +118,18 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
               Ovianta
               <small>{t('app.tagline')}</small>
             </div>
-            <button className="sidebar-toggle" onClick={toggle} aria-label="Collapse sidebar">
-              <Icon name="chevronLeft" size={16} />
-            </button>
+            {!isMobile && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-xs"
+                className="sidebar-toggle hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                onClick={toggle}
+                aria-label="Collapse sidebar"
+              >
+                <Icon name="chevronLeft" size={16} />
+              </Button>
+            )}
           </>
         )}
       </div>

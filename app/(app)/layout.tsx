@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth/context';
 import { Sidebar } from '@/components/organisms/sidebar';
 import { Topbar } from '@/components/organisms/topbar';
@@ -39,7 +39,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         />
       )}
       <div className="main-col">
-        <Topbar onToggleMobile={() => setMobileOpen(o => !o)} />
+        <Suspense fallback={null}>
+          <Topbar mobileOpen={mobileOpen} onToggleMobile={() => setMobileOpen(o => !o)} />
+        </Suspense>
         <div className="content">{children}</div>
       </div>
     </div>

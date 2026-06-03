@@ -8,6 +8,9 @@ import { PatientAvatar, getInitials, getAvatarTone } from '@/components/atoms/av
 import { StatusBadge } from '@/components/atoms/status-badge';
 import { Spinner } from '@/components/atoms/spinner';
 import { InfoRow } from '@/components/molecules/info-row';
+import { Button } from '@/components/atoms/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { useI18n } from '@/lib/i18n/context';
 import { useGetPatientById, useUpdatePatient } from '@/lib/container';
 import { fmtDate, fmtDateLong } from '@/lib/i18n/translations';
@@ -107,14 +110,10 @@ export default function PatientDetailPage() {
       <div className="content-inner">
         <div className="page-head">
           <p className="pdesc">Paciente no encontrado.</p>
-          <button
-            type="button"
-            className="btn btn-outline"
-            onClick={() => router.push('/pacientes')}
-          >
+          <Button variant="outline" onClick={() => router.push('/pacientes')}>
             <Icon name="chevronLeft" size={16} />
             {t('detail.back')}
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -135,13 +134,14 @@ export default function PatientDetailPage() {
     <div className="content-inner">
       <div className="page-head">
         <div className="crumbs">
-          <button
-            type="button"
-            className="link-btn inline-flex items-center gap-1"
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-1 px-1 text-muted-foreground"
             onClick={() => router.push('/pacientes')}
           >
             <Icon name="chevronLeft" size={15} /> {t('detail.back')}
-          </button>
+          </Button>
           <span>/</span>
           <span className="text-foreground">{patient.name}</span>
         </div>
@@ -149,27 +149,19 @@ export default function PatientDetailPage() {
         <div className="page-head-row">
           <h1>{patient.name}</h1>
           {!editing ? (
-            <button
-              type="button"
-              className="btn btn-outline"
-              onClick={() => dispatch({ type: 'START_EDIT' })}
-            >
+            <Button variant="outline" onClick={() => dispatch({ type: 'START_EDIT' })}>
               <Icon name="edit" size={16} />
               {t('detail.edit')}
-            </button>
+            </Button>
           ) : (
             <div className="flex gap-2">
-              <button
-                type="button"
-                className="btn btn-ghost"
-                onClick={() => dispatch({ type: 'CANCEL_EDIT' })}
-              >
+              <Button variant="ghost" onClick={() => dispatch({ type: 'CANCEL_EDIT' })}>
                 {t('detail.cancel')}
-              </button>
-              <button type="button" className="btn btn-primary" onClick={save}>
+              </Button>
+              <Button onClick={save}>
                 <Icon name="check" size={16} />
                 {t('detail.save')}
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -177,7 +169,7 @@ export default function PatientDetailPage() {
 
       <div className="detail-grid">
         <div className="flex flex-col gap-5">
-          <div className="card detail-hero">
+          <Card className="detail-hero items-center gap-4 p-6">
             <PatientAvatar
               initials={getInitials(patient.name)}
               tone={getAvatarTone(patient.id)}
@@ -192,14 +184,13 @@ export default function PatientDetailPage() {
                 </div>
               </>
             ) : (
-              <div className="mt-[14px] flex w-full flex-col gap-3">
+              <div className="flex w-full flex-col gap-3">
                 <div className="field">
                   <label className="lbl" htmlFor="ed-name">
                     {t('detail.name')}
                   </label>
-                  <input
+                  <Input
                     id="ed-name"
-                    className="input"
                     value={name}
                     onChange={e => dispatch({ type: 'SET_NAME', name: e.target.value })}
                   />
@@ -208,22 +199,22 @@ export default function PatientDetailPage() {
                   <label className="lbl" htmlFor="ed-age">
                     {t('detail.age')}
                   </label>
-                  <input
+                  <Input
                     id="ed-age"
-                    className={`input ${ageErr ? 'err' : ''}`}
                     type="number"
                     min={0}
                     max={130}
                     value={age}
+                    aria-invalid={!!ageErr}
                     onChange={e => dispatch({ type: 'SET_AGE', age: e.target.value })}
                   />
                   {ageErr && <span className="hint text-destructive">{ageErr}</span>}
                 </div>
               </div>
             )}
-          </div>
+          </Card>
 
-          <div className="card">
+          <Card className="gap-0 p-0">
             <div className="list-card-head">
               <h3>{t('detail.info')}</h3>
             </div>
@@ -238,29 +229,31 @@ export default function PatientDetailPage() {
               <InfoRow label={t('detail.phone')} value={patient.phone} valueClassName="tabular" />
               <InfoRow label={t('detail.since')} value={fmtDate(patient.since, lang)} />
             </div>
-          </div>
+          </Card>
         </div>
 
         <div>
           <div className="tabs">
-            <button
+            <Button
               type="button"
-              className={`tab ${tab === 'history' ? 'on' : ''}`}
+              variant="tab"
+              aria-pressed={tab === 'history'}
               onClick={() => dispatch({ type: 'SET_TAB', tab: 'history' })}
             >
               {t('detail.tab.history')}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className={`tab ${tab === 'data' ? 'on' : ''}`}
+              variant="tab"
+              aria-pressed={tab === 'data'}
               onClick={() => dispatch({ type: 'SET_TAB', tab: 'data' })}
             >
               {t('detail.tab.data')}
-            </button>
+            </Button>
           </div>
 
           {tab === 'history' ? (
-            <div className="card p-5 pb-2">
+            <Card className="gap-4 p-5 pb-2">
               <p className="pdesc mt-0 mb-[18px]">
                 <strong className="text-foreground">{patient.history.length}</strong>{' '}
                 {t('detail.totalConsultas')}
@@ -272,7 +265,7 @@ export default function PatientDetailPage() {
                       <span className={`tl-dot ${c.status}`} />
                       <span className="tl-line" />
                     </div>
-                    <div className="card tl-body">
+                    <Card className="tl-body gap-2 p-4">
                       <div className="tl-top">
                         <div>
                           <div className="tl-type">{c.type}</div>
@@ -286,13 +279,13 @@ export default function PatientDetailPage() {
                         </div>
                       </div>
                       <p className="tl-note">{c.note}</p>
-                    </div>
+                    </Card>
                   </div>
                 ))}
               </div>
-            </div>
+            </Card>
           ) : (
-            <div className="card">
+            <Card className="gap-0 p-0">
               <div className="info-list">
                 <InfoRow label={t('detail.name')} value={patient.name} noBorderTop />
                 <InfoRow label={t('detail.age')} value={patient.age} valueClassName="tabular" />
@@ -301,7 +294,7 @@ export default function PatientDetailPage() {
                 <InfoRow label={t('detail.id')} value={patient.id} valueClassName="font-mono" />
                 <InfoRow label={t('detail.since')} value={fmtDateLong(patient.since, lang)} />
               </div>
-            </div>
+            </Card>
           )}
         </div>
       </div>
