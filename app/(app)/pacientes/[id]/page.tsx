@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import { Icon } from '@/components/atoms/icon';
 import { PatientAvatar, getInitials, getAvatarTone } from '@/components/atoms/avatar';
 import { StatusBadge } from '@/components/atoms/status-badge';
+import { Spinner } from '@/components/atoms/spinner';
+import { InfoRow } from '@/components/molecules/info-row';
 import { useI18n } from '@/lib/i18n/context';
 import { useGetPatientById, useUpdatePatient } from '@/lib/container';
 import { fmtDate, fmtDateLong } from '@/lib/i18n/translations';
@@ -94,17 +96,8 @@ export default function PatientDetailPage() {
 
   if (patient === undefined) {
     return (
-      <div style={{ display: 'grid', placeItems: 'center', height: '50vh' }}>
-        <div
-          className="animate-spin"
-          style={{
-            width: 24,
-            height: 24,
-            borderRadius: '50%',
-            border: '2px solid var(--border)',
-            borderTopColor: 'var(--primary)',
-          }}
-        />
+      <div className="grid h-[50vh] place-items-center">
+        <Spinner size={24} />
       </div>
     );
   }
@@ -144,14 +137,13 @@ export default function PatientDetailPage() {
         <div className="crumbs">
           <button
             type="button"
-            className="link-btn"
+            className="link-btn inline-flex items-center gap-1"
             onClick={() => router.push('/pacientes')}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
           >
             <Icon name="chevronLeft" size={15} /> {t('detail.back')}
           </button>
           <span>/</span>
-          <span style={{ color: 'var(--foreground)' }}>{patient.name}</span>
+          <span className="text-foreground">{patient.name}</span>
         </div>
 
         <div className="page-head-row">
@@ -166,7 +158,7 @@ export default function PatientDetailPage() {
               {t('detail.edit')}
             </button>
           ) : (
-            <div style={{ display: 'flex', gap: 8 }}>
+            <div className="flex gap-2">
               <button
                 type="button"
                 className="btn btn-ghost"
@@ -184,7 +176,7 @@ export default function PatientDetailPage() {
       </div>
 
       <div className="detail-grid">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div className="flex flex-col gap-5">
           <div className="card detail-hero">
             <PatientAvatar
               initials={getInitials(patient.name)}
@@ -195,20 +187,12 @@ export default function PatientDetailPage() {
               <>
                 <div className="name">{patient.name}</div>
                 <div className="id">{patient.id}</div>
-                <div style={{ marginTop: 10 }}>
+                <div className="mt-2.5">
                   <StatusBadge status={patient.status} />
                 </div>
               </>
             ) : (
-              <div
-                style={{
-                  width: '100%',
-                  marginTop: 14,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 12,
-                }}
-              >
+              <div className="mt-[14px] flex w-full flex-col gap-3">
                 <div className="field">
                   <label className="lbl" htmlFor="ed-name">
                     {t('detail.name')}
@@ -233,11 +217,7 @@ export default function PatientDetailPage() {
                     value={age}
                     onChange={e => dispatch({ type: 'SET_AGE', age: e.target.value })}
                   />
-                  {ageErr && (
-                    <span className="hint" style={{ color: 'var(--destructive)' }}>
-                      {ageErr}
-                    </span>
-                  )}
+                  {ageErr && <span className="hint text-destructive">{ageErr}</span>}
                 </div>
               </div>
             )}
@@ -248,30 +228,15 @@ export default function PatientDetailPage() {
               <h3>{t('detail.info')}</h3>
             </div>
             <div className="info-list">
-              <div className="info-row">
-                <span className="k">{t('detail.age')}</span>
-                <span className="v tabular">
-                  {patient.age} {t('patients.years')}
-                </span>
-              </div>
-              <div className="info-row">
-                <span className="k">{t('detail.id')}</span>
-                <span className="v" style={{ fontFamily: 'var(--font-mono)' }}>
-                  {patient.id}
-                </span>
-              </div>
-              <div className="info-row">
-                <span className="k">{t('detail.email')}</span>
-                <span className="v">{patient.email}</span>
-              </div>
-              <div className="info-row">
-                <span className="k">{t('detail.phone')}</span>
-                <span className="v tabular">{patient.phone}</span>
-              </div>
-              <div className="info-row">
-                <span className="k">{t('detail.since')}</span>
-                <span className="v">{fmtDate(patient.since, lang)}</span>
-              </div>
+              <InfoRow
+                label={t('detail.age')}
+                value={`${patient.age} ${t('patients.years')}`}
+                valueClassName="tabular"
+              />
+              <InfoRow label={t('detail.id')} value={patient.id} valueClassName="font-mono" />
+              <InfoRow label={t('detail.email')} value={patient.email} />
+              <InfoRow label={t('detail.phone')} value={patient.phone} valueClassName="tabular" />
+              <InfoRow label={t('detail.since')} value={fmtDate(patient.since, lang)} />
             </div>
           </div>
         </div>
@@ -295,9 +260,9 @@ export default function PatientDetailPage() {
           </div>
 
           {tab === 'history' ? (
-            <div className="card" style={{ padding: '20px 20px 8px' }}>
-              <p className="pdesc" style={{ margin: '0 0 18px' }}>
-                <strong style={{ color: 'var(--foreground)' }}>{patient.history.length}</strong>{' '}
+            <div className="card p-5 pb-2">
+              <p className="pdesc mt-0 mb-[18px]">
+                <strong className="text-foreground">{patient.history.length}</strong>{' '}
                 {t('detail.totalConsultas')}
               </p>
               <div className="timeline">
@@ -315,7 +280,7 @@ export default function PatientDetailPage() {
                             {t('detail.with')} {c.doctor}
                           </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <div className="flex items-center gap-2.5">
                           <StatusBadge status={c.status} />
                           <span className="tl-date">{fmtDate(c.date, lang)}</span>
                         </div>
@@ -329,32 +294,12 @@ export default function PatientDetailPage() {
           ) : (
             <div className="card">
               <div className="info-list">
-                <div className="info-row" style={{ borderTop: 0 }}>
-                  <span className="k">{t('detail.name')}</span>
-                  <span className="v">{patient.name}</span>
-                </div>
-                <div className="info-row">
-                  <span className="k">{t('detail.age')}</span>
-                  <span className="v tabular">{patient.age}</span>
-                </div>
-                <div className="info-row">
-                  <span className="k">{t('detail.email')}</span>
-                  <span className="v">{patient.email}</span>
-                </div>
-                <div className="info-row">
-                  <span className="k">{t('detail.phone')}</span>
-                  <span className="v tabular">{patient.phone}</span>
-                </div>
-                <div className="info-row">
-                  <span className="k">{t('detail.id')}</span>
-                  <span className="v" style={{ fontFamily: 'var(--font-mono)' }}>
-                    {patient.id}
-                  </span>
-                </div>
-                <div className="info-row">
-                  <span className="k">{t('detail.since')}</span>
-                  <span className="v">{fmtDateLong(patient.since, lang)}</span>
-                </div>
+                <InfoRow label={t('detail.name')} value={patient.name} noBorderTop />
+                <InfoRow label={t('detail.age')} value={patient.age} valueClassName="tabular" />
+                <InfoRow label={t('detail.email')} value={patient.email} />
+                <InfoRow label={t('detail.phone')} value={patient.phone} valueClassName="tabular" />
+                <InfoRow label={t('detail.id')} value={patient.id} valueClassName="font-mono" />
+                <InfoRow label={t('detail.since')} value={fmtDateLong(patient.since, lang)} />
               </div>
             </div>
           )}
