@@ -62,12 +62,6 @@ export default function DashboardPage() {
               </span>
             </div>
             <div className="st-val tabular">{s.val}</div>
-            {s.trend && (
-              <div className="st-trend">
-                <Icon name="trend" size={13} style={{ verticalAlign: '-2px', marginRight: 3 }} />
-                {s.trend}
-              </div>
-            )}
           </div>
         ))}
       </div>
