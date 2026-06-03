@@ -1,53 +1,47 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth/context';
-import { usePatientRepository } from '@/lib/container';
 import { Sidebar } from '@/components/organisms/sidebar';
 import { Topbar } from '@/components/organisms/topbar';
+import { Spinner } from '@/components/atoms/spinner';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth();
-  const router = useRouter();
+  const { isAuthenticated } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const repo = usePatientRepository();
-  const patientCount = repo.getAll().length;
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.replace('/login');
-    }
-  }, [isLoading, isAuthenticated, router]);
+    setMounted(true);
+  }, []);
 
-  if (isLoading || !isAuthenticated) {
+  if (!mounted || !isAuthenticated) {
     return (
-      <div style={{ display: 'grid', placeItems: 'center', height: '100vh' }}>
-        <div
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: '50%',
-            border: '3px solid var(--border)',
-            borderTopColor: 'var(--primary)',
-            animation: 'spin 0.8s linear infinite',
-          }}
-        />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div className="grid h-screen place-items-center">
+        <Spinner size={32} className="border-[3px]" />
       </div>
     );
   }
 
   return (
     <div className="shell">
-      <Sidebar
-        patientCount={patientCount}
-        mobileOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-      />
-      {mobileOpen && <div className="scrim" onClick={() => setMobileOpen(false)} />}
+      <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+      {mobileOpen && (
+        <div
+          className="scrim"
+          role="button"
+          aria-label="Close menu"
+          tabIndex={0}
+          onClick={() => setMobileOpen(false)}
+          onKeyDown={e => {
+            if (e.key === 'Enter' || e.key === ' ') setMobileOpen(false);
+          }}
+        />
+      )}
       <div className="main-col">
-        <Topbar onToggleMobile={() => setMobileOpen(o => !o)} />
+        <Suspense fallback={null}>
+          <Topbar mobileOpen={mobileOpen} onToggleMobile={() => setMobileOpen(o => !o)} />
+        </Suspense>
         <div className="content">{children}</div>
       </div>
     </div>

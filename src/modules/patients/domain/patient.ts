@@ -1,7 +1,7 @@
 export type PatientStatus = 'completada' | 'pendiente' | 'cancelada' | 'activo';
-export type AvatarTone = 'primary' | 'info' | 'warning';
 
 export interface Consultation {
+  id: string;
   date: string;
   type: string;
   doctor: string;
@@ -13,8 +13,6 @@ export interface Patient {
   id: string;
   name: string;
   age: number;
-  initials: string;
-  tone: AvatarTone;
   email: string;
   phone: string;
   since: string;

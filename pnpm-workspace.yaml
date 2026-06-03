@@ -1,4 +1,13 @@
+packages:
+  - '.'
 allowBuilds:
-  msw: set this to true or false
-  sharp: set this to true or false
-  unrs-resolver: set this to true or false
+  msgpackr-extract: false
+  msw: true
+  sharp: true
+  unrs-resolver: true
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  - lucide-react@1.17.0
+  - oxlint-plugin-react-doctor@0.2.16
+  - react-doctor@0.2.16
+  - shadcn@4.8.3

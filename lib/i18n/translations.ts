@@ -63,6 +63,7 @@ export type TranslationKey =
   | 'patients.col.lastVisit'
   | 'patients.col.consultas'
   | 'patients.col.status'
+  | 'patients.col.actions'
   | 'patients.years'
   | 'patients.empty'
   | 'detail.back'
@@ -86,9 +87,26 @@ export type TranslationKey =
   | 'status.pendiente'
   | 'status.cancelada'
   | 'status.activo'
+  | 'patients.view.table'
+  | 'patients.view.cards'
+  | 'login.asideQuote'
   | 'theme.toggle'
   | 'ajustes.title'
-  | 'ajustes.subtitle';
+  | 'ajustes.subtitle'
+  | 'newPatient.title'
+  | 'newPatient.name'
+  | 'newPatient.namePlaceholder'
+  | 'newPatient.age'
+  | 'newPatient.email'
+  | 'newPatient.emailPlaceholder'
+  | 'newPatient.phone'
+  | 'newPatient.phonePlaceholder'
+  | 'newPatient.submit'
+  | 'newPatient.created'
+  | 'newPatient.nameRequired'
+  | 'newPatient.ageInvalid'
+  | 'newPatient.emailInvalid'
+  | 'newPatient.phoneRequired';
 
 type Translations = Record<TranslationKey, string>;
 
@@ -106,7 +124,7 @@ export const translations: Record<Lang, Translations> = {
     'login.verify': 'Verificar y entrar',
     'login.resend': 'Reenviar código',
     'login.back': 'Usar otro correo',
-    'login.demoHint': 'Demo: el código es 482019',
+    'login.demoHint': 'Demo: el código es',
     'login.invalid': 'Código incorrecto. Inténtalo de nuevo.',
     'login.emailInvalid': 'Introduce un correo válido.',
     'nav.home': 'Inicio',
@@ -144,8 +162,13 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.lastVisit': 'Última visita',
     'patients.col.consultas': 'Consultas',
     'patients.col.status': 'Estado',
+    'patients.col.actions': 'Acciones',
     'patients.years': 'años',
     'patients.empty': 'No se encontraron pacientes.',
+    'patients.view.table': 'Tabla',
+    'patients.view.cards': 'Tarjetas',
+    'login.asideQuote':
+      'Gestiona pacientes, consultas y agenda en un único espacio claro y seguro.',
     'detail.back': 'Pacientes',
     'detail.edit': 'Editar',
     'detail.save': 'Guardar cambios',
@@ -170,6 +193,20 @@ export const translations: Record<Lang, Translations> = {
     'theme.toggle': 'Cambiar tema',
     'ajustes.title': 'Ajustes',
     'ajustes.subtitle': 'Configuración de la plataforma.',
+    'newPatient.title': 'Nuevo paciente',
+    'newPatient.name': 'Nombre completo',
+    'newPatient.namePlaceholder': 'Ej. Ana García López',
+    'newPatient.age': 'Edad',
+    'newPatient.email': 'Correo electrónico',
+    'newPatient.emailPlaceholder': 'nombre@ejemplo.com',
+    'newPatient.phone': 'Teléfono',
+    'newPatient.phonePlaceholder': '+34 600 000 000',
+    'newPatient.submit': 'Crear paciente',
+    'newPatient.created': 'Paciente creado correctamente.',
+    'newPatient.nameRequired': 'El nombre es obligatorio.',
+    'newPatient.ageInvalid': 'Edad no válida (0–130).',
+    'newPatient.emailInvalid': 'Introduce un correo válido.',
+    'newPatient.phoneRequired': 'El teléfono es obligatorio.',
   },
   en: {
     'app.tagline': 'Clinical platform',
@@ -184,7 +221,7 @@ export const translations: Record<Lang, Translations> = {
     'login.verify': 'Verify and sign in',
     'login.resend': 'Resend code',
     'login.back': 'Use another email',
-    'login.demoHint': 'Demo: the code is 482019',
+    'login.demoHint': 'Demo: the code is',
     'login.invalid': 'Incorrect code. Please try again.',
     'login.emailInvalid': 'Enter a valid email address.',
     'nav.home': 'Home',
@@ -222,8 +259,12 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.lastVisit': 'Last visit',
     'patients.col.consultas': 'Consultations',
     'patients.col.status': 'Status',
+    'patients.col.actions': 'Actions',
     'patients.years': 'yrs',
     'patients.empty': 'No patients found.',
+    'patients.view.table': 'Table',
+    'patients.view.cards': 'Cards',
+    'login.asideQuote': 'Manage patients, consultations and scheduling in one clear, secure space.',
     'detail.back': 'Patients',
     'detail.edit': 'Edit',
     'detail.save': 'Save changes',
@@ -248,6 +289,20 @@ export const translations: Record<Lang, Translations> = {
     'theme.toggle': 'Toggle theme',
     'ajustes.title': 'Settings',
     'ajustes.subtitle': 'Platform configuration.',
+    'newPatient.title': 'New patient',
+    'newPatient.name': 'Full name',
+    'newPatient.namePlaceholder': 'E.g. Jane Smith',
+    'newPatient.age': 'Age',
+    'newPatient.email': 'Email address',
+    'newPatient.emailPlaceholder': 'name@example.com',
+    'newPatient.phone': 'Phone',
+    'newPatient.phonePlaceholder': '+1 555 000 0000',
+    'newPatient.submit': 'Create patient',
+    'newPatient.created': 'Patient created successfully.',
+    'newPatient.nameRequired': 'Name is required.',
+    'newPatient.ageInvalid': 'Invalid age (0–130).',
+    'newPatient.emailInvalid': 'Enter a valid email address.',
+    'newPatient.phoneRequired': 'Phone is required.',
   },
   it: {
     'app.tagline': 'Piattaforma clinica',
@@ -262,7 +317,7 @@ export const translations: Record<Lang, Translations> = {
     'login.verify': 'Verifica ed entra',
     'login.resend': 'Invia di nuovo',
     'login.back': "Usa un'altra email",
-    'login.demoHint': 'Demo: il codice è 482019',
+    'login.demoHint': 'Demo: il codice è',
     'login.invalid': 'Codice errato. Riprova.',
     'login.emailInvalid': "Inserisci un'email valida.",
     'nav.home': 'Home',
@@ -300,8 +355,12 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.lastVisit': 'Ultima visita',
     'patients.col.consultas': 'Consulti',
     'patients.col.status': 'Stato',
+    'patients.col.actions': 'Azioni',
     'patients.years': 'anni',
     'patients.empty': 'Nessun paziente trovato.',
+    'patients.view.table': 'Tabella',
+    'patients.view.cards': 'Schede',
+    'login.asideQuote': 'Gestisci pazienti, consulti e agenda in un unico spazio chiaro e sicuro.',
     'detail.back': 'Pazienti',
     'detail.edit': 'Modifica',
     'detail.save': 'Salva modifiche',
@@ -326,6 +385,20 @@ export const translations: Record<Lang, Translations> = {
     'theme.toggle': 'Cambia tema',
     'ajustes.title': 'Impostazioni',
     'ajustes.subtitle': 'Configurazione della piattaforma.',
+    'newPatient.title': 'Nuovo paziente',
+    'newPatient.name': 'Nome completo',
+    'newPatient.namePlaceholder': 'Es. Maria Rossi',
+    'newPatient.age': 'Età',
+    'newPatient.email': 'Indirizzo email',
+    'newPatient.emailPlaceholder': 'nome@esempio.com',
+    'newPatient.phone': 'Telefono',
+    'newPatient.phonePlaceholder': '+39 333 000 0000',
+    'newPatient.submit': 'Crea paziente',
+    'newPatient.created': 'Paziente creato correttamente.',
+    'newPatient.nameRequired': 'Il nome è obbligatorio.',
+    'newPatient.ageInvalid': 'Età non valida (0–130).',
+    'newPatient.emailInvalid': "Inserisci un'email valida.",
+    'newPatient.phoneRequired': 'Il telefono è obbligatorio.',
   },
   pt: {
     'app.tagline': 'Plataforma clínica',
@@ -340,7 +413,7 @@ export const translations: Record<Lang, Translations> = {
     'login.verify': 'Verificar e entrar',
     'login.resend': 'Reenviar código',
     'login.back': 'Usar outro email',
-    'login.demoHint': 'Demo: o código é 482019',
+    'login.demoHint': 'Demo: o código é',
     'login.invalid': 'Código incorreto. Tente novamente.',
     'login.emailInvalid': 'Introduza um email válido.',
     'nav.home': 'Início',
@@ -377,8 +450,13 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.lastVisit': 'Última visita',
     'patients.col.consultas': 'Consultas',
     'patients.col.status': 'Estado',
+    'patients.col.actions': 'Ações',
     'patients.years': 'anos',
     'patients.empty': 'Nenhum paciente encontrado.',
+    'patients.view.table': 'Tabela',
+    'patients.view.cards': 'Cartões',
+    'login.asideQuote':
+      'Faça a gestão de pacientes, consultas e agenda num único espaço claro e seguro.',
     'detail.back': 'Pacientes',
     'detail.edit': 'Editar',
     'detail.save': 'Guardar alterações',
@@ -403,23 +481,47 @@ export const translations: Record<Lang, Translations> = {
     'theme.toggle': 'Mudar tema',
     'ajustes.title': 'Definições',
     'ajustes.subtitle': 'Configuração da plataforma.',
+    'newPatient.title': 'Novo paciente',
+    'newPatient.name': 'Nome completo',
+    'newPatient.namePlaceholder': 'Ex. Maria Santos',
+    'newPatient.age': 'Idade',
+    'newPatient.email': 'Endereço de email',
+    'newPatient.emailPlaceholder': 'nome@exemplo.com',
+    'newPatient.phone': 'Telefone',
+    'newPatient.phonePlaceholder': '+351 900 000 000',
+    'newPatient.submit': 'Criar paciente',
+    'newPatient.created': 'Paciente criado com sucesso.',
+    'newPatient.nameRequired': 'O nome é obrigatório.',
+    'newPatient.ageInvalid': 'Idade inválida (0–130).',
+    'newPatient.emailInvalid': 'Introduza um email válido.',
+    'newPatient.phoneRequired': 'O telefone é obrigatório.',
   },
 };
 
-export const LOCALE_MAP: Record<Lang, string> = {
+const LOCALE_MAP: Record<Lang, string> = {
   es: 'es-ES',
   en: 'en-US',
   it: 'it-IT',
   pt: 'pt-PT',
 };
 
+const DATE_SHORT: Record<Lang, Intl.DateTimeFormat> = {
+  es: new Intl.DateTimeFormat(LOCALE_MAP.es, { day: '2-digit', month: 'short', year: 'numeric' }),
+  en: new Intl.DateTimeFormat(LOCALE_MAP.en, { day: '2-digit', month: 'short', year: 'numeric' }),
+  it: new Intl.DateTimeFormat(LOCALE_MAP.it, { day: '2-digit', month: 'short', year: 'numeric' }),
+  pt: new Intl.DateTimeFormat(LOCALE_MAP.pt, { day: '2-digit', month: 'short', year: 'numeric' }),
+};
+
+const DATE_LONG: Record<Lang, Intl.DateTimeFormat> = {
+  es: new Intl.DateTimeFormat(LOCALE_MAP.es, { day: 'numeric', month: 'long', year: 'numeric' }),
+  en: new Intl.DateTimeFormat(LOCALE_MAP.en, { day: 'numeric', month: 'long', year: 'numeric' }),
+  it: new Intl.DateTimeFormat(LOCALE_MAP.it, { day: 'numeric', month: 'long', year: 'numeric' }),
+  pt: new Intl.DateTimeFormat(LOCALE_MAP.pt, { day: 'numeric', month: 'long', year: 'numeric' }),
+};
+
 export function fmtDate(iso: string, lang: Lang): string {
   try {
-    return new Intl.DateTimeFormat(LOCALE_MAP[lang], {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    }).format(new Date(iso));
+    return DATE_SHORT[lang].format(new Date(iso));
   } catch {
     return iso;
   }
@@ -427,11 +529,7 @@ export function fmtDate(iso: string, lang: Lang): string {
 
 export function fmtDateLong(iso: string, lang: Lang): string {
   try {
-    return new Intl.DateTimeFormat(LOCALE_MAP[lang], {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date(iso));
+    return DATE_LONG[lang].format(new Date(iso));
   } catch {
     return iso;
   }
