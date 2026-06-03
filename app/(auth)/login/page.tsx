@@ -2,6 +2,7 @@
 
 import { useReducer, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
 import { useI18n } from '@/lib/i18n/context';
 import { useAuth } from '@/lib/auth/context';
@@ -196,21 +197,22 @@ export default function LoginPage() {
 
               <div style={{ height: 18 }} />
 
-              <button type="submit" className="btn btn-primary btn-lg btn-block">
+              <Button type="submit" size="lg" className="h-[46px] w-full text-[15px]">
                 {t('login.sendCode')}
                 <Icon name="chevronRight" size={16} />
-              </button>
+              </Button>
             </form>
           ) : (
             <form onSubmit={verify}>
-              <button
+              <Button
                 type="button"
-                className="link-btn"
-                style={{ marginBottom: 18, display: 'inline-flex', alignItems: 'center', gap: 4 }}
+                variant="link"
+                size="sm"
+                className="mb-[18px] inline-flex h-auto items-center gap-1 p-0"
                 onClick={() => dispatch({ type: 'BACK' })}
               >
                 <Icon name="chevronLeft" size={15} /> {t('login.back')}
-              </button>
+              </Button>
 
               <h1>{t('login.codeTitle')}</h1>
               <p className="sub">
@@ -249,21 +251,22 @@ export default function LoginPage() {
 
               <p className="hint" style={{ marginTop: 14 }}>
                 {t('login.codeHint')}{' '}
-                <button type="button" className="link-btn">
+                <Button type="button" variant="link" size="sm" className="h-auto p-0">
                   {t('login.resend')}
-                </button>
+                </Button>
               </p>
 
               <div style={{ height: 14 }} />
 
-              <button
+              <Button
                 type="submit"
-                className="btn btn-primary btn-lg btn-block"
+                size="lg"
+                className="h-[46px] w-full text-[15px]"
                 disabled={!codeComplete}
               >
                 <Icon name="check" size={16} />
                 {t('login.verify')}
-              </button>
+              </Button>
 
               {DEMO_CODE && (
                 <div className="demo-hint">

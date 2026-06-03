@@ -2,23 +2,35 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from '@/components/atoms/icon';
+import { Button } from '@/components/atoms/button';
+import { Input } from '@/components/ui/input';
 import { useI18n } from '@/lib/i18n/context';
 import { useTheme } from '@/lib/theme/context';
 import { useAuth } from '@/lib/auth/context';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import type { Lang } from '@/lib/i18n/translations';
 
 interface TopbarProps {
+  mobileOpen: boolean;
   onToggleMobile: () => void;
 }
 
-export function Topbar({ onToggleMobile }: TopbarProps) {
+export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
   const { t, lang, langs, setLang } = useI18n();
   const { theme, toggleTheme } = useTheme();
   const { logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [langOpen, setLangOpen] = useState(false);
+  const [query, setQuery] = useState('');
   const langRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (pathname === '/pacientes') {
+      setQuery(searchParams.get('q') ?? '');
+    }
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     function onDoc(e: MouseEvent) {
@@ -35,51 +47,61 @@ export function Topbar({ onToggleMobile }: TopbarProps) {
     router.push('/login');
   }
 
+  function handleSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const q = query.trim();
+    router.push(q ? `/pacientes?q=${encodeURIComponent(q)}` : '/pacientes');
+  }
+
   const current = langs.find(l => l.code === lang);
 
   return (
     <header className="topbar">
-      <button
-        type="button"
-        className="icon-btn hamburger"
+      <Button
+        variant="ghost"
+        size="icon"
+        className="hamburger"
         onClick={onToggleMobile}
-        aria-label="Menu"
+        aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={mobileOpen}
       >
-        <Icon name="menu" size={20} />
-      </button>
+        <Icon name={mobileOpen ? 'x' : 'menu'} size={20} />
+      </Button>
 
-      <div className="search">
+      <form className="search" onSubmit={handleSearchSubmit}>
         <div className="input-icon-wrap">
           <Icon name="search" size={16} />
-          <input
-            className="input"
+          <Input
+            type="search"
             placeholder={t('topbar.search')}
             aria-label={t('topbar.search')}
-            readOnly
+            value={query}
+            onChange={e => setQuery(e.target.value)}
           />
         </div>
-      </div>
+      </form>
 
       <div className="topbar-spacer" />
 
       <div className="topbar-actions">
         <div className="lang-wrap" ref={langRef}>
-          <button
-            type="button"
-            className="icon-btn"
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setLangOpen(o => !o)}
             aria-label="Language"
             title={current?.label}
           >
             <Icon name="globe" size={19} />
-          </button>
+          </Button>
           {langOpen && (
             <div className="lang-menu">
               {langs.map(l => (
-                <button
+                <Button
                   key={l.code}
                   type="button"
-                  className={`lang-opt ${l.code === lang ? 'on' : ''}`}
+                  variant="menu"
+                  aria-pressed={l.code === lang}
                   onClick={() => {
                     setLang(l.code as Lang);
                     setLangOpen(false);
@@ -87,38 +109,36 @@ export function Topbar({ onToggleMobile }: TopbarProps) {
                 >
                   <span className="flag">{l.flag}</span>
                   {l.label}
-                  {l.code === lang && (
-                    <Icon name="check" size={15} style={{ marginLeft: 'auto' }} />
-                  )}
-                </button>
+                  {l.code === lang && <Icon name="check" size={15} className="ml-auto" />}
+                </Button>
               ))}
             </div>
           )}
         </div>
 
-        <button type="button" className="icon-btn" aria-label="Notifications">
+        <Button variant="ghost" size="icon" aria-label="Notifications">
           <Icon name="bell" size={19} />
-        </button>
+        </Button>
 
-        <button
-          type="button"
-          className="icon-btn"
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={toggleTheme}
           aria-label={t('theme.toggle')}
           title={t('theme.toggle')}
         >
           <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={19} />
-        </button>
+        </Button>
 
-        <button
-          type="button"
-          className="icon-btn"
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={handleLogout}
           aria-label={t('topbar.logout')}
           title={t('topbar.logout')}
         >
           <Icon name="logout" size={19} />
-        </button>
+        </Button>
       </div>
     </header>
   );

@@ -189,84 +189,6 @@
    APP COMPONENT STYLES
    ============================================================ */
 @layer components {
-  /* --- Buttons --- */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 550;
-    line-height: 1;
-    height: 40px;
-    padding: 0 16px;
-    border-radius: calc(var(--radius) - 2px);
-    border: 1px solid transparent;
-    cursor: pointer;
-    white-space: nowrap;
-    transition:
-      background 0.15s,
-      color 0.15s,
-      border-color 0.15s,
-      box-shadow 0.15s,
-      opacity 0.15s;
-    text-decoration: none;
-  }
-  .btn svg {
-    width: 16px;
-    height: 16px;
-    flex: none;
-  }
-  .btn-primary {
-    background: var(--primary);
-    color: var(--primary-foreground);
-  }
-  .btn-primary:hover {
-    background: color-mix(in oklch, var(--primary) 90%, black);
-  }
-  .btn-secondary {
-    background: var(--secondary);
-    color: var(--secondary-foreground);
-    border-color: var(--border);
-  }
-  .btn-secondary:hover {
-    background: color-mix(in oklch, var(--secondary) 70%, var(--border));
-  }
-  .btn-outline {
-    background: transparent;
-    color: var(--foreground);
-    border-color: var(--border);
-  }
-  .btn-outline:hover {
-    background: var(--muted);
-  }
-  .btn-ghost {
-    background: transparent;
-    color: var(--foreground);
-  }
-  .btn-ghost:hover {
-    background: var(--muted);
-  }
-  .btn-sm {
-    height: 32px;
-    padding: 0 12px;
-    font-size: 13px;
-  }
-  .btn-lg {
-    height: 46px;
-    padding: 0 22px;
-    font-size: 15px;
-  }
-  .btn:disabled,
-  .btn[aria-disabled='true'] {
-    opacity: 0.5;
-    pointer-events: none;
-  }
-  .btn-block {
-    width: 100%;
-  }
-
   /* --- Inputs --- */
   .field {
     display: flex;
@@ -320,48 +242,9 @@
     color: var(--muted-foreground);
     pointer-events: none;
   }
-  .input-icon-wrap .input {
+  .input-icon-wrap > .input,
+  .input-icon-wrap > [data-slot='input'] {
     padding-left: 36px;
-  }
-
-  /* --- Badges --- */
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    height: 22px;
-    padding: 0 9px;
-    font-size: 12px;
-    font-weight: 550;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    white-space: nowrap;
-  }
-  .badge .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background: currentColor;
-    flex: none;
-  }
-  .badge-completada {
-    background: color-mix(in oklch, var(--success) 16%, transparent);
-    color: var(--success);
-  }
-  .badge-pendiente {
-    background: color-mix(in oklch, var(--warning) 22%, transparent);
-    color: color-mix(in oklch, var(--warning) 72%, black);
-  }
-  .badge-cancelada {
-    background: color-mix(in oklch, var(--destructive) 14%, transparent);
-    color: var(--destructive);
-  }
-  .badge-activo {
-    background: var(--accent);
-    color: var(--accent-foreground);
-  }
-  [data-theme='dark'] .badge-pendiente {
-    color: var(--warning);
   }
 
   /* --- Avatar --- */
@@ -405,18 +288,6 @@
     place-items: center;
     font-weight: 700;
     flex: none;
-  }
-  .link-btn {
-    background: none;
-    border: 0;
-    color: var(--primary);
-    font: inherit;
-    font-weight: 550;
-    cursor: pointer;
-    padding: 0;
-  }
-  .link-btn:hover {
-    text-decoration: underline;
   }
   .text-err {
     color: var(--destructive);
@@ -729,31 +600,15 @@
     opacity: 1;
   }
 
-  /* Sidebar toggle button */
+  /* Sidebar toggle button (layout/visibility; appearance from Button) */
   .sidebar-toggle {
     flex: none;
     margin-left: auto;
-    display: grid;
-    place-items: center;
-    width: 26px;
-    height: 26px;
-    border: 0;
-    background: transparent;
-    border-radius: calc(var(--radius) - 4px);
-    color: var(--muted-foreground);
-    cursor: pointer;
     opacity: 0;
-    transition:
-      opacity 0.15s,
-      background 0.15s,
-      color 0.15s;
+    transition: opacity 0.15s;
   }
   .sidebar:hover .sidebar-toggle {
     opacity: 1;
-  }
-  .sidebar-toggle:hover {
-    background: var(--sidebar-accent);
-    color: var(--sidebar-accent-foreground);
   }
 
   /* Topbar */
@@ -811,35 +666,13 @@
     min-width: 168px;
     z-index: 60;
   }
-  .lang-opt {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    border: 0;
-    background: none;
-    font: inherit;
-    font-size: 13.5px;
-    padding: 8px 10px;
-    border-radius: calc(var(--radius) - 4px);
-    cursor: pointer;
-    color: var(--popover-foreground);
-    text-align: left;
-  }
-  .lang-opt:hover {
-    background: var(--muted);
-  }
-  .lang-opt .flag {
+  .lang-menu .flag {
     font-size: 11px;
     font-weight: 700;
     width: 22px;
     color: var(--muted-foreground);
   }
-  .lang-opt.on {
-    color: var(--primary);
-    font-weight: 600;
-  }
-  .lang-opt.on .flag {
+  .lang-menu button[aria-pressed='true'] .flag {
     color: var(--primary);
   }
 
@@ -850,8 +683,9 @@
     padding: 32px;
   }
   .content-inner {
+    width: 100%;
     max-width: 1100px;
-    margin: 0 auto;
+    margin-inline: auto;
   }
   .page-head {
     margin-bottom: 24px;
@@ -863,12 +697,6 @@
     font-size: 13px;
     color: var(--muted-foreground);
     margin-bottom: 8px;
-  }
-  .page-head .crumbs .link-btn {
-    color: var(--muted-foreground);
-  }
-  .page-head .crumbs .link-btn:hover {
-    color: var(--foreground);
   }
   .page-head h1 {
     font-size: 28px;
@@ -983,14 +811,19 @@
     white-space: nowrap;
   }
 
-  /* Table */
+  /* Table — internal scroll keeps sticky headers; page layout stays centered like home */
   .table-wrap {
-    overflow-x: auto;
+    overflow: auto;
+    max-height: calc(100dvh - 17.5rem);
   }
   table.tbl {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: 13.5px;
+  }
+  table.tbl thead {
+    isolation: isolate;
   }
   table.tbl thead th {
     text-align: left;
@@ -1002,9 +835,11 @@
     padding: 11px 16px;
     border-bottom: 1px solid var(--border);
     white-space: nowrap;
-    background: var(--card);
+    background-color: var(--card);
     position: sticky;
     top: 0;
+    z-index: 10;
+    box-shadow: 0 1px 0 var(--border);
   }
   table.tbl thead th.sortable {
     cursor: pointer;
@@ -1026,6 +861,7 @@
   table.tbl tbody td {
     padding: 13px 16px;
     border-bottom: 1px solid var(--border);
+    background-color: var(--card);
   }
   table.tbl tbody tr:last-child td {
     border-bottom: 0;
@@ -1033,8 +869,8 @@
   table.tbl tbody tr {
     cursor: pointer;
   }
-  table.tbl tbody tr:hover {
-    background: var(--muted);
+  table.tbl tbody tr:hover td {
+    background-color: var(--muted);
   }
   .pt-cell {
     display: flex;
@@ -1153,23 +989,6 @@
     border-radius: calc(var(--radius) - 2px);
     margin-bottom: 16px;
   }
-  .tab {
-    border: 0;
-    background: transparent;
-    font: inherit;
-    font-size: 13px;
-    font-weight: 550;
-    padding: 7px 16px;
-    border-radius: calc(var(--radius) - 4px);
-    cursor: pointer;
-    color: var(--muted-foreground);
-  }
-  .tab.on {
-    background: var(--card);
-    color: var(--foreground);
-    box-shadow: var(--shadow-xs);
-  }
-
   /* Timeline */
   .timeline {
     position: relative;
@@ -1350,6 +1169,46 @@
     }
     .topbar .search {
       display: none;
+    }
+  }
+}
+
+@layer utilities {
+  .input-icon-wrap > .input,
+  .input-icon-wrap > [data-slot='input'] {
+    padding-inline-start: 2.25rem;
+  }
+
+  /* Mobile menu only in topbar; collapse toggle only on desktop */
+  .hamburger[data-slot='button'],
+  .sidebar-toggle[data-slot='button'] {
+    display: none;
+  }
+
+  /* Table card is the scrollport for sticky headers */
+  .table-wrap[data-slot='card'] {
+    overflow: auto;
+    min-height: 0;
+  }
+}
+
+@media (min-width: 761px) {
+  @layer utilities {
+    .sidebar-toggle[data-slot='button'] {
+      display: inline-flex;
+    }
+  }
+}
+
+@media (max-width: 760px) {
+  @layer utilities {
+    .hamburger[data-slot='button'] {
+      display: inline-flex;
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 101;
     }
   }
 }
