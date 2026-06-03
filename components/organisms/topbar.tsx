@@ -39,14 +39,24 @@ export function Topbar({ onToggleMobile }: TopbarProps) {
 
   return (
     <header className="topbar">
-      <button className="icon-btn hamburger" onClick={onToggleMobile} aria-label="Menu">
+      <button
+        type="button"
+        className="icon-btn hamburger"
+        onClick={onToggleMobile}
+        aria-label="Menu"
+      >
         <Icon name="menu" size={20} />
       </button>
 
       <div className="search">
         <div className="input-icon-wrap">
           <Icon name="search" size={16} />
-          <input className="input" placeholder={t('topbar.search')} readOnly />
+          <input
+            className="input"
+            placeholder={t('topbar.search')}
+            aria-label={t('topbar.search')}
+            readOnly
+          />
         </div>
       </div>
 
@@ -55,6 +65,7 @@ export function Topbar({ onToggleMobile }: TopbarProps) {
       <div className="topbar-actions">
         <div className="lang-wrap" ref={langRef}>
           <button
+            type="button"
             className="icon-btn"
             onClick={() => setLangOpen(o => !o)}
             aria-label="Language"
@@ -67,6 +78,7 @@ export function Topbar({ onToggleMobile }: TopbarProps) {
               {langs.map(l => (
                 <button
                   key={l.code}
+                  type="button"
                   className={`lang-opt ${l.code === lang ? 'on' : ''}`}
                   onClick={() => {
                     setLang(l.code as Lang);
@@ -84,11 +96,12 @@ export function Topbar({ onToggleMobile }: TopbarProps) {
           )}
         </div>
 
-        <button className="icon-btn" aria-label="Notifications">
+        <button type="button" className="icon-btn" aria-label="Notifications">
           <Icon name="bell" size={19} />
         </button>
 
         <button
+          type="button"
           className="icon-btn"
           onClick={toggleTheme}
           aria-label={t('theme.toggle')}
@@ -98,6 +111,7 @@ export function Topbar({ onToggleMobile }: TopbarProps) {
         </button>
 
         <button
+          type="button"
           className="icon-btn"
           onClick={handleLogout}
           aria-label={t('topbar.logout')}

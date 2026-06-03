@@ -63,6 +63,7 @@ export type TranslationKey =
   | 'patients.col.lastVisit'
   | 'patients.col.consultas'
   | 'patients.col.status'
+  | 'patients.col.actions'
   | 'patients.years'
   | 'patients.empty'
   | 'detail.back'
@@ -147,6 +148,7 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.lastVisit': 'Última visita',
     'patients.col.consultas': 'Consultas',
     'patients.col.status': 'Estado',
+    'patients.col.actions': 'Acciones',
     'patients.years': 'años',
     'patients.empty': 'No se encontraron pacientes.',
     'patients.view.table': 'Tabla',
@@ -229,6 +231,7 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.lastVisit': 'Last visit',
     'patients.col.consultas': 'Consultations',
     'patients.col.status': 'Status',
+    'patients.col.actions': 'Actions',
     'patients.years': 'yrs',
     'patients.empty': 'No patients found.',
     'patients.view.table': 'Table',
@@ -310,6 +313,7 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.lastVisit': 'Ultima visita',
     'patients.col.consultas': 'Consulti',
     'patients.col.status': 'Stato',
+    'patients.col.actions': 'Azioni',
     'patients.years': 'anni',
     'patients.empty': 'Nessun paziente trovato.',
     'patients.view.table': 'Tabella',
@@ -390,6 +394,7 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.lastVisit': 'Última visita',
     'patients.col.consultas': 'Consultas',
     'patients.col.status': 'Estado',
+    'patients.col.actions': 'Ações',
     'patients.years': 'anos',
     'patients.empty': 'Nenhum paciente encontrado.',
     'patients.view.table': 'Tabela',
@@ -423,20 +428,30 @@ export const translations: Record<Lang, Translations> = {
   },
 };
 
-export const LOCALE_MAP: Record<Lang, string> = {
+const LOCALE_MAP: Record<Lang, string> = {
   es: 'es-ES',
   en: 'en-US',
   it: 'it-IT',
   pt: 'pt-PT',
 };
 
+const DATE_SHORT: Record<Lang, Intl.DateTimeFormat> = {
+  es: new Intl.DateTimeFormat(LOCALE_MAP.es, { day: '2-digit', month: 'short', year: 'numeric' }),
+  en: new Intl.DateTimeFormat(LOCALE_MAP.en, { day: '2-digit', month: 'short', year: 'numeric' }),
+  it: new Intl.DateTimeFormat(LOCALE_MAP.it, { day: '2-digit', month: 'short', year: 'numeric' }),
+  pt: new Intl.DateTimeFormat(LOCALE_MAP.pt, { day: '2-digit', month: 'short', year: 'numeric' }),
+};
+
+const DATE_LONG: Record<Lang, Intl.DateTimeFormat> = {
+  es: new Intl.DateTimeFormat(LOCALE_MAP.es, { day: 'numeric', month: 'long', year: 'numeric' }),
+  en: new Intl.DateTimeFormat(LOCALE_MAP.en, { day: 'numeric', month: 'long', year: 'numeric' }),
+  it: new Intl.DateTimeFormat(LOCALE_MAP.it, { day: 'numeric', month: 'long', year: 'numeric' }),
+  pt: new Intl.DateTimeFormat(LOCALE_MAP.pt, { day: 'numeric', month: 'long', year: 'numeric' }),
+};
+
 export function fmtDate(iso: string, lang: Lang): string {
   try {
-    return new Intl.DateTimeFormat(LOCALE_MAP[lang], {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    }).format(new Date(iso));
+    return DATE_SHORT[lang].format(new Date(iso));
   } catch {
     return iso;
   }
@@ -444,11 +459,7 @@ export function fmtDate(iso: string, lang: Lang): string {
 
 export function fmtDateLong(iso: string, lang: Lang): string {
   try {
-    return new Intl.DateTimeFormat(LOCALE_MAP[lang], {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date(iso));
+    return DATE_LONG[lang].format(new Date(iso));
   } catch {
     return iso;
   }

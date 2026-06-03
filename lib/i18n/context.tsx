@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, use, useCallback, useMemo, useState } from 'react';
 import {
   translations,
   LANGS,
@@ -19,12 +19,11 @@ interface I18nContextValue {
 const I18nContext = createContext<I18nContextValue | null>(null);
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>('es');
-
-  useEffect(() => {
+  const [lang, setLangState] = useState<Lang>(() => {
+    if (typeof window === 'undefined') return 'es';
     const saved = localStorage.getItem('ovianta-lang') as Lang | null;
-    if (saved && translations[saved]) setLangState(saved);
-  }, []);
+    return saved && translations[saved] ? saved : 'es';
+  });
 
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
@@ -46,15 +45,13 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     [lang]
   );
 
-  return (
-    <I18nContext.Provider value={{ lang, langs: LANGS, setLang, t }}>
-      {children}
-    </I18nContext.Provider>
-  );
+  const value = useMemo(() => ({ lang, langs: LANGS, setLang, t }), [lang, setLang, t]);
+
+  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 
 export function useI18n() {
-  const ctx = useContext(I18nContext);
+  const ctx = use(I18nContext);
   if (!ctx) throw new Error('useI18n must be used within I18nProvider');
   return ctx;
 }

@@ -1,70 +1,109 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useReducer, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@/components/atoms/icon';
 import { useI18n } from '@/lib/i18n/context';
 import { useAuth } from '@/lib/auth/context';
 
 const DEMO_CODE = process.env.NEXT_PUBLIC_DEMO_OTP ?? '';
+const DIGIT_KEYS = ['d0', 'd1', 'd2', 'd3', 'd4', 'd5'] as const;
+const EMPTY_DIGITS = ['', '', '', '', '', ''];
+
+type Step = 'email' | 'code';
+type ErrorField = 'email' | 'code' | null;
+
+type State = {
+  step: Step;
+  email: string;
+  digits: string[];
+  error: ErrorField;
+  active: number;
+};
+
+type Action =
+  | { type: 'SET_EMAIL'; email: string }
+  | { type: 'SUBMIT_EMAIL' }
+  | { type: 'SET_DIGIT'; index: number; value: string }
+  | { type: 'SET_ACTIVE'; index: number }
+  | { type: 'PASTE'; digits: string[]; active: number }
+  | { type: 'SET_ERROR'; error: ErrorField }
+  | { type: 'RESET_CODE' }
+  | { type: 'BACK' };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'SET_EMAIL':
+      return { ...state, email: action.email };
+    case 'SUBMIT_EMAIL':
+      return { ...state, step: 'code', error: null };
+    case 'SET_DIGIT': {
+      const digits = [...state.digits];
+      digits[action.index] = action.value;
+      return {
+        ...state,
+        digits,
+        active: action.value && action.index < 5 ? action.index + 1 : state.active,
+      };
+    }
+    case 'SET_ACTIVE':
+      return { ...state, active: action.index };
+    case 'PASTE':
+      return { ...state, digits: action.digits, active: action.active };
+    case 'SET_ERROR':
+      return { ...state, error: action.error };
+    case 'RESET_CODE':
+      return { ...state, digits: [...EMPTY_DIGITS], error: 'code', active: 0 };
+    case 'BACK':
+      return { ...state, step: 'email', error: null };
+    default:
+      return state;
+  }
+}
+
+const initialState: State = {
+  step: 'email',
+  email: '',
+  digits: [...EMPTY_DIGITS],
+  error: null,
+  active: 0,
+};
 
 export default function LoginPage() {
   const { t } = useI18n();
-  const { login, isAuthenticated, isLoading } = useAuth();
+  const { login } = useAuth();
   const router = useRouter();
-
-  const [step, setStep] = useState<'email' | 'code'>('email');
-  const [email, setEmail] = useState('ana.torres@ovianta.com');
-  const [digits, setDigits] = useState<string[]>(['', '', '', '', '', '']);
-  const [error, setError] = useState<'email' | 'code' | null>(null);
-  const [active, setActive] = useState(0);
+  const [{ step, email, digits, error, active }, dispatch] = useReducer(reducer, initialState);
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
-
-  useEffect(() => {
-    if (!isLoading && isAuthenticated) router.replace('/');
-  }, [isLoading, isAuthenticated, router]);
-
-  useEffect(() => {
-    if (step === 'code') {
-      setTimeout(() => inputsRef.current[0]?.focus(), 80);
-    }
-  }, [step]);
 
   function submitEmail(e: React.FormEvent) {
     e.preventDefault();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('email');
+      dispatch({ type: 'SET_ERROR', error: 'email' });
       return;
     }
-    setError(null);
-    setStep('code');
+    dispatch({ type: 'SUBMIT_EMAIL' });
+    setTimeout(() => inputsRef.current[0]?.focus(), 80);
   }
 
   function setDigit(i: number, val: string) {
     const v = val.replace(/\D/g, '').slice(-1);
-    setDigits(prev => {
-      const next = [...prev];
-      next[i] = v;
-      return next;
-    });
-    if (v && i < 5) {
-      inputsRef.current[i + 1]?.focus();
-      setActive(i + 1);
-    }
+    dispatch({ type: 'SET_DIGIT', index: i, value: v });
+    if (v && i < 5) inputsRef.current[i + 1]?.focus();
   }
 
   function onKeyDown(i: number, e: React.KeyboardEvent) {
     if (e.key === 'Backspace' && !digits[i] && i > 0) {
       inputsRef.current[i - 1]?.focus();
-      setActive(i - 1);
+      dispatch({ type: 'SET_ACTIVE', index: i - 1 });
     }
     if (e.key === 'ArrowLeft' && i > 0) {
       inputsRef.current[i - 1]?.focus();
-      setActive(i - 1);
+      dispatch({ type: 'SET_ACTIVE', index: i - 1 });
     }
     if (e.key === 'ArrowRight' && i < 5) {
       inputsRef.current[i + 1]?.focus();
-      setActive(i + 1);
+      dispatch({ type: 'SET_ACTIVE', index: i + 1 });
     }
   }
 
@@ -72,12 +111,11 @@ export default function LoginPage() {
     const txt = (e.clipboardData.getData('text') ?? '').replace(/\D/g, '').slice(0, 6);
     if (!txt) return;
     e.preventDefault();
-    const next = ['', '', '', '', '', ''];
+    const next = [...EMPTY_DIGITS];
     for (let i = 0; i < txt.length; i++) next[i] = txt[i];
-    setDigits(next);
     const focusIdx = Math.min(txt.length, 5);
+    dispatch({ type: 'PASTE', digits: next, active: focusIdx });
     inputsRef.current[focusIdx]?.focus();
-    setActive(focusIdx);
   }
 
   function verify(e: React.FormEvent) {
@@ -85,20 +123,15 @@ export default function LoginPage() {
     const code = digits.join('');
     if (code.length < 6) return;
     if (code === DEMO_CODE) {
-      setError(null);
       login(email);
       router.replace('/');
     } else {
-      setError('code');
-      setDigits(['', '', '', '', '', '']);
+      dispatch({ type: 'RESET_CODE' });
       inputsRef.current[0]?.focus();
-      setActive(0);
     }
   }
 
   const codeComplete = digits.join('').length === 6;
-
-  if (isLoading) return null;
 
   return (
     <div className="auth-stage">
@@ -149,7 +182,7 @@ export default function LoginPage() {
                     className={`input ${error === 'email' ? 'err' : ''}`}
                     type="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => dispatch({ type: 'SET_EMAIL', email: e.target.value })}
                     placeholder={t('login.emailPlaceholder')}
                     autoComplete="email"
                   />
@@ -174,10 +207,7 @@ export default function LoginPage() {
                 type="button"
                 className="link-btn"
                 style={{ marginBottom: 18, display: 'inline-flex', alignItems: 'center', gap: 4 }}
-                onClick={() => {
-                  setStep('email');
-                  setError(null);
-                }}
+                onClick={() => dispatch({ type: 'BACK' })}
               >
                 <Icon name="chevronLeft" size={15} /> {t('login.back')}
               </button>
@@ -190,12 +220,8 @@ export default function LoginPage() {
               <div className="otp-row" onPaste={onPaste}>
                 {digits.map((d, i) => (
                   <div
-                    key={i}
+                    key={DIGIT_KEYS[i]}
                     className={`otp-cell ${d ? 'filled' : ''} ${active === i ? 'active' : ''}`}
-                    onClick={() => {
-                      inputsRef.current[i]?.focus();
-                      setActive(i);
-                    }}
                   >
                     <input
                       ref={el => {
@@ -207,7 +233,7 @@ export default function LoginPage() {
                       value={d}
                       onChange={e => setDigit(i, e.target.value)}
                       onKeyDown={e => onKeyDown(i, e)}
-                      onFocus={() => setActive(i)}
+                      onFocus={() => dispatch({ type: 'SET_ACTIVE', index: i })}
                       aria-label={`Digit ${i + 1}`}
                     />
                     <span style={{ pointerEvents: 'none' }}>{d}</span>

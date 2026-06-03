@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Icon } from '@/components/atoms/icon';
@@ -11,6 +11,72 @@ import { useGetPatientById, useUpdatePatient } from '@/lib/container';
 import { fmtDate, fmtDateLong } from '@/lib/i18n/translations';
 import type { Patient } from '@/src/modules/patients/domain/patient';
 
+type Tab = 'history' | 'data';
+
+type State = {
+  patient: Patient | null | undefined;
+  tab: Tab;
+  editing: boolean;
+  name: string;
+  age: string;
+  ageErr: string;
+};
+
+type Action =
+  | { type: 'LOADED'; patient: Patient | null }
+  | { type: 'SET_TAB'; tab: Tab }
+  | { type: 'START_EDIT' }
+  | { type: 'CANCEL_EDIT' }
+  | { type: 'SET_NAME'; name: string }
+  | { type: 'SET_AGE'; age: string }
+  | { type: 'SAVE_SUCCESS'; patient: Patient }
+  | { type: 'SAVE_ERROR'; ageErr: string };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'LOADED':
+      if (!action.patient) return { ...state, patient: null };
+      return {
+        ...state,
+        patient: action.patient,
+        name: action.patient.name,
+        age: String(action.patient.age),
+        editing: false,
+      };
+    case 'SET_TAB':
+      return { ...state, tab: action.tab };
+    case 'START_EDIT':
+      return { ...state, editing: true };
+    case 'CANCEL_EDIT':
+      return {
+        ...state,
+        editing: false,
+        name: state.patient?.name ?? '',
+        age: state.patient ? String(state.patient.age) : '',
+        ageErr: '',
+      };
+    case 'SET_NAME':
+      return { ...state, name: action.name };
+    case 'SET_AGE':
+      return { ...state, age: action.age };
+    case 'SAVE_SUCCESS':
+      return { ...state, patient: action.patient, editing: false, ageErr: '' };
+    case 'SAVE_ERROR':
+      return { ...state, ageErr: action.ageErr };
+    default:
+      return state;
+  }
+}
+
+const initialState: State = {
+  patient: undefined,
+  tab: 'history',
+  editing: false,
+  name: '',
+  age: '',
+  ageErr: '',
+};
+
 export default function PatientDetailPage() {
   const { t, lang } = useI18n();
   const getPatientById = useGetPatientById();
@@ -19,22 +85,11 @@ export default function PatientDetailPage() {
   const params = useParams();
   const id = typeof params.id === 'string' ? params.id : '';
 
-  const [patient, setPatient] = useState<Patient | null | undefined>(undefined);
-  const [tab, setTab] = useState<'history' | 'data'>('history');
-  const [editing, setEditing] = useState(false);
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [ageErr, setAgeErr] = useState('');
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { patient, tab, editing, name, age, ageErr } = state;
 
   useEffect(() => {
-    getPatientById.execute(id).then(p => {
-      setPatient(p);
-      if (p) {
-        setName(p.name);
-        setAge(String(p.age));
-        setEditing(false);
-      }
-    });
+    getPatientById.execute(id).then(p => dispatch({ type: 'LOADED', patient: p }));
   }, [id, getPatientById]);
 
   if (patient === undefined) {
@@ -59,7 +114,11 @@ export default function PatientDetailPage() {
       <div className="content-inner">
         <div className="page-head">
           <p className="pdesc">Paciente no encontrado.</p>
-          <button className="btn btn-outline" onClick={() => router.push('/pacientes')}>
+          <button
+            type="button"
+            className="btn btn-outline"
+            onClick={() => router.push('/pacientes')}
+          >
             <Icon name="chevronLeft" size={16} />
             {t('detail.back')}
           </button>
@@ -70,22 +129,13 @@ export default function PatientDetailPage() {
 
   async function save() {
     if (!name.trim()) return;
-    setAgeErr('');
     try {
       const updated = await updatePatient.execute(patient!.id, { name, age: parseInt(age, 10) });
-      setPatient(updated);
       toast.success(t('detail.saved'));
-      setEditing(false);
+      dispatch({ type: 'SAVE_SUCCESS', patient: updated });
     } catch {
-      setAgeErr(t('detail.ageInvalid'));
+      dispatch({ type: 'SAVE_ERROR', ageErr: t('detail.ageInvalid') });
     }
-  }
-
-  function cancel() {
-    setName(patient!.name);
-    setAge(String(patient!.age));
-    setAgeErr('');
-    setEditing(false);
   }
 
   return (
@@ -93,6 +143,7 @@ export default function PatientDetailPage() {
       <div className="page-head">
         <div className="crumbs">
           <button
+            type="button"
             className="link-btn"
             onClick={() => router.push('/pacientes')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
@@ -106,16 +157,24 @@ export default function PatientDetailPage() {
         <div className="page-head-row">
           <h1>{patient.name}</h1>
           {!editing ? (
-            <button className="btn btn-outline" onClick={() => setEditing(true)}>
+            <button
+              type="button"
+              className="btn btn-outline"
+              onClick={() => dispatch({ type: 'START_EDIT' })}
+            >
               <Icon name="edit" size={16} />
               {t('detail.edit')}
             </button>
           ) : (
             <div style={{ display: 'flex', gap: 8 }}>
-              <button className="btn btn-ghost" onClick={cancel}>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => dispatch({ type: 'CANCEL_EDIT' })}
+              >
                 {t('detail.cancel')}
               </button>
-              <button className="btn btn-primary" onClick={save}>
+              <button type="button" className="btn btn-primary" onClick={save}>
                 <Icon name="check" size={16} />
                 {t('detail.save')}
               </button>
@@ -158,7 +217,7 @@ export default function PatientDetailPage() {
                     id="ed-name"
                     className="input"
                     value={name}
-                    onChange={e => setName(e.target.value)}
+                    onChange={e => dispatch({ type: 'SET_NAME', name: e.target.value })}
                   />
                 </div>
                 <div className="field">
@@ -172,7 +231,7 @@ export default function PatientDetailPage() {
                     min={0}
                     max={130}
                     value={age}
-                    onChange={e => setAge(e.target.value)}
+                    onChange={e => dispatch({ type: 'SET_AGE', age: e.target.value })}
                   />
                   {ageErr && (
                     <span className="hint" style={{ color: 'var(--destructive)' }}>
@@ -220,12 +279,17 @@ export default function PatientDetailPage() {
         <div>
           <div className="tabs">
             <button
+              type="button"
               className={`tab ${tab === 'history' ? 'on' : ''}`}
-              onClick={() => setTab('history')}
+              onClick={() => dispatch({ type: 'SET_TAB', tab: 'history' })}
             >
               {t('detail.tab.history')}
             </button>
-            <button className={`tab ${tab === 'data' ? 'on' : ''}`} onClick={() => setTab('data')}>
+            <button
+              type="button"
+              className={`tab ${tab === 'data' ? 'on' : ''}`}
+              onClick={() => dispatch({ type: 'SET_TAB', tab: 'data' })}
+            >
               {t('detail.tab.data')}
             </button>
           </div>
