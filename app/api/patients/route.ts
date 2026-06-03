@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { listPatients, createPatient } from '@/src/shared/infrastructure/patient-store';
+import { MongoPatientRepository } from '@/src/modules/patients/infrastructure/mongo-patient-repository';
+import { withApiHandler } from '@/src/shared/infrastructure/api-handler';
 
-export async function GET(req: NextRequest) {
+const repo = new MongoPatientRepository();
+
+export const GET = withApiHandler(async req => {
   const q = req.nextUrl.searchParams.get('q') ?? undefined;
-  return NextResponse.json({ success: true, data: listPatients(q) });
-}
+  const data = await repo.findAll(q);
+  return NextResponse.json({ success: true, data });
+});
 
 const CreateSchema = z.object({
   name: z.string().min(1),
@@ -14,15 +18,17 @@ const CreateSchema = z.object({
   phone: z.string().min(1),
 });
 
-export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const parsed = CreateSchema.safeParse(body);
+export const POST = withApiHandler(async req => {
+  const parsed = CreateSchema.safeParse(await req.json());
   if (!parsed.success) {
-    return NextResponse.json({ success: false, error: 'Invalid input' }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: 'Invalid input', code: 'VALIDATION_ERROR' },
+      { status: 400 }
+    );
   }
   const { name, age, email, phone } = parsed.data;
   const today = new Date().toISOString().split('T')[0];
-  const patient = createPatient({
+  const patient = await repo.create({
     name,
     age,
     email,
@@ -33,4 +39,4 @@ export async function POST(req: NextRequest) {
     history: [],
   });
   return NextResponse.json({ success: true, data: patient }, { status: 201 });
-}
+});

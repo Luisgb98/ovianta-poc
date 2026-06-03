@@ -1,27 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { getPatientById, updatePatient } from '@/src/shared/infrastructure/patient-store';
+import { MongoPatientRepository } from '@/src/modules/patients/infrastructure/mongo-patient-repository';
+import { withApiHandler } from '@/src/shared/infrastructure/api-handler';
+import { NotFoundError } from '@/src/shared/domain/errors';
 
-export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+const repo = new MongoPatientRepository();
+
+export const GET = withApiHandler(async (_req, { params }) => {
   const { id } = await params;
-  const patient = getPatientById(id);
-  if (!patient) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 });
+  const patient = await repo.findById(id);
+  if (!patient) throw new NotFoundError('Patient', id);
   return NextResponse.json({ success: true, data: patient });
-}
+});
 
 const PatchSchema = z.object({
   name: z.string().min(1).optional(),
   age: z.number().int().min(0).max(130).optional(),
 });
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export const PATCH = withApiHandler(async (req, { params }) => {
   const { id } = await params;
-  const body = await req.json();
-  const parsed = PatchSchema.safeParse(body);
+  const parsed = PatchSchema.safeParse(await req.json());
   if (!parsed.success) {
-    return NextResponse.json({ success: false, error: 'Invalid input' }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: 'Invalid input', code: 'VALIDATION_ERROR' },
+      { status: 400 }
+    );
   }
-  const updated = updatePatient(id, parsed.data);
-  if (!updated) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 });
+  const updated = await repo.update(id, parsed.data);
+  if (!updated) throw new NotFoundError('Patient', id);
   return NextResponse.json({ success: true, data: updated });
-}
+});

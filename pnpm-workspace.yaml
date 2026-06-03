@@ -1,6 +1,7 @@
 packages:
   - '.'
 allowBuilds:
+  esbuild: set this to true or false
   msgpackr-extract: false
   msw: true
   sharp: true
