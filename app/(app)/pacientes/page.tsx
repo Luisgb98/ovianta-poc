@@ -8,6 +8,7 @@ import { StatusBadge } from '@/components/atoms/status-badge';
 import { Button } from '@/components/atoms/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { NewPatientDialog } from '@/components/organisms/new-patient-dialog';
 import { useI18n } from '@/lib/i18n/context';
 import { useListPatients } from '@/lib/container';
 import { fmtDate } from '@/lib/i18n/translations';
@@ -26,6 +27,7 @@ function PacientesPageContent() {
   const [query, setQuery] = useState(() => searchParams.get('q') ?? '');
   const [sort, setSort] = useState<{ key: SortKey; dir: SortDir }>({ key: 'name', dir: 'asc' });
   const [view, setView] = useState<'table' | 'cards'>('table');
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     setQuery(searchParams.get('q') ?? '');
@@ -86,7 +88,7 @@ function PacientesPageContent() {
                 {t('patients.view.cards')}
               </Button>
             </div>
-            <Button>
+            <Button onClick={() => setDialogOpen(true)}>
               <Icon name="plus" size={16} />
               {t('patients.new')}
             </Button>
@@ -105,6 +107,12 @@ function PacientesPageContent() {
           />
         </div>
       </div>
+
+      <NewPatientDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onCreated={patient => setPatients(prev => [patient, ...prev])}
+      />
 
       {view === 'cards' ? (
         <div className="pt-card-grid">
