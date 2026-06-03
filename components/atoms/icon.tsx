@@ -97,6 +97,7 @@ const PATHS: Record<string, React.ReactNode> = {
     </>
   ),
   activity: <path d="M22 12h-4l-3 9L9 3l-3 9H2" />,
+  filter: <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />,
   trend: (
     <>
       <path d="M22 7 13.5 15.5l-5-5L2 17" />

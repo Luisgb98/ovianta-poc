@@ -1,21 +1,31 @@
 'use client';
 
 import { Suspense, useEffect, useState } from 'react';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Icon } from '@/components/atoms/icon';
 import { PatientAvatar, getInitials, getAvatarTone } from '@/components/atoms/avatar';
 import { StatusBadge } from '@/components/atoms/status-badge';
 import { Button } from '@/components/atoms/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { NewPatientDialog } from '@/components/organisms/new-patient-dialog';
 import { useI18n } from '@/lib/i18n/context';
 import { useListPatients } from '@/lib/container';
 import { fmtDate } from '@/lib/i18n/translations';
 import type { Patient } from '@/src/modules/patients/domain/patient';
+import type { PatientStatus } from '@/src/modules/patients/domain/patient';
 
 type SortKey = 'name' | 'age' | 'lastVisit' | 'consultas';
 type SortDir = 'asc' | 'desc';
+
+const ALL_STATUSES: PatientStatus[] = ['activo', 'pendiente', 'completada', 'cancelada'];
 
 function PacientesPageContent() {
   const { t, lang } = useI18n();
@@ -28,6 +38,7 @@ function PacientesPageContent() {
   const [sort, setSort] = useState<{ key: SortKey; dir: SortDir }>({ key: 'name', dir: 'asc' });
   const [view, setView] = useState<'table' | 'cards'>('table');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<PatientStatus[]>([]);
 
   useEffect(() => {
     setQuery(searchParams.get('q') ?? '');
@@ -57,7 +68,15 @@ function PacientesPageContent() {
     );
   }
 
-  const countLabel = `${patients.length} ${patients.length === 1 ? t('patients.count.one') : t('patients.count.other')}`;
+  function toggleStatus(s: PatientStatus) {
+    setStatusFilter(prev => (prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]));
+  }
+
+  const visible =
+    statusFilter.length === 0 ? sorted : sorted.filter(p => statusFilter.includes(p.status));
+
+  const displayCount = statusFilter.length > 0 ? visible.length : patients.length;
+  const countLabel = `${displayCount} ${displayCount === 1 ? t('patients.count.one') : t('patients.count.other')}`;
 
   return (
     <div className="content-inner">
@@ -96,18 +115,6 @@ function PacientesPageContent() {
         </div>
       </div>
 
-      <div className="mb-4 max-w-[360px]">
-        <div className="input-icon-wrap">
-          <Icon name="search" size={16} />
-          <Input
-            placeholder={t('patients.search')}
-            aria-label={t('patients.search')}
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-          />
-        </div>
-      </div>
-
       <NewPatientDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
@@ -116,7 +123,7 @@ function PacientesPageContent() {
 
       {view === 'cards' ? (
         <div className="pt-card-grid">
-          {sorted.map(p => (
+          {visible.map(p => (
             <Card
               key={p.id}
               className="pt-card cursor-pointer gap-3 p-4"
@@ -160,7 +167,7 @@ function PacientesPageContent() {
               </div>
             </Card>
           ))}
-          {sorted.length === 0 && <p className="pdesc">{t('patients.empty')}</p>}
+          {visible.length === 0 && <p className="pdesc">{t('patients.empty')}</p>}
         </div>
       ) : (
         <Card className="table-wrap gap-0 p-0">
@@ -191,12 +198,46 @@ function PacientesPageContent() {
                     <Icon name="chevronUpDown" />
                   </span>
                 </th>
-                <th>{t('patients.col.status')}</th>
+                <th className="sortable">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="th-in w-full cursor-pointer appearance-none border-0 bg-transparent p-0 font-[inherit] text-[inherit]">
+                      {t('patients.col.status')}
+                      {statusFilter.length > 0 ? (
+                        <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] leading-none text-primary-foreground">
+                          {statusFilter.length}
+                        </span>
+                      ) : (
+                        <Icon name="chevronUpDown" />
+                      )}
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      {ALL_STATUSES.map(s => (
+                        <DropdownMenuCheckboxItem
+                          key={s}
+                          checked={statusFilter.includes(s)}
+                          onCheckedChange={() => toggleStatus(s)}
+                          closeOnClick={false}
+                          className="focus:bg-muted focus:text-foreground focus:**:text-foreground"
+                        >
+                          <StatusBadge status={s} />
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                      {statusFilter.length > 0 && (
+                        <>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem onClick={() => setStatusFilter([])}>
+                            Clear filter
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </th>
                 <th scope="col" aria-label={t('patients.col.actions')} className="w-10" />
               </tr>
             </thead>
             <tbody>
-              {sorted.map(p => (
+              {visible.map(p => (
                 <tr key={p.id} onClick={() => router.push(`/pacientes/${p.id}`)}>
                   <td>
                     <div className="pt-cell">
@@ -224,7 +265,7 @@ function PacientesPageContent() {
                   </td>
                 </tr>
               ))}
-              {sorted.length === 0 && (
+              {visible.length === 0 && (
                 <tr>
                   <td colSpan={6} className="py-10 text-center text-muted-foreground">
                     {t('patients.empty')}

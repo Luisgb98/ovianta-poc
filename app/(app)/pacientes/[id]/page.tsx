@@ -13,14 +13,11 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useI18n } from '@/lib/i18n/context';
 import { useGetPatientById, useUpdatePatient } from '@/lib/container';
-import { fmtDate, fmtDateLong } from '@/lib/i18n/translations';
+import { fmtDate } from '@/lib/i18n/translations';
 import type { Patient } from '@/src/modules/patients/domain/patient';
-
-type Tab = 'history' | 'data';
 
 type State = {
   patient: Patient | null | undefined;
-  tab: Tab;
   editing: boolean;
   name: string;
   age: string;
@@ -29,7 +26,6 @@ type State = {
 
 type Action =
   | { type: 'LOADED'; patient: Patient | null }
-  | { type: 'SET_TAB'; tab: Tab }
   | { type: 'START_EDIT' }
   | { type: 'CANCEL_EDIT' }
   | { type: 'SET_NAME'; name: string }
@@ -48,8 +44,6 @@ function reducer(state: State, action: Action): State {
         age: String(action.patient.age),
         editing: false,
       };
-    case 'SET_TAB':
-      return { ...state, tab: action.tab };
     case 'START_EDIT':
       return { ...state, editing: true };
     case 'CANCEL_EDIT':
@@ -75,7 +69,6 @@ function reducer(state: State, action: Action): State {
 
 const initialState: State = {
   patient: undefined,
-  tab: 'history',
   editing: false,
   name: '',
   age: '',
@@ -91,7 +84,7 @@ export default function PatientDetailPage() {
   const id = typeof params.id === 'string' ? params.id : '';
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { patient, tab, editing, name, age, ageErr } = state;
+  const { patient, editing, name, age, ageErr } = state;
 
   useEffect(() => {
     getPatientById.execute(id).then(p => dispatch({ type: 'LOADED', patient: p }));
@@ -223,6 +216,7 @@ export default function PatientDetailPage() {
                 label={t('detail.age')}
                 value={`${patient.age} ${t('patients.years')}`}
                 valueClassName="tabular"
+                noBorderTop
               />
               <InfoRow label={t('detail.id')} value={patient.id} valueClassName="font-mono" />
               <InfoRow label={t('detail.email')} value={patient.email} />
@@ -233,69 +227,37 @@ export default function PatientDetailPage() {
         </div>
 
         <div>
-          <div className="tabs">
-            <Button
-              type="button"
-              variant="tab"
-              aria-pressed={tab === 'history'}
-              onClick={() => dispatch({ type: 'SET_TAB', tab: 'history' })}
-            >
-              {t('detail.tab.history')}
-            </Button>
-            <Button
-              type="button"
-              variant="tab"
-              aria-pressed={tab === 'data'}
-              onClick={() => dispatch({ type: 'SET_TAB', tab: 'data' })}
-            >
-              {t('detail.tab.data')}
-            </Button>
-          </div>
-
-          {tab === 'history' ? (
-            <Card className="gap-4 p-5 pb-2">
-              <p className="pdesc mt-0 mb-[18px]">
-                <strong className="text-foreground">{patient.history.length}</strong>{' '}
-                {t('detail.totalConsultas')}
-              </p>
-              <div className="timeline">
-                {patient.history.map(c => (
-                  <div className="tl-item" key={c.id}>
-                    <div className="tl-rail">
-                      <span className={`tl-dot ${c.status}`} />
-                      <span className="tl-line" />
-                    </div>
-                    <Card className="tl-body gap-2 p-4">
-                      <div className="tl-top">
-                        <div>
-                          <div className="tl-type">{c.type}</div>
-                          <div className="tl-meta">
-                            {t('detail.with')} {c.doctor}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2.5">
-                          <StatusBadge status={c.status} />
-                          <span className="tl-date">{fmtDate(c.date, lang)}</span>
+          <Card className="gap-4 p-5 pb-2">
+            <p className="pdesc mt-0 mb-[18px]">
+              <strong className="text-foreground">{patient.history.length}</strong>{' '}
+              {t('detail.totalConsultas')}
+            </p>
+            <div className="timeline">
+              {patient.history.map(c => (
+                <div className="tl-item" key={c.id}>
+                  <div className="tl-rail">
+                    <span className={`tl-dot ${c.status}`} />
+                    <span className="tl-line" />
+                  </div>
+                  <Card className="tl-body gap-2 p-4">
+                    <div className="tl-top">
+                      <div>
+                        <div className="tl-type">{c.type}</div>
+                        <div className="tl-meta">
+                          {t('detail.with')} {c.doctor}
                         </div>
                       </div>
-                      <p className="tl-note">{c.note}</p>
-                    </Card>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          ) : (
-            <Card className="gap-0 p-0">
-              <div className="info-list">
-                <InfoRow label={t('detail.name')} value={patient.name} noBorderTop />
-                <InfoRow label={t('detail.age')} value={patient.age} valueClassName="tabular" />
-                <InfoRow label={t('detail.email')} value={patient.email} />
-                <InfoRow label={t('detail.phone')} value={patient.phone} valueClassName="tabular" />
-                <InfoRow label={t('detail.id')} value={patient.id} valueClassName="font-mono" />
-                <InfoRow label={t('detail.since')} value={fmtDateLong(patient.since, lang)} />
-              </div>
-            </Card>
-          )}
+                      <div className="flex items-center gap-2.5">
+                        <StatusBadge status={c.status} />
+                        <span className="tl-date">{fmtDate(c.date, lang)}</span>
+                      </div>
+                    </div>
+                    <p className="tl-note">{c.note}</p>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </Card>
         </div>
       </div>
     </div>
