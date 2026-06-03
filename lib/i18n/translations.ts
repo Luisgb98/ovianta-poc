@@ -92,7 +92,21 @@ export type TranslationKey =
   | 'login.asideQuote'
   | 'theme.toggle'
   | 'ajustes.title'
-  | 'ajustes.subtitle';
+  | 'ajustes.subtitle'
+  | 'newPatient.title'
+  | 'newPatient.name'
+  | 'newPatient.namePlaceholder'
+  | 'newPatient.age'
+  | 'newPatient.email'
+  | 'newPatient.emailPlaceholder'
+  | 'newPatient.phone'
+  | 'newPatient.phonePlaceholder'
+  | 'newPatient.submit'
+  | 'newPatient.created'
+  | 'newPatient.nameRequired'
+  | 'newPatient.ageInvalid'
+  | 'newPatient.emailInvalid'
+  | 'newPatient.phoneRequired';
 
 type Translations = Record<TranslationKey, string>;
 
@@ -179,6 +193,20 @@ export const translations: Record<Lang, Translations> = {
     'theme.toggle': 'Cambiar tema',
     'ajustes.title': 'Ajustes',
     'ajustes.subtitle': 'Configuración de la plataforma.',
+    'newPatient.title': 'Nuevo paciente',
+    'newPatient.name': 'Nombre completo',
+    'newPatient.namePlaceholder': 'Ej. Ana García López',
+    'newPatient.age': 'Edad',
+    'newPatient.email': 'Correo electrónico',
+    'newPatient.emailPlaceholder': 'nombre@ejemplo.com',
+    'newPatient.phone': 'Teléfono',
+    'newPatient.phonePlaceholder': '+34 600 000 000',
+    'newPatient.submit': 'Crear paciente',
+    'newPatient.created': 'Paciente creado correctamente.',
+    'newPatient.nameRequired': 'El nombre es obligatorio.',
+    'newPatient.ageInvalid': 'Edad no válida (0–130).',
+    'newPatient.emailInvalid': 'Introduce un correo válido.',
+    'newPatient.phoneRequired': 'El teléfono es obligatorio.',
   },
   en: {
     'app.tagline': 'Clinical platform',
@@ -261,6 +289,20 @@ export const translations: Record<Lang, Translations> = {
     'theme.toggle': 'Toggle theme',
     'ajustes.title': 'Settings',
     'ajustes.subtitle': 'Platform configuration.',
+    'newPatient.title': 'New patient',
+    'newPatient.name': 'Full name',
+    'newPatient.namePlaceholder': 'E.g. Jane Smith',
+    'newPatient.age': 'Age',
+    'newPatient.email': 'Email address',
+    'newPatient.emailPlaceholder': 'name@example.com',
+    'newPatient.phone': 'Phone',
+    'newPatient.phonePlaceholder': '+1 555 000 0000',
+    'newPatient.submit': 'Create patient',
+    'newPatient.created': 'Patient created successfully.',
+    'newPatient.nameRequired': 'Name is required.',
+    'newPatient.ageInvalid': 'Invalid age (0–130).',
+    'newPatient.emailInvalid': 'Enter a valid email address.',
+    'newPatient.phoneRequired': 'Phone is required.',
   },
   it: {
     'app.tagline': 'Piattaforma clinica',
@@ -343,6 +385,20 @@ export const translations: Record<Lang, Translations> = {
     'theme.toggle': 'Cambia tema',
     'ajustes.title': 'Impostazioni',
     'ajustes.subtitle': 'Configurazione della piattaforma.',
+    'newPatient.title': 'Nuovo paziente',
+    'newPatient.name': 'Nome completo',
+    'newPatient.namePlaceholder': 'Es. Maria Rossi',
+    'newPatient.age': 'Età',
+    'newPatient.email': 'Indirizzo email',
+    'newPatient.emailPlaceholder': 'nome@esempio.com',
+    'newPatient.phone': 'Telefono',
+    'newPatient.phonePlaceholder': '+39 333 000 0000',
+    'newPatient.submit': 'Crea paziente',
+    'newPatient.created': 'Paziente creato correttamente.',
+    'newPatient.nameRequired': 'Il nome è obbligatorio.',
+    'newPatient.ageInvalid': 'Età non valida (0–130).',
+    'newPatient.emailInvalid': "Inserisci un'email valida.",
+    'newPatient.phoneRequired': 'Il telefono è obbligatorio.',
   },
   pt: {
     'app.tagline': 'Plataforma clínica',
@@ -425,6 +481,20 @@ export const translations: Record<Lang, Translations> = {
     'theme.toggle': 'Mudar tema',
     'ajustes.title': 'Definições',
     'ajustes.subtitle': 'Configuração da plataforma.',
+    'newPatient.title': 'Novo paciente',
+    'newPatient.name': 'Nome completo',
+    'newPatient.namePlaceholder': 'Ex. Maria Santos',
+    'newPatient.age': 'Idade',
+    'newPatient.email': 'Endereço de email',
+    'newPatient.emailPlaceholder': 'nome@exemplo.com',
+    'newPatient.phone': 'Telefone',
+    'newPatient.phonePlaceholder': '+351 900 000 000',
+    'newPatient.submit': 'Criar paciente',
+    'newPatient.created': 'Paciente criado com sucesso.',
+    'newPatient.nameRequired': 'O nome é obrigatório.',
+    'newPatient.ageInvalid': 'Idade inválida (0–130).',
+    'newPatient.emailInvalid': 'Introduza um email válido.',
+    'newPatient.phoneRequired': 'O telefone é obrigatório.',
   },
 };
 

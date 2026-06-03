@@ -4,11 +4,13 @@ import { createContext, use } from 'react';
 import type { ListPatientsUseCase } from '@/src/modules/patients/application/use-cases/list-patients.use-case';
 import type { GetPatientByIdUseCase } from '@/src/modules/patients/application/use-cases/get-patient-by-id.use-case';
 import type { UpdatePatientUseCase } from '@/src/modules/patients/application/use-cases/update-patient.use-case';
+import type { CreatePatientUseCase } from '@/src/modules/patients/application/use-cases/create-patient.use-case';
 
 export interface ServiceContainer {
   listPatients: ListPatientsUseCase;
   getPatientById: GetPatientByIdUseCase;
   updatePatient: UpdatePatientUseCase;
+  createPatient: CreatePatientUseCase;
 }
 
 const ServiceContext = createContext<ServiceContainer | null>(null);
@@ -36,4 +38,8 @@ export function useGetPatientById(): GetPatientByIdUseCase {
 
 export function useUpdatePatient(): UpdatePatientUseCase {
   return useServices().updatePatient;
+}
+
+export function useCreatePatient(): CreatePatientUseCase {
+  return useServices().createPatient;
 }
