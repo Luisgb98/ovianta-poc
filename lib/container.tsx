@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 import type { ListPatientsUseCase } from '@/src/modules/patients/application/use-cases/list-patients.use-case';
 import type { GetPatientByIdUseCase } from '@/src/modules/patients/application/use-cases/get-patient-by-id.use-case';
 import type { UpdatePatientUseCase } from '@/src/modules/patients/application/use-cases/update-patient.use-case';
@@ -21,7 +21,7 @@ export function ServiceProvider({
 }
 
 function useServices(): ServiceContainer {
-  const ctx = useContext(ServiceContext);
+  const ctx = use(ServiceContext);
   if (!ctx) throw new Error('Service hooks must be used within ServiceProvider');
   return ctx;
 }

@@ -27,7 +27,7 @@ export default function PacientesPage() {
     listPatients.execute(query).then(setPatients);
   }, [query, listPatients]);
 
-  const sorted = [...patients].sort((a, b) => {
+  const sorted = patients.toSorted((a, b) => {
     let av: string | number = a[sort.key as keyof Patient] as string | number;
     let bv: string | number = b[sort.key as keyof Patient] as string | number;
     if (sort.key === 'consultas') {
@@ -60,6 +60,7 @@ export default function PacientesPage() {
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
             <div className="tabs" style={{ marginBottom: 0 }}>
               <button
+                type="button"
                 className={`tab ${view === 'table' ? 'on' : ''}`}
                 onClick={() => setView('table')}
               >
@@ -67,6 +68,7 @@ export default function PacientesPage() {
                 {t('patients.view.table')}
               </button>
               <button
+                type="button"
                 className={`tab ${view === 'cards' ? 'on' : ''}`}
                 onClick={() => setView('cards')}
               >
@@ -74,7 +76,7 @@ export default function PacientesPage() {
                 {t('patients.view.cards')}
               </button>
             </div>
-            <button className="btn btn-primary">
+            <button type="button" className="btn btn-primary">
               <Icon name="plus" size={16} />
               {t('patients.new')}
             </button>
@@ -88,6 +90,7 @@ export default function PacientesPage() {
           <input
             className="input"
             placeholder={t('patients.search')}
+            aria-label={t('patients.search')}
             value={query}
             onChange={e => setQuery(e.target.value)}
           />
@@ -100,7 +103,12 @@ export default function PacientesPage() {
             <div
               className="card pt-card"
               key={p.id}
+              role="button"
+              tabIndex={0}
               onClick={() => router.push(`/pacientes/${p.id}`)}
+              onKeyDown={e => {
+                if (e.key === 'Enter') router.push(`/pacientes/${p.id}`);
+              }}
             >
               <div className="pt-card-top">
                 <PatientAvatar
@@ -169,7 +177,7 @@ export default function PacientesPage() {
                   </span>
                 </th>
                 <th>{t('patients.col.status')}</th>
-                <th style={{ width: 40 }} />
+                <th scope="col" aria-label={t('patients.col.actions')} style={{ width: 40 }} />
               </tr>
             </thead>
             <tbody>

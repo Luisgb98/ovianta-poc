@@ -1,23 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useAuth } from '@/lib/auth/context';
 import { Sidebar } from '@/components/organisms/sidebar';
 import { Topbar } from '@/components/organisms/topbar';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth();
-  const router = useRouter();
+  const { isAuthenticated } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.replace('/login');
-    }
-  }, [isLoading, isAuthenticated, router]);
-
-  if (isLoading || !isAuthenticated) {
+  if (!isAuthenticated) {
     return (
       <div style={{ display: 'grid', placeItems: 'center', height: '100vh' }}>
         <div
@@ -37,7 +29,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="shell">
       <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
-      {mobileOpen && <div className="scrim" onClick={() => setMobileOpen(false)} />}
+      {mobileOpen && (
+        <div
+          className="scrim"
+          role="button"
+          aria-label="Close menu"
+          tabIndex={0}
+          onClick={() => setMobileOpen(false)}
+          onKeyDown={e => {
+            if (e.key === 'Enter' || e.key === ' ') setMobileOpen(false);
+          }}
+        />
+      )}
       <div className="main-col">
         <Topbar onToggleMobile={() => setMobileOpen(o => !o)} />
         <div className="content">{children}</div>

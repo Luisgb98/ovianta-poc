@@ -20,23 +20,28 @@ export default function DashboardPage() {
     listPatients.execute().then(setPatients);
   }, [listPatients]);
 
+  const activeConsultations = patients.reduce(
+    (sum, p) => sum + p.history.reduce((n, c) => n + (c.status === 'activo' ? 1 : 0), 0),
+    0
+  );
+  const totalConsultations = patients.reduce((sum, p) => sum + p.history.length, 0);
+
   const stats = [
-    { key: 'patients', icon: 'users' as const, val: patients.length, trend: '+2' },
-    { key: 'today', icon: 'stethoscope' as const, val: 8, trend: '+1' },
+    { key: 'patients', icon: 'users' as const, val: patients.length },
+    { key: 'today', icon: 'stethoscope' as const, val: activeConsultations },
     {
       key: 'pending',
       icon: 'clock' as const,
       val: patients.filter(p => p.status === 'pendiente').length,
     },
-    { key: 'week', icon: 'activity' as const, val: 24, trend: '+12%' },
+    { key: 'week', icon: 'activity' as const, val: totalConsultations },
   ];
 
   const upcoming = patients
     .slice(0, 4)
-    .map(p => (p.history[0] ? { p, c: p.history[0] } : null))
-    .filter(Boolean) as { p: Patient; c: Patient['history'][0] }[];
+    .flatMap(p => (p.history[0] ? [{ p, c: p.history[0] }] : []));
 
-  const recent = [...patients].sort((a, b) => b.lastVisit.localeCompare(a.lastVisit)).slice(0, 5);
+  const recent = patients.toSorted((a, b) => b.lastVisit.localeCompare(a.lastVisit)).slice(0, 5);
 
   return (
     <div className="content-inner">
@@ -73,7 +78,16 @@ export default function DashboardPage() {
             <h3>{t('home.upcoming')}</h3>
           </div>
           {upcoming.map(({ p, c }) => (
-            <div className="row-item" key={p.id} onClick={() => router.push(`/pacientes/${p.id}`)}>
+            <div
+              className="row-item"
+              key={p.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => router.push(`/pacientes/${p.id}`)}
+              onKeyDown={e => {
+                if (e.key === 'Enter') router.push(`/pacientes/${p.id}`);
+              }}
+            >
               <PatientAvatar initials={getInitials(p.name)} tone={getAvatarTone(p.id)} size={36} />
               <div className="meta">
                 <div className="r-title">{p.name}</div>
@@ -89,12 +103,21 @@ export default function DashboardPage() {
         <div className="card">
           <div className="list-card-head">
             <h3>{t('home.recent')}</h3>
-            <button className="link-btn" onClick={() => router.push('/pacientes')}>
+            <button type="button" className="link-btn" onClick={() => router.push('/pacientes')}>
               {t('home.viewAll')}
             </button>
           </div>
           {recent.map(p => (
-            <div className="row-item" key={p.id} onClick={() => router.push(`/pacientes/${p.id}`)}>
+            <div
+              className="row-item"
+              key={p.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => router.push(`/pacientes/${p.id}`)}
+              onKeyDown={e => {
+                if (e.key === 'Enter') router.push(`/pacientes/${p.id}`);
+              }}
+            >
               <PatientAvatar initials={getInitials(p.name)} tone={getAvatarTone(p.id)} size={36} />
               <div className="meta">
                 <div className="r-title">{p.name}</div>
