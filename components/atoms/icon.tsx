@@ -105,8 +105,10 @@ const PATHS: Record<string, React.ReactNode> = {
   ),
 };
 
+export type IconName = keyof typeof PATHS;
+
 interface IconProps extends SVGProps<SVGSVGElement> {
-  name: keyof typeof PATHS;
+  name: IconName;
   size?: number;
   strokeWidth?: number;
 }

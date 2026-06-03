@@ -57,14 +57,14 @@ export default function PacientesPage() {
             <h1>{t('patients.title')}</h1>
             <p className="pdesc">{countLabel}</p>
           </div>
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <div className="tabs" style={{ marginBottom: 0 }}>
+          <div className="flex items-center gap-2">
+            <div className="tabs mb-0">
               <button
                 type="button"
                 className={`tab ${view === 'table' ? 'on' : ''}`}
                 onClick={() => setView('table')}
               >
-                <Icon name="grid" size={14} style={{ marginRight: 4, verticalAlign: '-2px' }} />
+                <Icon name="grid" size={14} className="mr-1 align-[-2px]" />
                 {t('patients.view.table')}
               </button>
               <button
@@ -72,7 +72,7 @@ export default function PacientesPage() {
                 className={`tab ${view === 'cards' ? 'on' : ''}`}
                 onClick={() => setView('cards')}
               >
-                <Icon name="activity" size={14} style={{ marginRight: 4, verticalAlign: '-2px' }} />
+                <Icon name="activity" size={14} className="mr-1 align-[-2px]" />
                 {t('patients.view.cards')}
               </button>
             </div>
@@ -84,7 +84,7 @@ export default function PacientesPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 360, marginBottom: 16 }}>
+      <div className="mb-4 max-w-[360px]">
         <div className="input-icon-wrap">
           <Icon name="search" size={16} />
           <input
@@ -116,13 +116,11 @@ export default function PacientesPage() {
                   tone={getAvatarTone(p.id)}
                   size={44}
                 />
-                <div style={{ minWidth: 0 }}>
-                  <div className="pt-name" style={{ fontSize: 15 }}>
-                    {p.name}
-                  </div>
+                <div className="min-w-0">
+                  <div className="pt-name text-[15px]">{p.name}</div>
                   <div className="pt-sub">{p.id}</div>
                 </div>
-                <div style={{ marginLeft: 'auto' }}>
+                <div className="ml-auto">
                   <StatusBadge status={p.status} />
                 </div>
               </div>
@@ -177,7 +175,7 @@ export default function PacientesPage() {
                   </span>
                 </th>
                 <th>{t('patients.col.status')}</th>
-                <th scope="col" aria-label={t('patients.col.actions')} style={{ width: 40 }} />
+                <th scope="col" aria-label={t('patients.col.actions')} className="w-10" />
               </tr>
             </thead>
             <tbody>
@@ -197,8 +195,7 @@ export default function PacientesPage() {
                     </div>
                   </td>
                   <td>
-                    {p.age}{' '}
-                    <span style={{ color: 'var(--muted-foreground)' }}>{t('patients.years')}</span>
+                    {p.age} <span className="text-muted-foreground">{t('patients.years')}</span>
                   </td>
                   <td>{fmtDate(p.lastVisit, lang)}</td>
                   <td>{p.history.length}</td>
@@ -212,10 +209,7 @@ export default function PacientesPage() {
               ))}
               {sorted.length === 0 && (
                 <tr>
-                  <td
-                    colSpan={6}
-                    style={{ textAlign: 'center', padding: 40, color: 'var(--muted-foreground)' }}
-                  >
+                  <td colSpan={6} className="py-10 text-center text-muted-foreground">
                     {t('patients.empty')}
                   </td>
                 </tr>

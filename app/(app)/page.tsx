@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@/components/atoms/icon';
-import { PatientAvatar, getInitials, getAvatarTone } from '@/components/atoms/avatar';
 import { StatusBadge } from '@/components/atoms/status-badge';
+import { PatientRow } from '@/components/molecules/patient-row';
 import { useI18n } from '@/lib/i18n/context';
 import { useListPatients } from '@/lib/container';
 import { fmtDate } from '@/lib/i18n/translations';
@@ -72,25 +72,12 @@ export default function DashboardPage() {
             <h3>{t('home.upcoming')}</h3>
           </div>
           {upcoming.map(({ p, c }) => (
-            <div
-              className="row-item"
+            <PatientRow
               key={p.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => router.push(`/pacientes/${p.id}`)}
-              onKeyDown={e => {
-                if (e.key === 'Enter') router.push(`/pacientes/${p.id}`);
-              }}
-            >
-              <PatientAvatar initials={getInitials(p.name)} tone={getAvatarTone(p.id)} size={36} />
-              <div className="meta">
-                <div className="r-title">{p.name}</div>
-                <div className="r-sub">
-                  {c.type} · {c.doctor}
-                </div>
-              </div>
-              <StatusBadge status={c.status} />
-            </div>
+              patient={p}
+              subtitle={`${c.type} · ${c.doctor}`}
+              trailing={<StatusBadge status={c.status} />}
+            />
           ))}
         </div>
 
@@ -102,23 +89,12 @@ export default function DashboardPage() {
             </button>
           </div>
           {recent.map(p => (
-            <div
-              className="row-item"
+            <PatientRow
               key={p.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => router.push(`/pacientes/${p.id}`)}
-              onKeyDown={e => {
-                if (e.key === 'Enter') router.push(`/pacientes/${p.id}`);
-              }}
-            >
-              <PatientAvatar initials={getInitials(p.name)} tone={getAvatarTone(p.id)} size={36} />
-              <div className="meta">
-                <div className="r-title">{p.name}</div>
-                <div className="r-sub">{p.id}</div>
-              </div>
-              <span className="r-time">{fmtDate(p.lastVisit, lang)}</span>
-            </div>
+              patient={p}
+              subtitle={p.id}
+              trailing={<span className="r-time">{fmtDate(p.lastVisit, lang)}</span>}
+            />
           ))}
         </div>
       </div>

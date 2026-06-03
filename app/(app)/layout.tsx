@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '@/lib/auth/context';
 import { Sidebar } from '@/components/organisms/sidebar';
 import { Topbar } from '@/components/organisms/topbar';
+import { Spinner } from '@/components/atoms/spinner';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -11,17 +12,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   if (!isAuthenticated) {
     return (
-      <div style={{ display: 'grid', placeItems: 'center', height: '100vh' }}>
-        <div
-          className="animate-spin"
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: '50%',
-            border: '3px solid var(--border)',
-            borderTopColor: 'var(--primary)',
-          }}
-        />
+      <div className="grid h-screen place-items-center">
+        <Spinner size={32} className="border-[3px]" />
       </div>
     );
   }
