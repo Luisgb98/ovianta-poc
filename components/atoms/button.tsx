@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import type { ComponentProps } from 'react';
 
 const customVariants = {
-  tab: 'h-auto rounded-md px-4 py-[7px] text-[13px] font-medium text-muted-foreground hover:bg-transparent hover:text-foreground aria-pressed:bg-card aria-pressed:text-foreground aria-pressed:shadow-xs',
+  tab: 'h-9 rounded-md px-4 text-[13px] font-medium text-muted-foreground hover:bg-transparent hover:text-foreground aria-pressed:bg-card aria-pressed:text-foreground aria-pressed:shadow-xs',
   menu: 'h-auto w-full justify-start gap-2.5 px-2.5 py-2 text-[13.5px] font-normal text-popover-foreground aria-pressed:text-primary aria-pressed:font-semibold',
 } as const;
 
