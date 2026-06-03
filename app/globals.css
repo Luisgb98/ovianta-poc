@@ -247,46 +247,6 @@
     padding-left: 36px;
   }
 
-  /* --- Badges --- */
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    height: 22px;
-    padding: 0 9px;
-    font-size: 12px;
-    font-weight: 550;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    white-space: nowrap;
-  }
-  .badge .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background: currentColor;
-    flex: none;
-  }
-  .badge-completada {
-    background: color-mix(in oklch, var(--success) 16%, transparent);
-    color: var(--success);
-  }
-  .badge-pendiente {
-    background: color-mix(in oklch, var(--warning) 22%, transparent);
-    color: color-mix(in oklch, var(--warning) 72%, black);
-  }
-  .badge-cancelada {
-    background: color-mix(in oklch, var(--destructive) 14%, transparent);
-    color: var(--destructive);
-  }
-  .badge-activo {
-    background: var(--accent);
-    color: var(--accent-foreground);
-  }
-  [data-theme='dark'] .badge-pendiente {
-    color: var(--warning);
-  }
-
   /* --- Avatar --- */
   .avatar {
     border-radius: 999px;
