@@ -38,9 +38,11 @@ export function ScheduleView() {
   const [miniMonthAnchor, setMiniMonthAnchor] = useState(() => new Date());
 
   const [draggingAppt, setDraggingAppt] = useState<Appointment | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedAppt, setSelectedAppt] = useState<Appointment | null>(null);
-  const [defaultSlot, setDefaultSlot] = useState<string | undefined>();
+  const [dialog, setDialog] = useState<{
+    open: boolean;
+    selectedAppt: Appointment | null;
+    defaultSlot: string | undefined;
+  }>({ open: false, selectedAppt: null, defaultSlot: undefined });
 
   const { appointments, loading, reschedule, cancel, create, handleConflictError } =
     useAppointments(anchorDate);
@@ -88,15 +90,11 @@ export function ScheduleView() {
   }
 
   function handleSlotClick(iso: string) {
-    setSelectedAppt(null);
-    setDefaultSlot(iso);
-    setDialogOpen(true);
+    setDialog({ open: true, selectedAppt: null, defaultSlot: iso });
   }
 
   function handleAppointmentClick(appt: Appointment) {
-    setSelectedAppt(appt);
-    setDefaultSlot(undefined);
-    setDialogOpen(true);
+    setDialog({ open: true, selectedAppt: appt, defaultSlot: undefined });
   }
 
   function onDragStart({ active }: DragStartEvent) {
@@ -144,11 +142,7 @@ export function ScheduleView() {
         <Button
           variant="default"
           className="w-full gap-1.5"
-          onClick={() => {
-            setSelectedAppt(null);
-            setDefaultSlot(undefined);
-            setDialogOpen(true);
-          }}
+          onClick={() => setDialog({ open: true, selectedAppt: null, defaultSlot: undefined })}
         >
           <Icon name="plus" size={15} />
           {t('schedule.new')}
@@ -249,10 +243,11 @@ export function ScheduleView() {
       </div>
 
       <AppointmentDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        appointment={selectedAppt}
-        defaultDate={defaultSlot}
+        key={dialog.open ? (dialog.selectedAppt?.id ?? 'new') : 'closed'}
+        open={dialog.open}
+        onOpenChange={open => setDialog(d => ({ ...d, open }))}
+        appointment={dialog.selectedAppt}
+        defaultDate={dialog.defaultSlot}
         onCreate={async input => {
           await create(input);
         }}

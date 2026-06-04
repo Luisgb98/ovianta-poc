@@ -43,6 +43,8 @@ function DayColumn({
   return (
     <div
       ref={setNodeRef}
+      role="button"
+      tabIndex={0}
       className={cn(
         'relative min-w-0 flex-1 border-l border-border transition-colors',
         isOver && 'bg-primary/5'
@@ -55,11 +57,15 @@ function DayColumn({
         const snapped = Math.round(rawMinutes / 15) * 15;
         const hours = DAY_START_HOUR + Math.floor(snapped / 60);
         const mins = snapped % 60;
-        const d = new Date(day);
-        d.setHours(hours, mins, 0, 0);
         onSlotClick(
           `${dayKey}T${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:00`
         );
+      }}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSlotClick(`${dayKey}T09:00:00`);
+        }
       }}
     >
       {hours.map(h => (
@@ -110,22 +116,19 @@ interface WeekGridProps {
   onAppointmentClick: (appt: Appointment) => void;
 }
 
+function calcNowTop(): number | null {
+  const now = new Date();
+  const mins = now.getHours() * 60 + now.getMinutes() - DAY_START_HOUR * 60;
+  if (mins < 0 || mins > (DAY_END_HOUR - DAY_START_HOUR) * 60) return null;
+  return (mins / 60) * PX_PER_HOUR;
+}
+
 export function WeekGrid({ days, appointments, onSlotClick, onAppointmentClick }: WeekGridProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [nowTop, setNowTop] = useState<number | null>(null);
+  const [nowTop, setNowTop] = useState<number | null>(calcNowTop);
 
   useEffect(() => {
-    function calcNow() {
-      const now = new Date();
-      const mins = now.getHours() * 60 + now.getMinutes() - DAY_START_HOUR * 60;
-      if (mins < 0 || mins > (DAY_END_HOUR - DAY_START_HOUR) * 60) {
-        setNowTop(null);
-      } else {
-        setNowTop((mins / 60) * PX_PER_HOUR);
-      }
-    }
-    calcNow();
-    const timer = setInterval(calcNow, 60000);
+    const timer = setInterval(() => setNowTop(calcNowTop()), 60000);
     return () => clearInterval(timer);
   }, []);
 

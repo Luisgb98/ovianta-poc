@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { format, parseISO } from 'date-fns';
 import { toast } from 'sonner';
@@ -58,6 +58,30 @@ const EMPTY: FormState = {
   notes: '',
 };
 
+function buildForm(
+  appointment: Appointment | null | undefined,
+  defaultDate: string | undefined
+): FormState {
+  if (appointment) {
+    const d = parseISO(appointment.start);
+    return {
+      patientId: appointment.patientId,
+      patientName: appointment.patientName,
+      doctor: appointment.doctor,
+      type: appointment.type,
+      date: format(d, 'yyyy-MM-dd'),
+      time: format(d, 'HH:mm'),
+      durationMin: appointment.durationMin,
+      notes: appointment.notes,
+    };
+  }
+  if (defaultDate) {
+    const d = parseISO(defaultDate);
+    return { ...EMPTY, date: format(d, 'yyyy-MM-dd'), time: format(d, 'HH:mm') };
+  }
+  return EMPTY;
+}
+
 export function AppointmentDialog({
   open,
   onOpenChange,
@@ -70,7 +94,7 @@ export function AppointmentDialog({
   const listPatients = useListPatients();
 
   const [patients, setPatients] = useState<Array<{ id: string; name: string }>>([]);
-  const [form, setForm] = useState<FormState>(EMPTY);
+  const [form, setForm] = useState<FormState>(() => buildForm(appointment, defaultDate));
   const [saving, setSaving] = useState(false);
   const [cancelling, setCancelling] = useState(false);
 
@@ -79,45 +103,29 @@ export function AppointmentDialog({
   }, [listPatients]);
 
   useEffect(() => {
-    if (!open) {
-      setForm(EMPTY);
-      return;
-    }
-    if (appointment) {
-      const d = parseISO(appointment.start);
-      setForm({
-        patientId: appointment.patientId,
-        patientName: appointment.patientName,
-        doctor: appointment.doctor,
-        type: appointment.type,
-        date: format(d, 'yyyy-MM-dd'),
-        time: format(d, 'HH:mm'),
-        durationMin: appointment.durationMin,
-        notes: appointment.notes,
-      });
-    } else if (defaultDate) {
-      const d = parseISO(defaultDate);
-      setForm(f => ({
-        ...f,
-        date: format(d, 'yyyy-MM-dd'),
-        time: format(d, 'HH:mm'),
-      }));
-    }
+    setForm(open ? buildForm(appointment, defaultDate) : EMPTY);
   }, [open, appointment, defaultDate]);
 
-  const handleClose = useCallback(() => {
-    if (saving || cancelling) return;
-    onOpenChange(false);
-  }, [saving, cancelling, onOpenChange]);
+  // Stable refs so the keyboard effect never re-subscribes due to callback churn
+  const stateRef = useRef({ saving, cancelling, onOpenChange });
+  stateRef.current = { saving, cancelling, onOpenChange };
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleClose();
+      if (e.key === 'Escape') {
+        const { saving, cancelling, onOpenChange } = stateRef.current;
+        if (!saving && !cancelling) onOpenChange(false);
+      }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [open, handleClose]);
+  }, [open]);
+
+  function handleClose() {
+    if (saving || cancelling) return;
+    onOpenChange(false);
+  }
 
   function setField<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm(f => ({ ...f, [key]: value }));
@@ -171,6 +179,7 @@ export function AppointmentDialog({
   return createPortal(
     <>
       <div
+        aria-hidden="true"
         className="fixed inset-0 z-[200] bg-black/40 transition-opacity duration-200"
         onClick={handleClose}
       />
@@ -296,7 +305,11 @@ export function AppointmentDialog({
             </div>
 
             <Field label={`${t('schedule.duration')} (min)`}>
-              <div className="flex flex-wrap gap-1.5">
+              <div
+                role="group"
+                aria-label={`${t('schedule.duration')} (min)`}
+                className="flex flex-wrap gap-1.5"
+              >
                 {DURATIONS.map(d => (
                   <button
                     key={d}

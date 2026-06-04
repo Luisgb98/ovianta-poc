@@ -64,7 +64,10 @@ export function MiniMonth({ anchor, selected, appointments, onSelect, onMonthCha
 
       <div className="grid grid-cols-7 gap-y-0.5">
         {DOW.map((d, i) => (
-          <div key={i} className="py-0.5 text-center text-[10px] font-medium text-muted-foreground">
+          <div
+            key={`dow-${i}`}
+            className="py-0.5 text-center text-[10px] font-medium text-muted-foreground"
+          >
             {d}
           </div>
         ))}

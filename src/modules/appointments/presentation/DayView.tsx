@@ -27,24 +27,21 @@ interface Props {
   onAppointmentClick: (appt: Appointment) => void;
 }
 
+function calcNowTopForDay(day: Date): number | null {
+  if (!isToday(day)) return null;
+  const now = new Date();
+  const mins = now.getHours() * 60 + now.getMinutes() - DAY_START_HOUR * 60;
+  if (mins < 0 || mins > (DAY_END_HOUR - DAY_START_HOUR) * 60) return null;
+  return (mins / 60) * PX_PER_HOUR;
+}
+
 export function DayView({ day, appointments, onSlotClick, onAppointmentClick }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [nowTop, setNowTop] = useState<number | null>(null);
+  const [nowTop, setNowTop] = useState<number | null>(() => calcNowTopForDay(day));
 
   useEffect(() => {
-    function calcNow() {
-      if (!isToday(day)) {
-        setNowTop(null);
-        return;
-      }
-      const now = new Date();
-      const mins = now.getHours() * 60 + now.getMinutes() - DAY_START_HOUR * 60;
-      setNowTop(
-        mins < 0 || mins > (DAY_END_HOUR - DAY_START_HOUR) * 60 ? null : (mins / 60) * PX_PER_HOUR
-      );
-    }
-    calcNow();
-    const timer = setInterval(calcNow, 60000);
+    setNowTop(calcNowTopForDay(day));
+    const timer = setInterval(() => setNowTop(calcNowTopForDay(day)), 60000);
     return () => clearInterval(timer);
   }, [day]);
 
@@ -104,6 +101,8 @@ export function DayView({ day, appointments, onSlotClick, onAppointmentClick }: 
 
           <div
             ref={setNodeRef}
+            role="button"
+            tabIndex={0}
             className={cn(
               'relative flex-1 cursor-pointer transition-colors',
               isOver && 'bg-primary/5'
@@ -119,6 +118,12 @@ export function DayView({ day, appointments, onSlotClick, onAppointmentClick }: 
               onSlotClick(
                 `${dayKey}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`
               );
+            }}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onSlotClick(`${dayKey}T09:00:00`);
+              }
             }}
           >
             {hours.map(h => (
