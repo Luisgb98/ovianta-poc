@@ -23,12 +23,12 @@ import { fmtDate } from '@/lib/i18n/translations';
 import type { Patient } from '@/src/modules/patients/domain/patient';
 import type { PatientStatus } from '@/src/modules/patients/domain/patient';
 
-type SortKey = 'name' | 'age' | 'lastVisit' | 'consultas';
+type SortKey = 'name' | 'age' | 'lastVisit' | 'appointments';
 type SortDir = 'asc' | 'desc';
 
-const ALL_STATUSES: PatientStatus[] = ['activo', 'pendiente', 'completada', 'cancelada'];
+const ALL_STATUSES: PatientStatus[] = ['active', 'pending', 'completed', 'cancelled'];
 
-function PacientesPageContent() {
+function PatientsPageContent() {
   const { t, lang } = useI18n();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -52,7 +52,7 @@ function PacientesPageContent() {
   const sorted = patients.toSorted((a, b) => {
     let av: string | number = a[sort.key as keyof Patient] as string | number;
     let bv: string | number = b[sort.key as keyof Patient] as string | number;
-    if (sort.key === 'consultas') {
+    if (sort.key === 'appointments') {
       av = a.history.length;
       bv = b.history.length;
     }
@@ -130,9 +130,9 @@ function PacientesPageContent() {
               className="cursor-pointer gap-3.5 p-[18px] transition-[box-shadow,border-color] duration-150 hover:[border-color:color-mix(in_oklch,var(--primary)_30%,var(--border))] hover:shadow-[var(--shadow-md)]"
               role="button"
               tabIndex={0}
-              onClick={() => router.push(`/pacientes/${p.id}`)}
+              onClick={() => router.push(`/patients/${p.id}`)}
               onKeyDown={e => {
-                if (e.key === 'Enter') router.push(`/pacientes/${p.id}`);
+                if (e.key === 'Enter') router.push(`/patients/${p.id}`);
               }}
             >
               <div className="flex items-center gap-3">
@@ -157,7 +157,7 @@ function PacientesPageContent() {
                   </b>
                 </span>
                 <span>
-                  {t('patients.col.consultas')}
+                  {t('patients.col.appointments')}
                   <b className="tabular block text-sm font-semibold text-foreground">
                     {p.history.length}
                   </b>
@@ -185,7 +185,7 @@ function PacientesPageContent() {
                     { key: 'name', label: t('patients.col.patient') },
                     { key: 'age', label: t('patients.col.age') },
                     { key: 'lastVisit', label: t('patients.col.lastVisit') },
-                    { key: 'consultas', label: t('patients.col.consultas') },
+                    { key: 'appointments', label: t('patients.col.appointments') },
                   ] as { key: SortKey; label: string }[]
                 ).map(col => (
                   <th
@@ -246,7 +246,7 @@ function PacientesPageContent() {
                 <tr
                   key={p.id}
                   className="group cursor-pointer [&:last-child_td]:border-b-0"
-                  onClick={() => router.push(`/pacientes/${p.id}`)}
+                  onClick={() => router.push(`/patients/${p.id}`)}
                 >
                   <td className="border-b border-border bg-card px-4 py-[13px] group-hover:bg-muted">
                     <div className="flex items-center gap-[11px]">
@@ -293,10 +293,10 @@ function PacientesPageContent() {
   );
 }
 
-export default function PacientesPage() {
+export default function PatientsPage() {
   return (
     <Suspense fallback={null}>
-      <PacientesPageContent />
+      <PatientsPageContent />
     </Suspense>
   );
 }

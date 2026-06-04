@@ -13,16 +13,16 @@ import { useListPatients } from '@/lib/container';
 
 const NAV_ITEMS = [
   { key: 'home', href: '/', icon: 'grid' as const, section: 'clinica' },
-  { key: 'consultas', href: '/consultas', icon: 'stethoscope' as const, section: 'clinica' },
-  { key: 'agenda', href: '/agenda', icon: 'calendar' as const, section: 'clinica' },
+  { key: 'appointments', href: '/appointments', icon: 'stethoscope' as const, section: 'clinica' },
+  { key: 'schedule', href: '/schedule', icon: 'calendar' as const, section: 'clinica' },
   {
-    key: 'pacientes',
-    href: '/pacientes',
+    key: 'patients',
+    href: '/patients',
     icon: 'users' as const,
     section: 'clinica',
     showCount: true,
   },
-  { key: 'ajustes', href: '/ajustes', icon: 'settings' as const, section: 'general' },
+  { key: 'settings', href: '/settings', icon: 'settings' as const, section: 'general' },
 ] as const;
 
 type NavItem = (typeof NAV_ITEMS)[number];
@@ -80,7 +80,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
   function isActive(href: string, key: string): boolean {
     if (href === '/') return pathname === '/';
-    if (key === 'pacientes') return pathname.startsWith('/pacientes');
+    if (key === 'patients') return pathname.startsWith('/patients');
     return pathname.startsWith(href);
   }
 

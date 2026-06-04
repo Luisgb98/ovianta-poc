@@ -35,7 +35,7 @@ export const POST = withApiHandler(async req => {
     phone,
     since: today,
     lastVisit: today,
-    status: 'activo',
+    status: 'active',
     history: [],
   });
   return NextResponse.json({ success: true, data: patient }, { status: 201 });

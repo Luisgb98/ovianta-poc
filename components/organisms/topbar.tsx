@@ -29,7 +29,7 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (pathname === '/pacientes') {
+    if (pathname === '/patients') {
       setQuery(searchParams.get('q') ?? '');
     }
   }, [pathname, searchParams]);
@@ -54,7 +54,7 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       const q = value.trim();
-      router.replace(q ? `/pacientes?q=${encodeURIComponent(q)}` : '/pacientes');
+      router.replace(q ? `/patients?q=${encodeURIComponent(q)}` : '/patients');
     }, 300);
   }
 
@@ -62,7 +62,7 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
     e.preventDefault();
     if (debounceRef.current) clearTimeout(debounceRef.current);
     const q = query.trim();
-    router.push(q ? `/pacientes?q=${encodeURIComponent(q)}` : '/pacientes');
+    router.push(q ? `/patients?q=${encodeURIComponent(q)}` : '/patients');
   }
 
   const current = langs.find(l => l.code === lang);

@@ -18,9 +18,9 @@ export function PatientRow({ patient, subtitle, trailing }: PatientRowProps) {
       className="flex cursor-pointer items-center gap-3 border-b border-border px-5 py-3 last:border-b-0 hover:bg-muted"
       role="button"
       tabIndex={0}
-      onClick={() => router.push(`/pacientes/${patient.id}`)}
+      onClick={() => router.push(`/patients/${patient.id}`)}
       onKeyDown={e => {
-        if (e.key === 'Enter') router.push(`/pacientes/${patient.id}`);
+        if (e.key === 'Enter') router.push(`/patients/${patient.id}`);
       }}
     >
       <PatientAvatar
