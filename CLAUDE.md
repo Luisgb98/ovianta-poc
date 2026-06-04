@@ -90,8 +90,31 @@ Feature-specific components live in `src/modules/<feature>/presentation/` instea
 Tailwind CSS 4 is configured via `app/globals.css` using `@import "tailwindcss"` (no `tailwind.config.*` file needed). Design tokens are CSS custom properties under `@theme inline {}`.
 
 - Use CSS variables for all color/spacing tokens — never hardcode hex values.
-- Dark mode uses the `.dark` class variant (configured in `globals.css`).
+- Dark mode is toggled via `data-theme="dark"` on `<html>`, defined with `@custom-variant dark` in `globals.css`.
 - Avoid arbitrary Tailwind values; extend the theme in `globals.css` instead.
+
+### globals.css is for tokens only — NEVER add component styles
+
+`app/globals.css` must contain only:
+
+1. `@import` statements
+2. `@custom-variant` definitions
+3. `@theme inline {}` — Tailwind token mappings
+4. `:root` / `[data-theme]` — CSS custom property values
+5. `@layer base {}` — bare HTML element resets only
+
+**Forbidden in globals.css:**
+
+- `@layer components {}` blocks with named classes (`.sidebar`, `.navitem`, `.card`, etc.)
+- Any CSS class applied via `className="..."` in JSX
+- Responsive overrides for custom classes
+
+**Instead, always:**
+
+- Compose Tailwind utilities directly in `className` props
+- Use `cn()` from `@/lib/utils` for conditional classes
+- Use shadcn components (`<Card>`, `<Dialog>`, `<Table>`) for UI primitives
+- Create a reusable React component when the same Tailwind pattern appears in 3+ places
 
 ## Database
 

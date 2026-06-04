@@ -11,13 +11,13 @@ interface PlaceholderSectionProps {
 export function PlaceholderSection({ icon }: PlaceholderSectionProps) {
   const { t } = useI18n();
   return (
-    <div className="placeholder-wrap">
-      <div className="placeholder-inner">
-        <div className="placeholder-ic">
+    <div className="grid min-h-[60vh] place-items-center text-center">
+      <div className="flex max-w-form flex-col items-center gap-2">
+        <div className="mb-2 grid size-16 place-items-center rounded-[18px] bg-accent text-accent-foreground">
           <Icon name={icon} size={30} />
         </div>
-        <h2>{t('placeholder.soon')}</h2>
-        <p>{t('placeholder.desc')}</p>
+        <h2 className="text-xl font-[650] tracking-snug">{t('placeholder.soon')}</h2>
+        <p className="text-sm leading-relaxed text-muted-foreground">{t('placeholder.desc')}</p>
       </div>
     </div>
   );

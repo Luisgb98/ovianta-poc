@@ -15,7 +15,7 @@ export function PatientRow({ patient, subtitle, trailing }: PatientRowProps) {
   const router = useRouter();
   return (
     <div
-      className="row-item"
+      className="flex cursor-pointer items-center gap-3 border-b border-border px-5 py-3 last:border-b-0 hover:bg-muted"
       role="button"
       tabIndex={0}
       onClick={() => router.push(`/pacientes/${patient.id}`)}
@@ -28,9 +28,9 @@ export function PatientRow({ patient, subtitle, trailing }: PatientRowProps) {
         tone={getAvatarTone(patient.id)}
         size={36}
       />
-      <div className="meta">
-        <div className="r-title">{patient.name}</div>
-        <div className="r-sub">{subtitle}</div>
+      <div className="min-w-0 flex-1">
+        <div className="text-[13.5px] font-semibold">{patient.name}</div>
+        <div className="text-[12px] text-muted-foreground">{subtitle}</div>
       </div>
       {trailing}
     </div>
