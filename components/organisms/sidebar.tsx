@@ -102,7 +102,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         'group flex min-h-0 flex-col overflow-hidden border-r border-sidebar-border bg-sidebar text-sidebar-foreground',
         isMobile
           ? cn(
-              'z-sidebar fixed top-0 bottom-0 left-0 w-sidebar shadow-[var(--shadow-lg)] transition-transform duration-200',
+              'fixed top-0 bottom-0 left-0 z-sidebar w-sidebar shadow-[var(--shadow-lg)] transition-transform duration-200',
               mobileOpen ? 'translate-x-0' : '-translate-x-full'
             )
           : cn('transition-[width] duration-[220ms] ease-in-out', isCollapsed ? 'w-16' : 'w-64')

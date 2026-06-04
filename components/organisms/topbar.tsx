@@ -68,7 +68,7 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
   const current = langs.find(l => l.code === lang);
 
   return (
-    <header className="z-topbar relative flex h-topbar flex-none items-center gap-3 border-b border-border bg-background px-5">
+    <header className="relative z-topbar flex h-topbar flex-none items-center gap-3 border-b border-border bg-background px-5">
       <Button
         variant="ghost"
         size="icon"
@@ -112,7 +112,7 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
             <Icon name="globe" size={19} />
           </Button>
           {langOpen && (
-            <div className="z-dropdown absolute top-[var(--topbar-height)] right-0 min-w-42 rounded-md border border-border bg-popover p-1.5 shadow-[var(--shadow-lg)]">
+            <div className="absolute top-[var(--topbar-height)] right-0 z-dropdown min-w-42 rounded-md border border-border bg-popover p-1.5 shadow-[var(--shadow-lg)]">
               {langs.map(l => (
                 <Button
                   key={l.code}
