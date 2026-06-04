@@ -4,6 +4,7 @@ import { useReducer, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/atoms/button';
 import { Icon } from '@/components/atoms/icon';
+import { cn } from '@/lib/utils';
 import { useI18n } from '@/lib/i18n/context';
 import { useAuth } from '@/lib/auth/context';
 
@@ -135,10 +136,16 @@ export default function LoginPage() {
   const codeComplete = digits.join('').length === 6;
 
   return (
-    <div className="auth-stage">
-      <aside className="auth-aside">
+    <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
+      <aside
+        className="hidden md:relative md:flex md:flex-col md:justify-between md:overflow-hidden md:border-r md:border-border md:p-12"
+        style={{
+          background:
+            'radial-gradient(120% 120% at 80% 10%, color-mix(in oklch, var(--primary) 22%, var(--background)) 0%, var(--background) 55%)',
+        }}
+      >
         <svg
-          className="deco"
+          className="pointer-events-none absolute inset-0 opacity-50"
           viewBox="0 0 400 600"
           preserveAspectRatio="xMidYMid slice"
           aria-hidden="true"
@@ -150,37 +157,55 @@ export default function LoginPage() {
           </defs>
           <rect width="400" height="600" fill="url(#dots)" />
         </svg>
-        <div className="brand-lg">
-          <span className="brand-mark" style={{ width: 36, height: 36, fontSize: 19 }}>
+        <div className="flex items-center gap-3 text-xl font-bold tracking-snug">
+          <span
+            className="grid flex-none place-items-center rounded-lg bg-primary font-bold text-primary-foreground"
+            style={{ width: 36, height: 36, fontSize: 19 }}
+          >
             O
           </span>
           Ovianta
         </div>
-        <div className="auth-quote">
-          <h2>{t('app.tagline')}</h2>
-          <p>{t('login.asideQuote')}</p>
+        <div className="max-w-[30ch]">
+          <h2 className="mb-3.5 text-3xl leading-title font-bold tracking-tightest">
+            {t('app.tagline')}
+          </h2>
+          <p className="text-cta leading-relaxed text-muted-foreground">{t('login.asideQuote')}</p>
         </div>
         <div style={{ fontSize: 12.5, color: 'var(--muted-foreground)' }}>
           © 2026 Ovianta Health
         </div>
       </aside>
 
-      <main className="auth-main">
-        <div className="auth-card">
+      <main className="grid place-items-center p-8">
+        <div className="w-full max-w-form">
           {step === 'email' ? (
             <form onSubmit={submitEmail}>
-              <h1>{t('login.welcome')}</h1>
-              <p className="sub">{t('login.subtitle')}</p>
+              <h1 className="mb-1.5 text-heading-sm font-bold tracking-snug">
+                {t('login.welcome')}
+              </h1>
+              <p className="mb-7 text-body-sm leading-body text-muted-foreground">
+                {t('login.subtitle')}
+              </p>
 
-              <div className="field">
-                <label className="lbl" htmlFor="login-email">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-body-2xs font-[550] text-foreground" htmlFor="login-email">
                   {t('login.email')}
                 </label>
-                <div className="input-icon-wrap">
-                  <Icon name="mail" size={16} />
+                <div className="relative">
+                  <Icon
+                    name="mail"
+                    size={16}
+                    className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
+                  />
                   <input
                     id="login-email"
-                    className={`input ${error === 'email' ? 'err' : ''}`}
+                    className={cn(
+                      'h-10 w-full rounded-md border border-input bg-card pr-3 pl-9 font-[inherit] text-sm text-foreground',
+                      'transition-[border-color,box-shadow] duration-150 placeholder:text-muted-foreground',
+                      'focus:border-ring focus:[box-shadow:0_0_0_3px_color-mix(in_oklch,var(--ring)_20%,transparent)] focus:outline-none',
+                      error === 'email' && 'border-destructive'
+                    )}
                     type="email"
                     value={email}
                     onChange={e => dispatch({ type: 'SET_EMAIL', email: e.target.value })}
@@ -189,15 +214,13 @@ export default function LoginPage() {
                   />
                 </div>
                 {error === 'email' && (
-                  <span className="hint" style={{ color: 'var(--destructive)' }}>
-                    {t('login.emailInvalid')}
-                  </span>
+                  <span className="text-xs text-destructive">{t('login.emailInvalid')}</span>
                 )}
               </div>
 
               <div style={{ height: 18 }} />
 
-              <Button type="submit" size="lg" className="h-[46px] w-full text-[15px]">
+              <Button type="submit" size="lg" className="h-[46px] w-full text-cta">
                 {t('login.sendCode')}
                 <Icon name="chevronRight" size={16} />
               </Button>
@@ -208,28 +231,39 @@ export default function LoginPage() {
                 type="button"
                 variant="link"
                 size="sm"
-                className="mb-[18px] inline-flex h-auto items-center gap-1 p-0"
+                className="mb-4.5 inline-flex h-auto items-center gap-1 p-0"
                 onClick={() => dispatch({ type: 'BACK' })}
               >
                 <Icon name="chevronLeft" size={15} /> {t('login.back')}
               </Button>
 
-              <h1>{t('login.codeTitle')}</h1>
-              <p className="sub">
-                {t('login.codeSubtitle')} <strong>{email}</strong>
+              <h1 className="mb-1.5 text-heading-sm font-bold tracking-snug">
+                {t('login.codeTitle')}
+              </h1>
+              <p className="mb-7 text-body-sm leading-body text-muted-foreground">
+                {t('login.codeSubtitle')} <strong className="text-foreground">{email}</strong>
               </p>
 
-              <div className="otp-row" onPaste={onPaste}>
+              <div className="flex justify-between gap-2" onPaste={onPaste}>
                 {digits.map((d, i) => (
                   <div
                     key={DIGIT_KEYS[i]}
-                    className={`otp-cell ${d ? 'filled' : ''} ${active === i ? 'active' : ''}`}
+                    className={cn(
+                      'relative grid aspect-[5/6] w-full max-w-[52px] place-items-center rounded-md border',
+                      'bg-card font-mono text-[22px] font-semibold text-foreground',
+                      'cursor-text transition-[border-color,box-shadow] duration-150',
+                      active === i
+                        ? 'border-ring [box-shadow:0_0_0_3px_color-mix(in_oklch,var(--ring)_20%,transparent)]'
+                        : d
+                          ? '[border-color:color-mix(in_oklch,var(--primary)_50%,var(--border))]'
+                          : 'border-input'
+                    )}
                   >
                     <input
                       ref={el => {
                         inputsRef.current[i] = el;
                       }}
-                      className="otp-input-hidden"
+                      className="pointer-events-none absolute h-px w-px opacity-0"
                       inputMode="numeric"
                       maxLength={1}
                       value={d}
@@ -244,12 +278,10 @@ export default function LoginPage() {
               </div>
 
               {error === 'code' && (
-                <p className="text-err" style={{ marginTop: 12 }}>
-                  {t('login.invalid')}
-                </p>
+                <p className="mt-3 text-body-2xs text-destructive">{t('login.invalid')}</p>
               )}
 
-              <p className="hint" style={{ marginTop: 14 }}>
+              <p className="mt-3.5 text-xs text-muted-foreground">
                 {t('login.codeHint')}{' '}
                 <Button type="button" variant="link" size="sm" className="h-auto p-0">
                   {t('login.resend')}
@@ -261,7 +293,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 size="lg"
-                className="h-[46px] w-full text-[15px]"
+                className="h-[46px] w-full text-cta text-white"
                 disabled={!codeComplete}
               >
                 <Icon name="check" size={16} />
@@ -269,9 +301,10 @@ export default function LoginPage() {
               </Button>
 
               {DEMO_CODE && (
-                <div className="demo-hint">
+                <div className="mt-4.5 flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-xs-plus text-muted-foreground">
                   <Icon name="activity" size={15} />
-                  {t('login.demoHint')} <code>{DEMO_CODE}</code>
+                  {t('login.demoHint')}{' '}
+                  <code className="font-mono font-semibold text-foreground">{DEMO_CODE}</code>
                 </div>
               )}
             </form>

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Icon } from '@/components/atoms/icon';
 import { Button } from '@/components/atoms/button';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 import { useI18n } from '@/lib/i18n/context';
 import { useTheme } from '@/lib/theme/context';
 import { useAuth } from '@/lib/auth/context';
@@ -28,7 +29,7 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (pathname === '/pacientes') {
+    if (pathname === '/patients') {
       setQuery(searchParams.get('q') ?? '');
     }
   }, [pathname, searchParams]);
@@ -53,7 +54,7 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       const q = value.trim();
-      router.replace(q ? `/pacientes?q=${encodeURIComponent(q)}` : '/pacientes');
+      router.replace(q ? `/patients?q=${encodeURIComponent(q)}` : '/patients');
     }, 300);
   }
 
@@ -61,17 +62,17 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
     e.preventDefault();
     if (debounceRef.current) clearTimeout(debounceRef.current);
     const q = query.trim();
-    router.push(q ? `/pacientes?q=${encodeURIComponent(q)}` : '/pacientes');
+    router.push(q ? `/patients?q=${encodeURIComponent(q)}` : '/patients');
   }
 
   const current = langs.find(l => l.code === lang);
 
   return (
-    <header className="topbar">
+    <header className="relative z-topbar flex h-topbar flex-none items-center gap-3 border-b border-border bg-background px-5">
       <Button
         variant="ghost"
         size="icon"
-        className="hamburger"
+        className="md:hidden"
         onClick={onToggleMobile}
         aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={mobileOpen}
@@ -79,23 +80,28 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
         <Icon name={mobileOpen ? 'x' : 'menu'} size={20} />
       </Button>
 
-      <form className="search" onSubmit={handleSearchSubmit}>
-        <div className="input-icon-wrap">
-          <Icon name="search" size={16} />
+      <form className="hidden md:block md:max-w-search md:flex-1" onSubmit={handleSearchSubmit}>
+        <div className="relative">
+          <Icon
+            name="search"
+            size={16}
+            className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
+          />
           <Input
             type="search"
             placeholder={t('topbar.search')}
             aria-label={t('topbar.search')}
             value={query}
             onChange={e => handleSearchChange(e.target.value)}
+            className="pl-9"
           />
         </div>
       </form>
 
-      <div className="topbar-spacer" />
+      <div className="flex-1" />
 
-      <div className="topbar-actions">
-        <div className="lang-wrap" ref={langRef}>
+      <div className="flex items-center gap-1.5">
+        <div className="relative" ref={langRef}>
           <Button
             variant="ghost"
             size="icon"
@@ -106,7 +112,7 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
             <Icon name="globe" size={19} />
           </Button>
           {langOpen && (
-            <div className="lang-menu">
+            <div className="absolute top-[var(--topbar-height)] right-0 z-dropdown min-w-42 rounded-md border border-border bg-popover p-1.5 shadow-[var(--shadow-lg)]">
               {langs.map(l => (
                 <Button
                   key={l.code}
@@ -118,7 +124,14 @@ export function Topbar({ mobileOpen, onToggleMobile }: TopbarProps) {
                     setLangOpen(false);
                   }}
                 >
-                  <span className="flag">{l.flag}</span>
+                  <span
+                    className={cn(
+                      'w-5.5 text-badge font-bold',
+                      l.code === lang ? 'text-primary' : 'text-muted-foreground'
+                    )}
+                  >
+                    {l.flag}
+                  </span>
                   {l.label}
                   {l.code === lang && <Icon name="check" size={15} className="ml-auto" />}
                 </Button>

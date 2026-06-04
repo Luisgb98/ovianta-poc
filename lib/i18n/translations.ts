@@ -30,10 +30,10 @@ export type TranslationKey =
   | 'login.invalid'
   | 'login.emailInvalid'
   | 'nav.home'
-  | 'nav.consultas'
-  | 'nav.agenda'
-  | 'nav.pacientes'
-  | 'nav.ajustes'
+  | 'nav.appointments'
+  | 'nav.schedule'
+  | 'nav.patients'
+  | 'nav.settings'
   | 'nav.section.clinica'
   | 'nav.section.general'
   | 'topbar.search'
@@ -47,10 +47,10 @@ export type TranslationKey =
   | 'home.upcoming'
   | 'home.recent'
   | 'home.viewAll'
-  | 'consultas.title'
-  | 'consultas.subtitle'
-  | 'agenda.title'
-  | 'agenda.subtitle'
+  | 'appointments.title'
+  | 'appointments.subtitle'
+  | 'schedule.title'
+  | 'schedule.subtitle'
   | 'placeholder.soon'
   | 'placeholder.desc'
   | 'patients.title'
@@ -61,7 +61,7 @@ export type TranslationKey =
   | 'patients.col.patient'
   | 'patients.col.age'
   | 'patients.col.lastVisit'
-  | 'patients.col.consultas'
+  | 'patients.col.appointments'
   | 'patients.col.status'
   | 'patients.col.actions'
   | 'patients.years'
@@ -80,19 +80,19 @@ export type TranslationKey =
   | 'detail.email'
   | 'detail.phone'
   | 'detail.since'
-  | 'detail.totalConsultas'
+  | 'detail.totalAppointments'
   | 'detail.with'
   | 'detail.ageInvalid'
-  | 'status.completada'
-  | 'status.pendiente'
-  | 'status.cancelada'
-  | 'status.activo'
+  | 'status.completed'
+  | 'status.pending'
+  | 'status.cancelled'
+  | 'status.active'
   | 'patients.view.table'
   | 'patients.view.cards'
   | 'login.asideQuote'
   | 'theme.toggle'
-  | 'ajustes.title'
-  | 'ajustes.subtitle'
+  | 'settings.title'
+  | 'settings.subtitle'
   | 'newPatient.title'
   | 'newPatient.name'
   | 'newPatient.namePlaceholder'
@@ -128,10 +128,10 @@ export const translations: Record<Lang, Translations> = {
     'login.invalid': 'Código incorrecto. Inténtalo de nuevo.',
     'login.emailInvalid': 'Introduce un correo válido.',
     'nav.home': 'Inicio',
-    'nav.consultas': 'Consultas',
-    'nav.agenda': 'Agenda',
-    'nav.pacientes': 'Pacientes',
-    'nav.ajustes': 'Ajustes',
+    'nav.appointments': 'Consultas',
+    'nav.schedule': 'Agenda',
+    'nav.patients': 'Pacientes',
+    'nav.settings': 'Ajustes',
     'nav.section.clinica': 'Clínica',
     'nav.section.general': 'General',
     'topbar.search': 'Buscar pacientes, consultas…',
@@ -145,10 +145,10 @@ export const translations: Record<Lang, Translations> = {
     'home.upcoming': 'Próximas consultas',
     'home.recent': 'Pacientes recientes',
     'home.viewAll': 'Ver todos',
-    'consultas.title': 'Consultas',
-    'consultas.subtitle': 'Gestiona las consultas de la clínica.',
-    'agenda.title': 'Agenda',
-    'agenda.subtitle': 'Tu calendario de citas.',
+    'appointments.title': 'Consultas',
+    'appointments.subtitle': 'Gestiona las consultas de la clínica.',
+    'schedule.title': 'Agenda',
+    'schedule.subtitle': 'Tu calendario de citas.',
     'placeholder.soon': 'Módulo en construcción',
     'placeholder.desc':
       'Esta sección forma parte del sistema pero queda fuera del alcance de esta prueba. La navegación y el diseño ya están listos.',
@@ -160,7 +160,7 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.patient': 'Paciente',
     'patients.col.age': 'Edad',
     'patients.col.lastVisit': 'Última visita',
-    'patients.col.consultas': 'Consultas',
+    'patients.col.appointments': 'Consultas',
     'patients.col.status': 'Estado',
     'patients.col.actions': 'Acciones',
     'patients.years': 'años',
@@ -183,16 +183,16 @@ export const translations: Record<Lang, Translations> = {
     'detail.email': 'Correo',
     'detail.phone': 'Teléfono',
     'detail.since': 'Paciente desde',
-    'detail.totalConsultas': 'consultas en total',
+    'detail.totalAppointments': 'consultas en total',
     'detail.with': 'con',
     'detail.ageInvalid': 'Edad no válida',
-    'status.completada': 'Completada',
-    'status.pendiente': 'Pendiente',
-    'status.cancelada': 'Cancelada',
-    'status.activo': 'Activo',
+    'status.completed': 'Completada',
+    'status.pending': 'Pendiente',
+    'status.cancelled': 'Cancelada',
+    'status.active': 'Activo',
     'theme.toggle': 'Cambiar tema',
-    'ajustes.title': 'Ajustes',
-    'ajustes.subtitle': 'Configuración de la plataforma.',
+    'settings.title': 'Ajustes',
+    'settings.subtitle': 'Configuración de la plataforma.',
     'newPatient.title': 'Nuevo paciente',
     'newPatient.name': 'Nombre completo',
     'newPatient.namePlaceholder': 'Ej. Ana García López',
@@ -225,10 +225,10 @@ export const translations: Record<Lang, Translations> = {
     'login.invalid': 'Incorrect code. Please try again.',
     'login.emailInvalid': 'Enter a valid email address.',
     'nav.home': 'Home',
-    'nav.consultas': 'Consultations',
-    'nav.agenda': 'Schedule',
-    'nav.pacientes': 'Patients',
-    'nav.ajustes': 'Settings',
+    'nav.appointments': 'Consultations',
+    'nav.schedule': 'Schedule',
+    'nav.patients': 'Patients',
+    'nav.settings': 'Settings',
     'nav.section.clinica': 'Clinic',
     'nav.section.general': 'General',
     'topbar.search': 'Search patients, consultations…',
@@ -242,10 +242,10 @@ export const translations: Record<Lang, Translations> = {
     'home.upcoming': 'Upcoming consultations',
     'home.recent': 'Recent patients',
     'home.viewAll': 'View all',
-    'consultas.title': 'Consultations',
-    'consultas.subtitle': "Manage the clinic's consultations.",
-    'agenda.title': 'Schedule',
-    'agenda.subtitle': 'Your appointment calendar.',
+    'appointments.title': 'Consultations',
+    'appointments.subtitle': "Manage the clinic's consultations.",
+    'schedule.title': 'Schedule',
+    'schedule.subtitle': 'Your appointment calendar.',
     'placeholder.soon': 'Module under construction',
     'placeholder.desc':
       'This section is part of the system but is out of scope for this test. Navigation and design are already in place.',
@@ -257,7 +257,7 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.patient': 'Patient',
     'patients.col.age': 'Age',
     'patients.col.lastVisit': 'Last visit',
-    'patients.col.consultas': 'Consultations',
+    'patients.col.appointments': 'Consultations',
     'patients.col.status': 'Status',
     'patients.col.actions': 'Actions',
     'patients.years': 'yrs',
@@ -279,16 +279,16 @@ export const translations: Record<Lang, Translations> = {
     'detail.email': 'Email',
     'detail.phone': 'Phone',
     'detail.since': 'Patient since',
-    'detail.totalConsultas': 'consultations in total',
+    'detail.totalAppointments': 'consultations in total',
     'detail.with': 'with',
     'detail.ageInvalid': 'Invalid age',
-    'status.completada': 'Completed',
-    'status.pendiente': 'Pending',
-    'status.cancelada': 'Cancelled',
-    'status.activo': 'Active',
+    'status.completed': 'Completed',
+    'status.pending': 'Pending',
+    'status.cancelled': 'Cancelled',
+    'status.active': 'Active',
     'theme.toggle': 'Toggle theme',
-    'ajustes.title': 'Settings',
-    'ajustes.subtitle': 'Platform configuration.',
+    'settings.title': 'Settings',
+    'settings.subtitle': 'Platform configuration.',
     'newPatient.title': 'New patient',
     'newPatient.name': 'Full name',
     'newPatient.namePlaceholder': 'E.g. Jane Smith',
@@ -321,10 +321,10 @@ export const translations: Record<Lang, Translations> = {
     'login.invalid': 'Codice errato. Riprova.',
     'login.emailInvalid': "Inserisci un'email valida.",
     'nav.home': 'Home',
-    'nav.consultas': 'Consulti',
-    'nav.agenda': 'Agenda',
-    'nav.pacientes': 'Pazienti',
-    'nav.ajustes': 'Impostazioni',
+    'nav.appointments': 'Consulti',
+    'nav.schedule': 'Agenda',
+    'nav.patients': 'Pazienti',
+    'nav.settings': 'Impostazioni',
     'nav.section.clinica': 'Clinica',
     'nav.section.general': 'Generale',
     'topbar.search': 'Cerca pazienti, consulti…',
@@ -338,10 +338,10 @@ export const translations: Record<Lang, Translations> = {
     'home.upcoming': 'Prossimi consulti',
     'home.recent': 'Pazienti recenti',
     'home.viewAll': 'Vedi tutti',
-    'consultas.title': 'Consulti',
-    'consultas.subtitle': 'Gestisci i consulti della clinica.',
-    'agenda.title': 'Agenda',
-    'agenda.subtitle': 'Il tuo calendario di appuntamenti.',
+    'appointments.title': 'Consulti',
+    'appointments.subtitle': 'Gestisci i consulti della clinica.',
+    'schedule.title': 'Agenda',
+    'schedule.subtitle': 'Il tuo calendario di appuntamenti.',
     'placeholder.soon': 'Modulo in costruzione',
     'placeholder.desc':
       "Questa sezione fa parte del sistema ma è fuori dall'ambito di questo test.",
@@ -353,7 +353,7 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.patient': 'Paziente',
     'patients.col.age': 'Età',
     'patients.col.lastVisit': 'Ultima visita',
-    'patients.col.consultas': 'Consulti',
+    'patients.col.appointments': 'Consulti',
     'patients.col.status': 'Stato',
     'patients.col.actions': 'Azioni',
     'patients.years': 'anni',
@@ -375,16 +375,16 @@ export const translations: Record<Lang, Translations> = {
     'detail.email': 'Email',
     'detail.phone': 'Telefono',
     'detail.since': 'Paziente dal',
-    'detail.totalConsultas': 'consulti in totale',
+    'detail.totalAppointments': 'consulti in totale',
     'detail.with': 'con',
     'detail.ageInvalid': 'Età non valida',
-    'status.completada': 'Completato',
-    'status.pendiente': 'In sospeso',
-    'status.cancelada': 'Annullato',
-    'status.activo': 'Attivo',
+    'status.completed': 'Completato',
+    'status.pending': 'In sospeso',
+    'status.cancelled': 'Annullato',
+    'status.active': 'Attivo',
     'theme.toggle': 'Cambia tema',
-    'ajustes.title': 'Impostazioni',
-    'ajustes.subtitle': 'Configurazione della piattaforma.',
+    'settings.title': 'Impostazioni',
+    'settings.subtitle': 'Configurazione della piattaforma.',
     'newPatient.title': 'Nuovo paziente',
     'newPatient.name': 'Nome completo',
     'newPatient.namePlaceholder': 'Es. Maria Rossi',
@@ -417,10 +417,10 @@ export const translations: Record<Lang, Translations> = {
     'login.invalid': 'Código incorreto. Tente novamente.',
     'login.emailInvalid': 'Introduza um email válido.',
     'nav.home': 'Início',
-    'nav.consultas': 'Consultas',
-    'nav.agenda': 'Agenda',
-    'nav.pacientes': 'Pacientes',
-    'nav.ajustes': 'Definições',
+    'nav.appointments': 'Consultas',
+    'nav.schedule': 'Agenda',
+    'nav.patients': 'Pacientes',
+    'nav.settings': 'Definições',
     'nav.section.clinica': 'Clínica',
     'nav.section.general': 'Geral',
     'topbar.search': 'Procurar pacientes, consultas…',
@@ -434,10 +434,10 @@ export const translations: Record<Lang, Translations> = {
     'home.upcoming': 'Próximas consultas',
     'home.recent': 'Pacientes recentes',
     'home.viewAll': 'Ver todos',
-    'consultas.title': 'Consultas',
-    'consultas.subtitle': 'Faça a gestão das consultas da clínica.',
-    'agenda.title': 'Agenda',
-    'agenda.subtitle': 'O seu calendário de marcações.',
+    'appointments.title': 'Consultas',
+    'appointments.subtitle': 'Faça a gestão das consultas da clínica.',
+    'schedule.title': 'Agenda',
+    'schedule.subtitle': 'O seu calendário de marcações.',
     'placeholder.soon': 'Módulo em construção',
     'placeholder.desc': 'Esta secção faz parte do sistema mas está fora do âmbito deste teste.',
     'patients.title': 'Pacientes',
@@ -448,7 +448,7 @@ export const translations: Record<Lang, Translations> = {
     'patients.col.patient': 'Paciente',
     'patients.col.age': 'Idade',
     'patients.col.lastVisit': 'Última visita',
-    'patients.col.consultas': 'Consultas',
+    'patients.col.appointments': 'Consultas',
     'patients.col.status': 'Estado',
     'patients.col.actions': 'Ações',
     'patients.years': 'anos',
@@ -471,16 +471,16 @@ export const translations: Record<Lang, Translations> = {
     'detail.email': 'Email',
     'detail.phone': 'Telefone',
     'detail.since': 'Paciente desde',
-    'detail.totalConsultas': 'consultas no total',
+    'detail.totalAppointments': 'consultas no total',
     'detail.with': 'com',
     'detail.ageInvalid': 'Idade inválida',
-    'status.completada': 'Concluída',
-    'status.pendiente': 'Pendente',
-    'status.cancelada': 'Cancelada',
-    'status.activo': 'Ativo',
+    'status.completed': 'Concluída',
+    'status.pending': 'Pendente',
+    'status.cancelled': 'Cancelada',
+    'status.active': 'Ativo',
     'theme.toggle': 'Mudar tema',
-    'ajustes.title': 'Definições',
-    'ajustes.subtitle': 'Configuração da plataforma.',
+    'settings.title': 'Definições',
+    'settings.subtitle': 'Configuração da plataforma.',
     'newPatient.title': 'Novo paciente',
     'newPatient.name': 'Nome completo',
     'newPatient.namePlaceholder': 'Ex. Maria Santos',

@@ -8,14 +8,14 @@ import type { TranslationKey } from '@/lib/i18n/translations';
 
 /** Distinct hues: blue = active, green = done, amber = pending, red = cancelled */
 const statusStyles: Record<PatientStatus, string> = {
-  activo: [
+  active: [
     'border-[color-mix(in_oklch,var(--info)_32%,transparent)]',
     'bg-[color-mix(in_oklch,var(--info)_16%,transparent)]',
     'text-info',
     'dark:border-[color-mix(in_oklch,var(--info)_42%,transparent)]',
     'dark:bg-[color-mix(in_oklch,var(--info)_24%,transparent)]',
   ].join(' '),
-  pendiente: [
+  pending: [
     'border-[color-mix(in_oklch,var(--warning)_40%,transparent)]',
     'bg-[color-mix(in_oklch,var(--warning)_28%,transparent)]',
     'text-[color-mix(in_oklch,var(--warning)_62%,var(--foreground))]',
@@ -23,7 +23,7 @@ const statusStyles: Record<PatientStatus, string> = {
     'dark:bg-[color-mix(in_oklch,var(--warning)_22%,transparent)]',
     'dark:text-warning',
   ].join(' '),
-  completada: [
+  completed: [
     'border-[color-mix(in_oklch,var(--success)_38%,transparent)]',
     'bg-[color-mix(in_oklch,var(--success)_20%,transparent)]',
     'text-[color-mix(in_oklch,var(--success)_78%,black)]',
@@ -31,7 +31,7 @@ const statusStyles: Record<PatientStatus, string> = {
     'dark:bg-[color-mix(in_oklch,var(--success)_24%,transparent)]',
     'dark:text-success',
   ].join(' '),
-  cancelada: [
+  cancelled: [
     'border-[color-mix(in_oklch,var(--destructive)_28%,transparent)]',
     'bg-[color-mix(in_oklch,var(--destructive)_12%,transparent)]',
     'text-destructive',
@@ -59,7 +59,7 @@ interface StatusBadgeProps {
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
   const { t } = useI18n();
-  const showDot = status !== 'cancelada';
+  const showDot = status !== 'cancelled';
 
   return (
     <Badge
@@ -70,7 +70,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         className
       )}
     >
-      {showDot && <StatusDot pulse={status === 'activo'} />}
+      {showDot && <StatusDot pulse={status === 'active'} />}
       {t(`status.${status}` as TranslationKey)}
     </Badge>
   );

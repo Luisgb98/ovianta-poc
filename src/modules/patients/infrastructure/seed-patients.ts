@@ -9,14 +9,14 @@ export const SEED_PATIENTS: Patient[] = [
     phone: '+34 612 345 678',
     since: '2021-03-12',
     lastVisit: '2026-05-12',
-    status: 'completada',
+    status: 'completed',
     history: [
       {
         id: 'c-04821-1',
         date: '2026-05-12',
         type: 'Revisión general',
         doctor: 'Dra. Elena Ruiz',
-        status: 'completada',
+        status: 'completed',
         note: 'Revisión rutinaria sin incidencias. Constantes dentro de rango normal.',
       },
       {
@@ -24,7 +24,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2026-02-03',
         type: 'Análisis de sangre',
         doctor: 'Dr. Andrés Vega',
-        status: 'completada',
+        status: 'completed',
         note: 'Hemograma completo. Ligero déficit de vitamina D, se recomienda suplementación.',
       },
       {
@@ -32,7 +32,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2025-11-20',
         type: 'Control de seguimiento',
         doctor: 'Dra. Elena Ruiz',
-        status: 'completada',
+        status: 'completed',
         note: 'Seguimiento de tratamiento. Evolución favorable.',
       },
       {
@@ -40,7 +40,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2025-08-09',
         type: 'Primera consulta',
         doctor: 'Dra. Elena Ruiz',
-        status: 'completada',
+        status: 'completed',
         note: 'Anamnesis inicial. Sin antecedentes relevantes.',
       },
     ],
@@ -53,14 +53,14 @@ export const SEED_PATIENTS: Patient[] = [
     phone: '+39 333 123 4567',
     since: '2019-07-22',
     lastVisit: '2026-04-28',
-    status: 'pendiente',
+    status: 'pending',
     history: [
       {
         id: 'c-04822-1',
         date: '2026-04-28',
         type: 'Electrocardiograma',
         doctor: 'Dr. Marco Bianchi',
-        status: 'pendiente',
+        status: 'pending',
         note: 'Pendiente de interpretación por cardiología.',
       },
       {
@@ -68,7 +68,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2026-01-15',
         type: 'Control de seguimiento',
         doctor: 'Dr. Marco Bianchi',
-        status: 'completada',
+        status: 'completed',
         note: 'Tensión arterial controlada con medicación actual.',
       },
       {
@@ -76,7 +76,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2025-09-30',
         type: 'Análisis de sangre',
         doctor: 'Dr. Andrés Vega',
-        status: 'completada',
+        status: 'completed',
         note: 'Perfil lipídico ligeramente elevado.',
       },
     ],
@@ -89,14 +89,14 @@ export const SEED_PATIENTS: Patient[] = [
     phone: '+351 912 345 678',
     since: '2023-01-08',
     lastVisit: '2026-05-03',
-    status: 'activo',
+    status: 'active',
     history: [
       {
         id: 'c-04823-1',
         date: '2026-05-03',
         type: 'Consulta dermatológica',
         doctor: 'Dra. Sofia Costa',
-        status: 'activo',
+        status: 'active',
         note: 'En tratamiento dermatológico activo. Próxima revisión en 3 semanas.',
       },
       {
@@ -104,7 +104,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2026-03-18',
         type: 'Primera consulta',
         doctor: 'Dra. Sofia Costa',
-        status: 'completada',
+        status: 'completed',
         note: 'Derivado por dermatitis. Se inicia tratamiento tópico.',
       },
     ],
@@ -117,14 +117,14 @@ export const SEED_PATIENTS: Patient[] = [
     phone: '+34 677 889 900',
     since: '2020-11-30',
     lastVisit: '2026-05-20',
-    status: 'completada',
+    status: 'completed',
     history: [
       {
         id: 'c-04824-1',
         date: '2026-05-20',
         type: 'Vacunación',
         doctor: 'Dra. Elena Ruiz',
-        status: 'completada',
+        status: 'completed',
         note: 'Vacuna de la gripe estacional administrada sin reacción adversa.',
       },
       {
@@ -132,7 +132,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2026-02-28',
         type: 'Revisión general',
         doctor: 'Dra. Elena Ruiz',
-        status: 'completada',
+        status: 'completed',
         note: 'Estado de salud general bueno.',
       },
       {
@@ -140,7 +140,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2025-10-11',
         type: 'Análisis de sangre',
         doctor: 'Dr. Andrés Vega',
-        status: 'completada',
+        status: 'completed',
         note: 'Resultados normales.',
       },
     ],
@@ -153,14 +153,14 @@ export const SEED_PATIENTS: Patient[] = [
     phone: '+39 348 765 4321',
     since: '2018-04-17',
     lastVisit: '2026-03-30',
-    status: 'cancelada',
+    status: 'cancelled',
     history: [
       {
         id: 'c-04825-1',
         date: '2026-03-30',
         type: 'Control de seguimiento',
         doctor: 'Dr. Marco Bianchi',
-        status: 'cancelada',
+        status: 'cancelled',
         note: 'Cita cancelada por el paciente. Reprogramar.',
       },
       {
@@ -168,7 +168,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2026-01-12',
         type: 'Electrocardiograma',
         doctor: 'Dr. Marco Bianchi',
-        status: 'completada',
+        status: 'completed',
         note: 'Ritmo sinusal normal.',
       },
       {
@@ -176,7 +176,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2025-07-05',
         type: 'Revisión general',
         doctor: 'Dra. Elena Ruiz',
-        status: 'completada',
+        status: 'completed',
         note: 'Recomendado control de tensión periódico.',
       },
     ],
@@ -189,14 +189,14 @@ export const SEED_PATIENTS: Patient[] = [
     phone: '+351 967 111 222',
     since: '2022-09-14',
     lastVisit: '2026-05-18',
-    status: 'pendiente',
+    status: 'pending',
     history: [
       {
         id: 'c-04826-1',
         date: '2026-05-18',
         type: 'Análisis de sangre',
         doctor: 'Dr. Andrés Vega',
-        status: 'pendiente',
+        status: 'pending',
         note: 'A la espera de resultados de laboratorio.',
       },
       {
@@ -204,7 +204,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2026-02-22',
         type: 'Primera consulta',
         doctor: 'Dra. Sofia Costa',
-        status: 'completada',
+        status: 'completed',
         note: 'Consulta inicial. Solicitada analítica de control.',
       },
     ],
@@ -217,14 +217,14 @@ export const SEED_PATIENTS: Patient[] = [
     phone: '+39 320 555 7788',
     since: '2024-02-01',
     lastVisit: '2026-04-09',
-    status: 'completada',
+    status: 'completed',
     history: [
       {
         id: 'c-04827-1',
         date: '2026-04-09',
         type: 'Revisión general',
         doctor: 'Dr. Marco Bianchi',
-        status: 'completada',
+        status: 'completed',
         note: 'Apto para actividad deportiva. Sin contraindicaciones.',
       },
       {
@@ -232,7 +232,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2025-12-03',
         type: 'Primera consulta',
         doctor: 'Dr. Marco Bianchi',
-        status: 'completada',
+        status: 'completed',
         note: 'Consulta deportiva inicial.',
       },
     ],
@@ -245,14 +245,14 @@ export const SEED_PATIENTS: Patient[] = [
     phone: '+351 933 444 555',
     since: '2017-06-25',
     lastVisit: '2026-05-22',
-    status: 'activo',
+    status: 'active',
     history: [
       {
         id: 'c-04828-1',
         date: '2026-05-22',
         type: 'Control de seguimiento',
         doctor: 'Dra. Sofia Costa',
-        status: 'activo',
+        status: 'active',
         note: 'Seguimiento crónico activo. Medicación ajustada.',
       },
       {
@@ -260,7 +260,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2026-03-01',
         type: 'Análisis de sangre',
         doctor: 'Dr. Andrés Vega',
-        status: 'completada',
+        status: 'completed',
         note: 'Valores estables respecto al control anterior.',
       },
       {
@@ -268,7 +268,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2025-11-18',
         type: 'Electrocardiograma',
         doctor: 'Dr. Marco Bianchi',
-        status: 'completada',
+        status: 'completed',
         note: 'Sin alteraciones significativas.',
       },
       {
@@ -276,7 +276,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2025-09-02',
         type: 'Revisión general',
         doctor: 'Dra. Sofia Costa',
-        status: 'completada',
+        status: 'completed',
         note: 'Control anual.',
       },
     ],
@@ -289,14 +289,14 @@ export const SEED_PATIENTS: Patient[] = [
     phone: '+34 655 222 111',
     since: '2021-12-09',
     lastVisit: '2026-04-15',
-    status: 'completada',
+    status: 'completed',
     history: [
       {
         id: 'c-04829-1',
         date: '2026-04-15',
         type: 'Consulta dermatológica',
         doctor: 'Dra. Sofia Costa',
-        status: 'completada',
+        status: 'completed',
         note: 'Lesión cutánea benigna. No requiere intervención.',
       },
       {
@@ -304,7 +304,7 @@ export const SEED_PATIENTS: Patient[] = [
         date: '2025-10-28',
         type: 'Revisión general',
         doctor: 'Dra. Elena Ruiz',
-        status: 'completada',
+        status: 'completed',
         note: 'Estado general correcto.',
       },
     ],
@@ -317,14 +317,14 @@ export const SEED_PATIENTS: Patient[] = [
     phone: '+39 327 888 9900',
     since: '2023-08-19',
     lastVisit: '2026-05-25',
-    status: 'pendiente',
+    status: 'pending',
     history: [
       {
         id: 'c-04830-1',
         date: '2026-05-25',
         type: 'Primera consulta',
         doctor: 'Dra. Sofia Costa',
-        status: 'pendiente',
+        status: 'pending',
         note: 'Primera visita agendada. Pendiente de confirmación.',
       },
     ],

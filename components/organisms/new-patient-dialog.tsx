@@ -94,20 +94,23 @@ export function NewPatientDialog({ open, onOpenChange, onCreated }: Props) {
 
   return createPortal(
     <>
-      <div className="dialog-backdrop" onClick={handleClose} />
+      <div
+        className="fixed inset-0 z-[200] bg-black/40 transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0"
+        onClick={handleClose}
+      />
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="new-patient-title"
-        className="dialog-popup"
+        className="fixed top-1/2 left-1/2 z-dialog w-full max-w-dialog -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-card shadow-[var(--shadow-lg)] transition-[opacity,transform] duration-200 outline-none data-[ending-style]:[transform:translate(-50%,-46%)] data-[ending-style]:opacity-0 data-[starting-style]:[transform:translate(-50%,-46%)] data-[starting-style]:opacity-0"
       >
-        <div className="dialog-head">
-          <h2 id="new-patient-title" className="dialog-title">
+        <div className="flex items-center justify-between px-5 pt-5">
+          <h2 id="new-patient-title" className="text-dialog font-bold tracking-snug">
             {t('newPatient.title')}
           </h2>
           <button
             type="button"
-            className="dialog-close"
+            className="grid size-8 flex-none cursor-pointer place-items-center rounded-md border-0 bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
             aria-label="Close"
             disabled={saving}
             onClick={handleClose}
@@ -116,9 +119,9 @@ export function NewPatientDialog({ open, onOpenChange, onCreated }: Props) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} noValidate className="dialog-body">
-          <div className="field">
-            <label className="lbl" htmlFor="np-name">
+        <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 p-5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[13px] font-[550] text-foreground" htmlFor="np-name">
               {t('newPatient.name')}
             </label>
             <Input
@@ -130,11 +133,11 @@ export function NewPatientDialog({ open, onOpenChange, onCreated }: Props) {
               disabled={saving}
               autoFocus
             />
-            {errors.name && <span className="hint text-destructive">{errors.name}</span>}
+            {errors.name && <span className="text-[12px] text-destructive">{errors.name}</span>}
           </div>
 
-          <div className="field">
-            <label className="lbl" htmlFor="np-age">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[13px] font-[550] text-foreground" htmlFor="np-age">
               {t('newPatient.age')}
             </label>
             <Input
@@ -148,11 +151,11 @@ export function NewPatientDialog({ open, onOpenChange, onCreated }: Props) {
               aria-invalid={!!errors.age}
               disabled={saving}
             />
-            {errors.age && <span className="hint text-destructive">{errors.age}</span>}
+            {errors.age && <span className="text-[12px] text-destructive">{errors.age}</span>}
           </div>
 
-          <div className="field">
-            <label className="lbl" htmlFor="np-email">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[13px] font-[550] text-foreground" htmlFor="np-email">
               {t('newPatient.email')}
             </label>
             <Input
@@ -164,11 +167,11 @@ export function NewPatientDialog({ open, onOpenChange, onCreated }: Props) {
               aria-invalid={!!errors.email}
               disabled={saving}
             />
-            {errors.email && <span className="hint text-destructive">{errors.email}</span>}
+            {errors.email && <span className="text-[12px] text-destructive">{errors.email}</span>}
           </div>
 
-          <div className="field">
-            <label className="lbl" htmlFor="np-phone">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[13px] font-[550] text-foreground" htmlFor="np-phone">
               {t('newPatient.phone')}
             </label>
             <Input
@@ -180,10 +183,10 @@ export function NewPatientDialog({ open, onOpenChange, onCreated }: Props) {
               aria-invalid={!!errors.phone}
               disabled={saving}
             />
-            {errors.phone && <span className="hint text-destructive">{errors.phone}</span>}
+            {errors.phone && <span className="text-[12px] text-destructive">{errors.phone}</span>}
           </div>
 
-          <div className="dialog-foot">
+          <div className="flex justify-end gap-2 pt-1">
             <Button type="button" variant="ghost" onClick={handleClose} disabled={saving}>
               {t('detail.cancel')}
             </Button>

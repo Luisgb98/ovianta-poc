@@ -7,6 +7,8 @@ import { StatusBadge } from '@/components/atoms/status-badge';
 import { PatientRow } from '@/components/molecules/patient-row';
 import { Button } from '@/components/atoms/button';
 import { Card } from '@/components/ui/card';
+import { PageLayout } from '@/components/templates/PageLayout';
+import { PageHeader } from '@/components/molecules/PageHeader';
 import { useI18n } from '@/lib/i18n/context';
 import { useListPatients } from '@/lib/container';
 import { fmtDate } from '@/lib/i18n/translations';
@@ -23,7 +25,7 @@ export default function DashboardPage() {
   }, [listPatients]);
 
   const activeConsultations = patients.reduce(
-    (sum, p) => sum + p.history.reduce((n, c) => n + (c.status === 'activo' ? 1 : 0), 0),
+    (sum, p) => sum + p.history.reduce((n, c) => n + (c.status === 'active' ? 1 : 0), 0),
     0
   );
   const totalConsultations = patients.reduce((sum, p) => sum + p.history.length, 0);
@@ -34,7 +36,7 @@ export default function DashboardPage() {
     {
       key: 'pending',
       icon: 'clock' as const,
-      val: patients.filter(p => p.status === 'pendiente').length,
+      val: patients.filter(p => p.status === 'pending').length,
     },
     { key: 'week', icon: 'activity' as const, val: totalConsultations },
   ];
@@ -46,32 +48,36 @@ export default function DashboardPage() {
   const recent = patients.toSorted((a, b) => b.lastVisit.localeCompare(a.lastVisit)).slice(0, 5);
 
   return (
-    <div className="content-inner">
-      <div className="page-head">
-        <h1>
-          {t('home.greeting')} <span aria-hidden="true">👋</span>
-        </h1>
-        <p className="pdesc">{t('home.subtitle')}</p>
-      </div>
+    <PageLayout>
+      <PageHeader
+        title={
+          <>
+            {t('home.greeting')} <span aria-hidden="true">👋</span>
+          </>
+        }
+        description={t('home.subtitle')}
+      />
 
-      <div className="stat-grid">
+      <div className="mb-7 grid grid-cols-2 gap-4 lg:grid-cols-4">
         {stats.map(s => (
-          <Card key={s.key} className="stat gap-3 p-4">
-            <div className="st-top">
-              <span className="st-label">{t(`home.stat.${s.key}` as Parameters<typeof t>[0])}</span>
-              <span className="st-ic">
+          <Card key={s.key} className="gap-3 p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-body-2xs font-medium text-muted-foreground">
+                {t(`home.stat.${s.key}` as Parameters<typeof t>[0])}
+              </span>
+              <span className="grid size-[34px] place-items-center rounded-md bg-accent text-accent-foreground">
                 <Icon name={s.icon} size={18} />
               </span>
             </div>
-            <div className="st-val tabular">{s.val}</div>
+            <div className="tabular mt-2.5 text-3xl font-bold tracking-snug">{s.val}</div>
           </Card>
         ))}
       </div>
 
-      <div className="grid-2col">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr]">
         <Card className="gap-0 p-0">
-          <div className="list-card-head">
-            <h3>{t('home.upcoming')}</h3>
+          <div className="flex items-center justify-between border-b border-border px-5 py-4">
+            <h3 className="text-cta font-semibold">{t('home.upcoming')}</h3>
           </div>
           {upcoming.map(({ p, c }) => (
             <PatientRow
@@ -84,13 +90,13 @@ export default function DashboardPage() {
         </Card>
 
         <Card className="gap-0 p-0">
-          <div className="list-card-head">
-            <h3>{t('home.recent')}</h3>
+          <div className="flex items-center justify-between border-b border-border px-5 py-4">
+            <h3 className="text-cta font-semibold">{t('home.recent')}</h3>
             <Button
               variant="link"
               size="sm"
               className="h-auto p-0"
-              onClick={() => router.push('/pacientes')}
+              onClick={() => router.push('/patients')}
             >
               {t('home.viewAll')}
             </Button>
@@ -100,11 +106,15 @@ export default function DashboardPage() {
               key={p.id}
               patient={p}
               subtitle={p.id}
-              trailing={<span className="r-time">{fmtDate(p.lastVisit, lang)}</span>}
+              trailing={
+                <span className="text-xs whitespace-nowrap text-muted-foreground">
+                  {fmtDate(p.lastVisit, lang)}
+                </span>
+              }
             />
           ))}
         </Card>
       </div>
-    </div>
+    </PageLayout>
   );
 }

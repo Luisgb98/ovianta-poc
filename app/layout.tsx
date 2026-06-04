@@ -16,8 +16,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Ovianta — Plataforma clínica',
-  description: 'Gestiona pacientes, consultas y agenda en un único espacio claro y seguro.',
+  title: 'Ovianta — Clinical platform',
+  description: 'Manage patients, appointments and schedule in one clear, secure space.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

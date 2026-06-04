@@ -1,7 +1,18 @@
 import mongoose, { Schema, Model } from 'mongoose';
 import { connectDb } from '@/src/shared/infrastructure/mongoose';
 import type { PatientRepository } from '../application/ports/patient-repository';
-import type { Patient, PatientPatch } from '../domain/patient';
+import type { Patient, PatientPatch, PatientStatus } from '../domain/patient';
+
+const STATUS_MIGRATION: Record<string, PatientStatus> = {
+  completada: 'completed',
+  pendiente: 'pending',
+  cancelada: 'cancelled',
+  activo: 'active',
+};
+
+function migrateStatus(s: string): PatientStatus {
+  return (STATUS_MIGRATION[s] ?? s) as PatientStatus;
+}
 
 const ConsultationSchema = new Schema(
   {
@@ -38,7 +49,10 @@ function getModel(): Model<PatientDoc> {
 
 function docToPatient(doc: Record<string, unknown> & { _id: string }): Patient {
   const { _id, ...rest } = doc;
-  return { id: _id, ...(rest as Omit<Patient, 'id'>) };
+  const p = { id: _id, ...(rest as Omit<Patient, 'id'>) };
+  p.status = migrateStatus(p.status);
+  p.history = p.history.map(c => ({ ...c, status: migrateStatus(c.status) }));
+  return p;
 }
 
 async function nextId(): Promise<string> {
