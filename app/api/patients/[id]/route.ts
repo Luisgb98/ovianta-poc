@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { MongoPatientRepository } from '@/src/modules/patients/infrastructure/mongo-patient-repository';
 import { withApiHandler } from '@/src/shared/infrastructure/api-handler';
