@@ -106,7 +106,28 @@ export type TranslationKey =
   | 'newPatient.nameRequired'
   | 'newPatient.ageInvalid'
   | 'newPatient.emailInvalid'
-  | 'newPatient.phoneRequired';
+  | 'newPatient.phoneRequired'
+  | 'schedule.week'
+  | 'schedule.day'
+  | 'schedule.agenda'
+  | 'schedule.today'
+  | 'schedule.new'
+  | 'schedule.duration'
+  | 'schedule.conflict'
+  | 'schedule.noAppointments'
+  | 'schedule.rescheduled'
+  | 'schedule.created'
+  | 'schedule.cancelled'
+  | 'schedule.cancelAppt'
+  | 'schedule.patient'
+  | 'schedule.doctor'
+  | 'schedule.type'
+  | 'schedule.date'
+  | 'schedule.time'
+  | 'schedule.notes'
+  | 'schedule.selectPatient'
+  | 'status.scheduled'
+  | 'status.no-show';
 
 type Translations = Record<TranslationKey, string>;
 
@@ -207,6 +228,27 @@ export const translations: Record<Lang, Translations> = {
     'newPatient.ageInvalid': 'Edad no válida (0–130).',
     'newPatient.emailInvalid': 'Introduce un correo válido.',
     'newPatient.phoneRequired': 'El teléfono es obligatorio.',
+    'schedule.week': 'Semana',
+    'schedule.day': 'Día',
+    'schedule.agenda': 'Lista',
+    'schedule.today': 'Hoy',
+    'schedule.new': 'Nueva cita',
+    'schedule.duration': 'Duración',
+    'schedule.conflict': 'Conflicto de horario con otro médico',
+    'schedule.noAppointments': 'Sin citas esta semana',
+    'schedule.rescheduled': 'Cita reprogramada',
+    'schedule.created': 'Cita creada correctamente',
+    'schedule.cancelled': 'Cita cancelada',
+    'schedule.cancelAppt': 'Cancelar cita',
+    'schedule.patient': 'Paciente',
+    'schedule.doctor': 'Médico',
+    'schedule.type': 'Tipo',
+    'schedule.date': 'Fecha',
+    'schedule.time': 'Hora',
+    'schedule.notes': 'Notas',
+    'schedule.selectPatient': 'Seleccionar paciente…',
+    'status.scheduled': 'Programada',
+    'status.no-show': 'No presentado',
   },
   en: {
     'app.tagline': 'Clinical platform',
@@ -303,6 +345,27 @@ export const translations: Record<Lang, Translations> = {
     'newPatient.ageInvalid': 'Invalid age (0–130).',
     'newPatient.emailInvalid': 'Enter a valid email address.',
     'newPatient.phoneRequired': 'Phone is required.',
+    'schedule.week': 'Week',
+    'schedule.day': 'Day',
+    'schedule.agenda': 'Agenda',
+    'schedule.today': 'Today',
+    'schedule.new': 'New appointment',
+    'schedule.duration': 'Duration',
+    'schedule.conflict': 'Schedule conflict with another doctor',
+    'schedule.noAppointments': 'No appointments this week',
+    'schedule.rescheduled': 'Appointment rescheduled',
+    'schedule.created': 'Appointment created',
+    'schedule.cancelled': 'Appointment cancelled',
+    'schedule.cancelAppt': 'Cancel appointment',
+    'schedule.patient': 'Patient',
+    'schedule.doctor': 'Doctor',
+    'schedule.type': 'Type',
+    'schedule.date': 'Date',
+    'schedule.time': 'Time',
+    'schedule.notes': 'Notes',
+    'schedule.selectPatient': 'Select patient…',
+    'status.scheduled': 'Scheduled',
+    'status.no-show': 'No-show',
   },
   it: {
     'app.tagline': 'Piattaforma clinica',
@@ -399,6 +462,27 @@ export const translations: Record<Lang, Translations> = {
     'newPatient.ageInvalid': 'Età non valida (0–130).',
     'newPatient.emailInvalid': "Inserisci un'email valida.",
     'newPatient.phoneRequired': 'Il telefono è obbligatorio.',
+    'schedule.week': 'Settimana',
+    'schedule.day': 'Giorno',
+    'schedule.agenda': 'Lista',
+    'schedule.today': 'Oggi',
+    'schedule.new': 'Nuovo appuntamento',
+    'schedule.duration': 'Durata',
+    'schedule.conflict': 'Conflitto di orario con un altro medico',
+    'schedule.noAppointments': 'Nessun appuntamento questa settimana',
+    'schedule.rescheduled': 'Appuntamento riprogrammato',
+    'schedule.created': 'Appuntamento creato',
+    'schedule.cancelled': 'Appuntamento annullato',
+    'schedule.cancelAppt': 'Annulla appuntamento',
+    'schedule.patient': 'Paziente',
+    'schedule.doctor': 'Medico',
+    'schedule.type': 'Tipo',
+    'schedule.date': 'Data',
+    'schedule.time': 'Ora',
+    'schedule.notes': 'Note',
+    'schedule.selectPatient': 'Seleziona paziente…',
+    'status.scheduled': 'Programmato',
+    'status.no-show': 'Non presentato',
   },
   pt: {
     'app.tagline': 'Plataforma clínica',
@@ -495,6 +579,27 @@ export const translations: Record<Lang, Translations> = {
     'newPatient.ageInvalid': 'Idade inválida (0–130).',
     'newPatient.emailInvalid': 'Introduza um email válido.',
     'newPatient.phoneRequired': 'O telefone é obrigatório.',
+    'schedule.week': 'Semana',
+    'schedule.day': 'Dia',
+    'schedule.agenda': 'Lista',
+    'schedule.today': 'Hoje',
+    'schedule.new': 'Nova consulta',
+    'schedule.duration': 'Duração',
+    'schedule.conflict': 'Conflito de horário com outro médico',
+    'schedule.noAppointments': 'Sem consultas esta semana',
+    'schedule.rescheduled': 'Consulta reagendada',
+    'schedule.created': 'Consulta criada',
+    'schedule.cancelled': 'Consulta cancelada',
+    'schedule.cancelAppt': 'Cancelar consulta',
+    'schedule.patient': 'Paciente',
+    'schedule.doctor': 'Médico',
+    'schedule.type': 'Tipo',
+    'schedule.date': 'Data',
+    'schedule.time': 'Hora',
+    'schedule.notes': 'Notas',
+    'schedule.selectPatient': 'Selecionar paciente…',
+    'status.scheduled': 'Agendada',
+    'status.no-show': 'Não compareceu',
   },
 };
 
