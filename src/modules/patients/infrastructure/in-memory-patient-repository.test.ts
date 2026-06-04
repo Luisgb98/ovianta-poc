@@ -10,14 +10,14 @@ const PATIENT_A: Patient = {
   phone: '+34 600 000 001',
   since: '2021-01-01',
   lastVisit: '2026-05-01',
-  status: 'completada',
+  status: 'completed',
   history: [
     {
       id: 'c-001-1',
       date: '2026-05-01',
       type: 'Revisión',
       doctor: 'Dr. Test',
-      status: 'completada',
+      status: 'completed',
       note: 'Sin incidencias.',
     },
   ],
@@ -31,7 +31,7 @@ const PATIENT_B: Patient = {
   phone: '+39 333 000 002',
   since: '2019-06-15',
   lastVisit: '2026-04-01',
-  status: 'pendiente',
+  status: 'pending',
   history: [],
 };
 

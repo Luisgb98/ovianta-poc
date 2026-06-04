@@ -105,7 +105,7 @@ export default function PatientDetailPage() {
       <PageLayout>
         <div className="mb-6">
           <p className="mt-1 text-body-sm text-muted-foreground">Paciente no encontrado.</p>
-          <Button variant="outline" onClick={() => router.push('/pacientes')}>
+          <Button variant="outline" onClick={() => router.push('/patients')}>
             <Icon name="chevronLeft" size={16} />
             {t('detail.back')}
           </Button>
@@ -133,7 +133,7 @@ export default function PatientDetailPage() {
             variant="ghost"
             size="sm"
             className="gap-1 px-1 text-muted-foreground"
-            onClick={() => router.push('/pacientes')}
+            onClick={() => router.push('/patients')}
           >
             <Icon name="chevronLeft" size={15} /> {t('detail.back')}
           </Button>
@@ -234,7 +234,7 @@ export default function PatientDetailPage() {
           <Card className="gap-4 p-5 pb-2">
             <p className="mt-0 mb-4.5 text-body-sm text-muted-foreground">
               <strong className="text-foreground">{patient.history.length}</strong>{' '}
-              {t('detail.totalConsultas')}
+              {t('detail.totalAppointments')}
             </p>
             <div className="relative pl-1">
               {patient.history.map((c, idx) => (
@@ -244,10 +244,10 @@ export default function PatientDetailPage() {
                       className={cn(
                         'z-1 mt-4.5 size-3 flex-none rounded-full border-[3px] border-card shadow-[0_0_0_1px_var(--border)]',
                         {
-                          'bg-success': c.status === 'completada',
-                          'bg-warning': c.status === 'pendiente',
-                          'bg-destructive': c.status === 'cancelada',
-                          'bg-primary': c.status === 'activo',
+                          'bg-success': c.status === 'completed',
+                          'bg-warning': c.status === 'pending',
+                          'bg-destructive': c.status === 'cancelled',
+                          'bg-primary': c.status === 'active',
                         }
                       )}
                     />

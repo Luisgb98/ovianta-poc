@@ -11,7 +11,11 @@ export class UpdatePatientUseCase {
     if (patch.age !== undefined && (isNaN(patch.age) || patch.age < 0 || patch.age > 130))
       throw new ValidationError('Age must be between 0 and 130');
 
-    const updated = await this.repo.update(id, { ...patch, name: patch.name?.trim() });
+    const trimmedPatch = {
+      ...patch,
+      ...(patch.name !== undefined && { name: patch.name.trim() }),
+    };
+    const updated = await this.repo.update(id, trimmedPatch);
     if (!updated) throw new NotFoundError('Patient', id);
     return updated;
   }

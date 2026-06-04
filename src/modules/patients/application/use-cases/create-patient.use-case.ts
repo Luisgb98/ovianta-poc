@@ -37,7 +37,7 @@ export class CreatePatientUseCase {
       phone,
       since: today,
       lastVisit: today,
-      status: 'activo',
+      status: 'active',
       history: [],
     });
   }

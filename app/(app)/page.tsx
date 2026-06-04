@@ -25,7 +25,7 @@ export default function DashboardPage() {
   }, [listPatients]);
 
   const activeConsultations = patients.reduce(
-    (sum, p) => sum + p.history.reduce((n, c) => n + (c.status === 'activo' ? 1 : 0), 0),
+    (sum, p) => sum + p.history.reduce((n, c) => n + (c.status === 'active' ? 1 : 0), 0),
     0
   );
   const totalConsultations = patients.reduce((sum, p) => sum + p.history.length, 0);
@@ -36,7 +36,7 @@ export default function DashboardPage() {
     {
       key: 'pending',
       icon: 'clock' as const,
-      val: patients.filter(p => p.status === 'pendiente').length,
+      val: patients.filter(p => p.status === 'pending').length,
     },
     { key: 'week', icon: 'activity' as const, val: totalConsultations },
   ];
@@ -96,7 +96,7 @@ export default function DashboardPage() {
               variant="link"
               size="sm"
               className="h-auto p-0"
-              onClick={() => router.push('/pacientes')}
+              onClick={() => router.push('/patients')}
             >
               {t('home.viewAll')}
             </Button>

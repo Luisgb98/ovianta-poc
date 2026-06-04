@@ -83,10 +83,10 @@
   --max-width-search: var(--search-max-width);
 
   /* --- Z-index layers --- */
-  --z-dropdown: var(--z-layer-dropdown);
-  --z-sidebar: var(--z-layer-sidebar);
-  --z-topbar: var(--z-layer-topbar);
-  --z-dialog: var(--z-layer-dialog);
+  --z-index-dropdown: var(--z-layer-dropdown);
+  --z-index-sidebar: var(--z-layer-sidebar);
+  --z-index-topbar: var(--z-layer-topbar);
+  --z-index-dialog: var(--z-layer-dialog);
 }
 
 /* ---------- FONT + RADIUS PRIMITIVES ---------- */

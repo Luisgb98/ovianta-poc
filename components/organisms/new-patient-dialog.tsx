@@ -102,7 +102,7 @@ export function NewPatientDialog({ open, onOpenChange, onCreated }: Props) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="new-patient-title"
-        className="z-dialog fixed top-1/2 left-1/2 w-full max-w-dialog -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-card shadow-[var(--shadow-lg)] transition-[opacity,transform] duration-200 outline-none data-[ending-style]:[transform:translate(-50%,-46%)] data-[ending-style]:opacity-0 data-[starting-style]:[transform:translate(-50%,-46%)] data-[starting-style]:opacity-0"
+        className="fixed top-1/2 left-1/2 z-dialog w-full max-w-dialog -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-card shadow-[var(--shadow-lg)] transition-[opacity,transform] duration-200 outline-none data-[ending-style]:[transform:translate(-50%,-46%)] data-[ending-style]:opacity-0 data-[starting-style]:[transform:translate(-50%,-46%)] data-[starting-style]:opacity-0"
       >
         <div className="flex items-center justify-between px-5 pt-5">
           <h2 id="new-patient-title" className="text-dialog font-bold tracking-snug">

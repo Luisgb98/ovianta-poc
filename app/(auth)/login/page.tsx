@@ -293,7 +293,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 size="lg"
-                className="h-[46px] w-full text-cta"
+                className="h-[46px] w-full text-cta text-white"
                 disabled={!codeComplete}
               >
                 <Icon name="check" size={16} />

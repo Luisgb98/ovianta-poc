@@ -1,4 +1,4 @@
-export type PatientStatus = 'completada' | 'pendiente' | 'cancelada' | 'activo';
+export type PatientStatus = 'completed' | 'pending' | 'cancelled' | 'active';
 
 export interface Consultation {
   id: string;
