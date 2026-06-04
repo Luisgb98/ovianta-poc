@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { format, parseISO } from 'date-fns';
 import { toast } from 'sonner';
@@ -106,9 +106,11 @@ export function AppointmentDialog({
     setForm(open ? buildForm(appointment, defaultDate) : EMPTY);
   }, [open, appointment, defaultDate]);
 
-  // Stable refs so the keyboard effect never re-subscribes due to callback churn
+  // Stable ref so the keyboard effect never re-subscribes due to callback churn
   const stateRef = useRef({ saving, cancelling, onOpenChange });
-  stateRef.current = { saving, cancelling, onOpenChange };
+  useLayoutEffect(() => {
+    stateRef.current = { saving, cancelling, onOpenChange };
+  });
 
   useEffect(() => {
     if (!open) return;
