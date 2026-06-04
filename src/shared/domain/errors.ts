@@ -23,6 +23,13 @@ export class ValidationError extends AppError {
   }
 }
 
+export class ConflictError extends AppError {
+  constructor(message: string) {
+    super(message, 409, 'CONFLICT');
+    this.name = 'ConflictError';
+  }
+}
+
 export class DatabaseError extends AppError {
   constructor(
     message: string,

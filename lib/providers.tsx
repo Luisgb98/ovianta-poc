@@ -10,16 +10,28 @@ import { ListPatientsUseCase } from '@/src/modules/patients/application/use-case
 import { GetPatientByIdUseCase } from '@/src/modules/patients/application/use-cases/get-patient-by-id.use-case';
 import { UpdatePatientUseCase } from '@/src/modules/patients/application/use-cases/update-patient.use-case';
 import { CreatePatientUseCase } from '@/src/modules/patients/application/use-cases/create-patient.use-case';
+import { ApiAppointmentRepository } from '@/src/modules/appointments/infrastructure/api-appointment-repository';
+import { ListAppointmentsUseCase } from '@/src/modules/appointments/application/use-cases/list-appointments.use-case';
+import { CreateAppointmentUseCase } from '@/src/modules/appointments/application/use-cases/create-appointment.use-case';
+import { RescheduleAppointmentUseCase } from '@/src/modules/appointments/application/use-cases/reschedule-appointment.use-case';
+import { CancelAppointmentUseCase } from '@/src/modules/appointments/application/use-cases/cancel-appointment.use-case';
+import { GetAppointmentByIdUseCase } from '@/src/modules/appointments/application/use-cases/get-appointment-by-id.use-case';
 import { Toaster } from 'sonner';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [services] = useState(() => {
-    const repo = new ApiPatientRepository();
+    const patientRepo = new ApiPatientRepository();
+    const appointmentRepo = new ApiAppointmentRepository();
     return {
-      listPatients: new ListPatientsUseCase(repo),
-      getPatientById: new GetPatientByIdUseCase(repo),
-      updatePatient: new UpdatePatientUseCase(repo),
-      createPatient: new CreatePatientUseCase(repo),
+      listPatients: new ListPatientsUseCase(patientRepo),
+      getPatientById: new GetPatientByIdUseCase(patientRepo),
+      updatePatient: new UpdatePatientUseCase(patientRepo),
+      createPatient: new CreatePatientUseCase(patientRepo),
+      listAppointments: new ListAppointmentsUseCase(appointmentRepo),
+      createAppointment: new CreateAppointmentUseCase(appointmentRepo),
+      rescheduleAppointment: new RescheduleAppointmentUseCase(appointmentRepo),
+      cancelAppointment: new CancelAppointmentUseCase(appointmentRepo),
+      getAppointmentById: new GetAppointmentByIdUseCase(appointmentRepo),
     };
   });
 

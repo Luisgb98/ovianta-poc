@@ -2,7 +2,6 @@ import { SEED_PATIENTS } from '@/src/modules/patients/infrastructure/seed-patien
 import type { Patient, PatientPatch } from '@/src/modules/patients/domain/patient';
 
 declare global {
-  // eslint-disable-next-line no-var
   var __patientStore: { patients: Patient[]; counter: number } | undefined;
 }
 
