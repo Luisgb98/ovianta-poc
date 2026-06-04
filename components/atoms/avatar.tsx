@@ -5,9 +5,10 @@ export type AvatarTone = 'primary' | 'info' | 'warning';
 const TONES: AvatarTone[] = ['primary', 'info', 'warning'];
 
 const toneClass: Record<AvatarTone, string> = {
-  primary: 'avatar-primary',
-  info: 'avatar-info',
-  warning: 'avatar-warning',
+  primary: 'bg-accent text-accent-foreground',
+  info: '[background:color-mix(in_oklch,var(--info)_18%,transparent)] text-info',
+  warning:
+    '[background:color-mix(in_oklch,var(--warning)_24%,transparent)] [color:color-mix(in_oklch,var(--warning)_72%,black)] dark:text-warning',
 };
 
 export function getInitials(name: string): string {
@@ -30,7 +31,7 @@ interface AvatarProps {
 export function PatientAvatar({ initials, tone = 'primary', size = 38 }: AvatarProps) {
   return (
     <div
-      className={cn('avatar', toneClass[tone])}
+      className={cn('grid flex-none place-items-center rounded-full font-[650]', toneClass[tone])}
       style={{ width: size, height: size, fontSize: size * 0.34 }}
     >
       {initials}

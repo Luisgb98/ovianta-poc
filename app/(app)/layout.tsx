@@ -24,11 +24,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="shell">
+    <div className="grid h-screen grid-cols-1 overflow-hidden md:grid-cols-[auto_1fr]">
       <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
       {mobileOpen && (
         <div
-          className="scrim"
+          className="fixed inset-0 z-[90] bg-black/40"
           role="button"
           aria-label="Close menu"
           tabIndex={0}
@@ -38,11 +38,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           }}
         />
       )}
-      <div className="main-col">
+      <div className="flex h-screen min-w-0 flex-col overflow-hidden">
         <Suspense fallback={null}>
           <Topbar mobileOpen={mobileOpen} onToggleMobile={() => setMobileOpen(o => !o)} />
         </Suspense>
-        <div className="content">{children}</div>
+        <div className="flex-1 overflow-y-auto px-4 py-5 md:p-8">{children}</div>
       </div>
     </div>
   );

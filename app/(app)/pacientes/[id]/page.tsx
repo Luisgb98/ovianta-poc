@@ -11,6 +11,8 @@ import { InfoRow } from '@/components/molecules/info-row';
 import { Button } from '@/components/atoms/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+import { PageLayout } from '@/components/templates/PageLayout';
 import { useI18n } from '@/lib/i18n/context';
 import { useGetPatientById, useUpdatePatient } from '@/lib/container';
 import { fmtDate } from '@/lib/i18n/translations';
@@ -100,15 +102,15 @@ export default function PatientDetailPage() {
 
   if (!patient) {
     return (
-      <div className="content-inner">
-        <div className="page-head">
-          <p className="pdesc">Paciente no encontrado.</p>
+      <PageLayout>
+        <div className="mb-6">
+          <p className="mt-1 text-body-sm text-muted-foreground">Paciente no encontrado.</p>
           <Button variant="outline" onClick={() => router.push('/pacientes')}>
             <Icon name="chevronLeft" size={16} />
             {t('detail.back')}
           </Button>
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
@@ -124,9 +126,9 @@ export default function PatientDetailPage() {
   }
 
   return (
-    <div className="content-inner">
-      <div className="page-head">
-        <div className="crumbs">
+    <PageLayout>
+      <div className="mb-6">
+        <div className="mb-2 flex items-center gap-1.5 text-body-2xs text-muted-foreground">
           <Button
             variant="ghost"
             size="sm"
@@ -139,8 +141,8 @@ export default function PatientDetailPage() {
           <span className="text-foreground">{patient.name}</span>
         </div>
 
-        <div className="page-head-row">
-          <h1>{patient.name}</h1>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <h1 className="text-heading font-bold tracking-heading">{patient.name}</h1>
           {!editing ? (
             <Button variant="outline" onClick={() => dispatch({ type: 'START_EDIT' })}>
               <Icon name="edit" size={16} />
@@ -160,9 +162,9 @@ export default function PatientDetailPage() {
         </div>
       </div>
 
-      <div className="detail-grid">
+      <div className="grid grid-cols-[300px_1fr] items-start gap-5 max-[980px]:grid-cols-1">
         <div className="flex flex-col gap-5">
-          <Card className="detail-hero items-center gap-4 p-6">
+          <Card className="items-center gap-4 p-6 text-center">
             <PatientAvatar
               initials={getInitials(patient.name)}
               tone={getAvatarTone(patient.id)}
@@ -170,16 +172,18 @@ export default function PatientDetailPage() {
             />
             {!editing ? (
               <>
-                <div className="name">{patient.name}</div>
-                <div className="id">{patient.id}</div>
+                <div className="mt-3 text-xl font-bold tracking-snug">{patient.name}</div>
+                <div className="font-mono text-xs-plus whitespace-nowrap text-muted-foreground">
+                  {patient.id}
+                </div>
                 <div className="mt-2.5">
                   <StatusBadge status={patient.status} />
                 </div>
               </>
             ) : (
               <div className="flex w-full flex-col gap-3">
-                <div className="field">
-                  <label className="lbl" htmlFor="ed-name">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-body-2xs font-[550] text-foreground" htmlFor="ed-name">
                     {t('detail.name')}
                   </label>
                   <Input
@@ -188,8 +192,8 @@ export default function PatientDetailPage() {
                     onChange={e => dispatch({ type: 'SET_NAME', name: e.target.value })}
                   />
                 </div>
-                <div className="field">
-                  <label className="lbl" htmlFor="ed-age">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-body-2xs font-[550] text-foreground" htmlFor="ed-age">
                     {t('detail.age')}
                   </label>
                   <Input
@@ -201,17 +205,17 @@ export default function PatientDetailPage() {
                     aria-invalid={!!ageErr}
                     onChange={e => dispatch({ type: 'SET_AGE', age: e.target.value })}
                   />
-                  {ageErr && <span className="hint text-destructive">{ageErr}</span>}
+                  {ageErr && <span className="text-xs text-destructive">{ageErr}</span>}
                 </div>
               </div>
             )}
           </Card>
 
           <Card className="gap-0 p-0">
-            <div className="list-card-head">
-              <h3>{t('detail.info')}</h3>
+            <div className="flex items-center justify-between border-b border-border px-5 py-4">
+              <h3 className="text-cta font-semibold">{t('detail.info')}</h3>
             </div>
-            <div className="info-list">
+            <div className="py-1">
               <InfoRow
                 label={t('detail.age')}
                 value={`${patient.age} ${t('patients.years')}`}
@@ -228,31 +232,45 @@ export default function PatientDetailPage() {
 
         <div>
           <Card className="gap-4 p-5 pb-2">
-            <p className="pdesc mt-0 mb-[18px]">
+            <p className="mt-0 mb-4.5 text-body-sm text-muted-foreground">
               <strong className="text-foreground">{patient.history.length}</strong>{' '}
               {t('detail.totalConsultas')}
             </p>
-            <div className="timeline">
-              {patient.history.map(c => (
-                <div className="tl-item" key={c.id}>
-                  <div className="tl-rail">
-                    <span className={`tl-dot ${c.status}`} />
-                    <span className="tl-line" />
+            <div className="relative pl-1">
+              {patient.history.map((c, idx) => (
+                <div className="relative grid grid-cols-[28px_1fr] gap-3.5 pb-1.5" key={c.id}>
+                  <div className="flex flex-col items-center">
+                    <span
+                      className={cn(
+                        'z-1 mt-4.5 size-3 flex-none rounded-full border-[3px] border-card shadow-[0_0_0_1px_var(--border)]',
+                        {
+                          'bg-success': c.status === 'completada',
+                          'bg-warning': c.status === 'pendiente',
+                          'bg-destructive': c.status === 'cancelada',
+                          'bg-primary': c.status === 'activo',
+                        }
+                      )}
+                    />
+                    {idx < patient.history.length - 1 && (
+                      <span className="my-0.5 w-0.5 flex-1 bg-border" />
+                    )}
                   </div>
-                  <Card className="tl-body gap-2 p-4">
-                    <div className="tl-top">
+                  <Card className="mb-3.5 gap-2 p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
                       <div>
-                        <div className="tl-type">{c.type}</div>
-                        <div className="tl-meta">
+                        <div className="text-body-sm font-[650]">{c.type}</div>
+                        <div className="mt-0.5 text-xs-plus text-muted-foreground">
                           {t('detail.with')} {c.doctor}
                         </div>
                       </div>
                       <div className="flex items-center gap-2.5">
                         <StatusBadge status={c.status} />
-                        <span className="tl-date">{fmtDate(c.date, lang)}</span>
+                        <span className="text-xs-plus font-[550] whitespace-nowrap text-muted-foreground">
+                          {fmtDate(c.date, lang)}
+                        </span>
                       </div>
                     </div>
-                    <p className="tl-note">{c.note}</p>
+                    <p className="mt-2.5 text-body-xs leading-body text-foreground">{c.note}</p>
                   </Card>
                 </div>
               ))}
@@ -260,6 +278,6 @@ export default function PatientDetailPage() {
           </Card>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 }
