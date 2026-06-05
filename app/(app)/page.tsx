@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { MongoPatientRepository } from '@/src/modules/patients/infrastructure/mongo-patient-repository';
 import { ListPatientsUseCase } from '@/src/modules/patients/application/use-cases/list-patients.use-case';
 import { DashboardClient } from '@/src/modules/patients/presentation/DashboardClient';
