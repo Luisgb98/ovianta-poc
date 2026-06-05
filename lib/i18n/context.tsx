@@ -28,6 +28,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
     localStorage.setItem('ovianta-lang', l);
+    document.cookie = `ovianta-lang=${l}; path=/; max-age=31536000; SameSite=Lax`;
     document.documentElement.lang = l;
   }, []);
 
